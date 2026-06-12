@@ -218,6 +218,7 @@
 
     function selectMode(mode) {
       document.getElementById('mode-assistant').value = mode;
+      var avatarInput = document.getElementById('profil-avatar');
       if (mode === 'alter_ego') {
         document.getElementById('btn-alter').style.border = '3px solid #C4993A';
         document.getElementById('btn-alter').style.opacity = '1';
@@ -225,6 +226,9 @@
         document.getElementById('btn-agent').style.border = '2px solid #1A3A8F';
         document.getElementById('btn-agent').style.opacity = '0.6';
         document.getElementById('btn-agent').style.background = 'white';
+        avatarInput.style.color = '#C4993A';
+        avatarInput.style.borderColor = '#C4993A';
+        avatarInput.placeholder = 'Son nom en doré (ex: Ernesto, Sofia...)';
       } else {
         document.getElementById('btn-agent').style.border = '3px solid #1A3A8F';
         document.getElementById('btn-agent').style.opacity = '1';
@@ -232,6 +236,9 @@
         document.getElementById('btn-alter').style.border = '2px solid #C4993A';
         document.getElementById('btn-alter').style.opacity = '0.6';
         document.getElementById('btn-alter').style.background = 'white';
+        avatarInput.style.color = '#1A3A8F';
+        avatarInput.style.borderColor = '#1A3A8F';
+        avatarInput.placeholder = 'Son nom en bleu (ex: Max, Luna...)';
       }
     }
     var recognition = null;
@@ -399,12 +406,14 @@
         var mode = profil.mode || "alter_ego";
         var intro = mode === "alter_ego" ? "Bonjour. Je suis " + nom + ", le pinceau de ta creativite." : "Bonjour. Je suis " + nom + ", ton agent personnel.";
         msg.textContent = intro + " Que souhaites-tu creer aujourd'hui ?";
+        msg.style.color = mode === "alter_ego" ? "#C4993A" : "#1A3A8F";
       }
 
       // Titre assistant personnalisé
       var titre = document.querySelector('.assistant-title');
       if (titre && nom) {
         titre.textContent = 'Or Eille AI — ' + nom;
+        titre.style.color = (profil.mode === 'agent') ? '#1A3A8F' : '#C4993A';
       }
 
       showPage('assistant');
