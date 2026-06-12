@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Or Eille AI</title>
+  <style>
+    @font-face {
+      font-family: "Basteleur";
+      src: url("Basteleur-Moonlight.ttf") format("truetype");
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background-color: #F7F4EF; font-family: "Basteleur", serif; min-height: 100vh; display: flex; flex-direction: column; }
+    header { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; border-bottom: 1px solid #e0d8cc; }
+    .header-logo { display: flex; align-items: center; gap: 12px; }
+    .header-logo img { width: 44px; height: 44px; }
+    .header-logo-text { font-family: "Basteleur"; font-size: 1.3rem; color: #C4993A; }
+    nav a { font-family: "Basteleur"; font-size: 1rem; color: #1a1a1a; text-decoration: none; margin-left: 24px; opacity: 0.6; transition: opacity 0.2s; }
+    nav a:hover { opacity: 1; }
+    .page { display: none; flex: 1; flex-direction: column; }
+    .page.active { display: flex; }
+    .hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 24px; }
+    .hero-logo { width: 160px; height: 160px; margin-bottom: 32px; animation: float 4s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+    .hero h1 { font-family: "Basteleur"; font-size: clamp(3rem, 8vw, 6rem); color: #C4993A; line-height: 1.05; margin-bottom: 16px; }
+    .hero-slogan { font-family: "Basteleur"; font-size: clamp(1rem, 2.5vw, 1.3rem); color: #1A3A8F; margin-bottom: 52px; }
+    .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .btn-primary { background: #C4993A; color: white; border: none; padding: 16px 40px; border-radius: 50px; font-family: "Basteleur"; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(196,153,58,0.3); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(196,153,58,0.45); }
+    .btn-secondary { background: transparent; color: #C4993A; border: 2px solid #C4993A; padding: 16px 40px; border-radius: 50px; font-family: "Basteleur"; font-size: 1.1rem; cursor: pointer; transition: all 0.2s; }
+    .btn-secondary:hover { background: #C4993A; color: white; }
+    .assistant-page { flex: 1; display: flex; flex-direction: column; padding: 24px; max-width: 800px; margin: 0 auto; width: 100%; }
+    .assistant-title { font-family: "Basteleur"; font-size: 1.8rem; color: #C4993A; margin-bottom: 20px; text-align: center; }
+    .messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; min-height: 300px; max-height: 60vh; padding: 16px; background: white; border-radius: 16px; border: 1px solid #e0d8cc; }
+    .message { padding: 14px 18px; border-radius: 12px; font-family: "Basteleur"; font-size: 1rem; line-height: 1.5; max-width: 85%; }
+    .message.user { background: #C4993A; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+    .message.assistant { background: #F7F4EF; color: #1a1a1a; align-self: flex-start; border: 1px solid #e0d8cc; border-bottom-left-radius: 4px; }
+    .message.thinking { background: #f0ede8; color: #aaa; align-self: flex-start; font-style: italic; font-size: 0.9rem; }
+    .input-zone { display: flex; gap: 12px; align-items: flex-end; }
+    .input-zone textarea { flex: 1; padding: 14px 18px; border-radius: 16px; border: 2px solid #e0d8cc; font-family: "Basteleur"; font-size: 1rem; resize: none; background: white; outline: none; transition: border-color 0.2s; min-height: 52px; max-height: 120px; }
+    .input-zone textarea:focus { border-color: #C4993A; }
+    .btn-send { background: #C4993A; color: white; border: none; width: 52px; height: 52px; border-radius: 50%; font-size: 1.4rem; cursor: pointer; transition: transform 0.2s; flex-shrink: 0; box-shadow: 0 4px 16px rgba(196,153,58,0.3); }
+    .btn-send:hover { transform: scale(1.05); }
+    .btn-send:disabled { background: #ddd; cursor: not-allowed; transform: none; box-shadow: none; }
+    footer { text-align: center; padding: 20px; font-family: "Basteleur"; font-size: 0.85rem; color: #bbb; border-top: 1px solid #e0d8cc; }
+    @media (max-width: 600px) { header { padding: 16px 20px; } nav { display: none; } .hero-logo { width: 130px; height: 130px; } .hero-buttons { flex-direction: column; align-items: center; } .btn-primary, .btn-secondary { width: 260px; text-align: center; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-logo">
+      <img src="logo.png" alt="Or Eille AI" />
+      <span class="header-logo-text">Or Eille AI</span>
+    </div>
+    <nav>
+      <a href="#" onclick="showPage('accueil');return false;">Accueil</a>
+      <a href="#" onclick="showPage('assistant');return false;">Assistant</a>
+      <a href="#">Abonnement</a>
+    </nav>
+  </header>
+  <div class="page active" id="page-accueil">
+    <main class="hero">
+      <img class="hero-logo" src="logo.png" alt="Or Eille AI logo" />
+      <h1>Or Eille AI</h1>
+      <p class="hero-slogan">L'IA qui s'exécute au doigt et à l'œil.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary" onclick="showPage('assistant')">Essayer gratuitement</button>
+        <button class="btn-secondary">S'abonner</button>
+      </div>
+    </main>
+  </div>
+  <div class="page" id="page-assistant">
+    <div class="assistant-page">
+      <div class="assistant-title">Or Eille AI — Assistant</div>
+      <div class="messages" id="messages">
+        <div class="message assistant">Bonjour. Je suis là. Qu'est-ce que tu veux créer aujourd'hui ?</div>
+      </div>
+      <div class="input-zone">
+        <textarea id="input" placeholder="Écris ta question..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();envoyer();}"></textarea>
+        <button class="btn-send" id="btn-send" onclick="envoyer()">➤</button>
+      </div>
+    </div>
+  </div>
+  <footer>© Madame Or Eille Studio — Tous droits réservés</footer>
+  <script>
+    const SYSTEM = "Tu es Or Eille AI, l'assistant de Madame Or Eille Studio. Règle absolue : réponds toujours à la question posée en premier. Commence par ce que la personne A et ce qui est possible. Jamais par ce qui manque. Tutoiement. Chaleureux et direct.";
+    function showPage(p) {
+      document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+      document.getElementById('page-'+p).classList.add('active');
+    }
+    async function envoyer() {
+      const input = document.getElementById('input');
+      const messages = document.getElementById('messages');
+      const btn = document.getElementById('btn-send');
+      const texte = input.value.trim();
+      if (!texte) return;
+      const msgUser = document.createElement('div');
+      msgUser.className = 'message user';
+      msgUser.textContent = texte;
+      messages.appendChild(msgUser);
+      input.value = '';
+      btn.disabled = true;
+      const thinking = document.createElement('div');
+      thinking.className = 'message thinking';
+      thinking.textContent = 'Or Eille réfléchit...';
+      messages.appendChild(thinking);
+      messages.scrollTop = messages.scrollHeight;
+      const hist = [];
+      document.querySelectorAll('.message.user, .message.assistant').forEach(m => {
+        hist.push({role: m.classList.contains('user') ? 'user' : 'assistant', content: m.textContent});
+      });
+      try {
+        const r = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({system: SYSTEM, messages: hist})});
+        const d = await r.json();
+        thinking.remove();
+        const msg = document.createElement('div');
+        msg.className = 'message assistant';
+        msg.textContent = d.content?.[0]?.text || 'Pas de réponse.';
+        messages.appendChild(msg);
+      } catch(e) {
+        thinking.remove();
+        const err = document.createElement('div');
+        err.className = 'message assistant';
+        err.textContent = 'Connexion impossible pour l\'instant.';
+        messages.appendChild(err);
+      }
+      btn.disabled = false;
+      messages.scrollTop = messages.scrollHeight;
+    }
+  </script>
+</body>
+</html>
