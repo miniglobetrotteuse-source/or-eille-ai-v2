@@ -52,6 +52,8 @@
     .input-zone { display: flex; flex-direction: column; gap: 8px; width: 100%; }
     .input-zone textarea { width: 100%; padding: 12px 14px; border-radius: 16px; border: 2px solid #C4993A; font-family: "Basteleur"; font-size: 16px; resize: none; background: white; outline: none; min-height: 180px; max-height: 300px; box-sizing: border-box; }
     .input-zone textarea:focus { border-color: #1A3A8F; }
+    #page-profil input, #page-profil textarea, #page-profil select { color: #1A3A8F; }
+    #page-profil input::placeholder, #page-profil textarea::placeholder { color: #C4993A; opacity: 0.7; }
     .input-buttons { display: flex; gap: 8px; justify-content: flex-end; margin-top: 80px; }
     @media (max-width: 600px) {
       .input-zone { flex-wrap: wrap; }
@@ -177,9 +179,9 @@
           <option value="Atkinson Hyperlegible">Atkinson (déficience visuelle)</option>
           <option value="OpenDyslexic">OpenDyslexic (dyslexie)</option>
         </select>
-        <label style="font-family:'Basteleur',serif;font-size:0.8rem;color:#888;">Taille du texte</label>
+        <label style="font-family:'Basteleur',serif;font-size:0.85rem;color:#C4993A;">Taille du texte</label>
         <input type="range" id="profil-taille" min="12" max="24" value="16" style="width:100%;margin:4px 0 8px;">
-        <label style="font-family:'Basteleur',serif;font-size:0.8rem;color:#888;">Vitesse de parole</label>
+        <label style="font-family:'Basteleur',serif;font-size:0.85rem;color:#C4993A;">Vitesse de parole</label>
         <input type="range" id="profil-vitesse" min="0.5" max="1.5" step="0.1" value="0.95" style="width:100%;margin:4px 0 8px;">
         <select id="profil-theme" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;">
           <option value="clair">Thème clair</option>
