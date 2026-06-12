@@ -40,9 +40,14 @@
     .message.user { background: #C4993A; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
     .message.assistant { background: #F7F4EF; color: #1A3A8F; align-self: flex-start; border: 1px solid #e0d8cc; border-bottom-left-radius: 4px; }
     .message.thinking { background: #f0ede8; color: #aaa; align-self: flex-start; font-style: italic; font-size: 0.9rem; }
-    .input-zone { display: flex; gap: 10px; align-items: flex-end; }
-    .input-zone textarea { flex: 1; padding: 14px 18px; border-radius: 16px; border: 2px solid #e0d8cc; font-family: "Basteleur"; font-size: 1rem; resize: none; background: white; outline: none; transition: border-color 0.2s; min-height: 52px; max-height: 120px; min-width: 0; }
+    .input-zone { display: flex; gap: 8px; align-items: flex-end; flex-wrap: nowrap; }
+    .input-zone textarea { flex: 1; min-width: 0; width: 100%; padding: 12px 14px; border-radius: 16px; border: 2px solid #e0d8cc; font-family: "Basteleur"; font-size: 1rem; resize: none; background: white; outline: none; transition: border-color 0.2s; min-height: 48px; max-height: 120px; box-sizing: border-box; }
     .input-zone textarea:focus { border-color: #C4993A; }
+    @media (max-width: 600px) {
+      .input-zone { flex-wrap: wrap; }
+      .input-zone textarea { width: 100%; min-height: 56px; font-size: 1.1rem; margin-bottom: 8px; }
+      .input-zone .btn-mic, .input-zone .btn-speaker, .input-zone .btn-send, .input-zone button { width: 46px; height: 46px; font-size: 1.2rem; }
+    }
     .btn-send, .btn-mic, .btn-speaker, .btn-crayon { border: none; width: 52px; height: 52px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; flex-shrink: 0; transition: transform 0.2s; }
     .btn-send { background: #C4993A; color: white; box-shadow: 0 4px 16px rgba(196,153,58,0.3); }
     .btn-send:disabled { background: #ddd; cursor: not-allowed; }
