@@ -202,7 +202,16 @@
     var recognition = null;
     var isRecording = false;
 
-    var SYSTEM = "Tu es Or Eille AI, assistant de Madame Or Eille Studio. REGLE : reponds toujours a la question posee en premier. Vocabulaire francais correct, courant a soutenu. Tutoiement. Chaleureux et direct.";
+    function getSystem() {
+      var profil = JSON.parse(sessionStorage.getItem('profil') || '{}');
+      var nom = profil.avatar || profil.nom || '';
+      var mission = profil.mission || '';
+      var base = "Tu es Or Eille AI, assistant de Madame Or Eille Studio. REGLE ABSOLUE : reponds toujours a la question posee en premier. Vocabulaire francais correct, courant a soutenu. Tutoiement. Chaleureux et direct.";
+      if (nom) base += " Tu t'adresses a " + nom + ".";
+      if (mission) base += " Sa mission : " + mission + ". Tiens compte de cela dans tes reponses.";
+      return base;
+    }
+    var SYSTEM = getSystem();
 
     document.getElementById('nav-accueil').addEventListener('click', function(e) { e.preventDefault(); showPage('accueil'); });
     document.getElementById('nav-assistant').addEventListener('click', function(e) { e.preventDefault(); showPage('assistant'); });
@@ -302,7 +311,7 @@
         hist.push({role: m.classList.contains('user') ? 'user' : 'assistant', content: m.textContent});
       });
       try {
-        var r = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({system: SYSTEM, messages: hist})});
+        var r = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({system: getSystem(), messages: hist})});
         var d = await r.json();
         thinking.remove();
         var reponse = (d.content && d.content[0] && d.content[0].text) ? d.content[0].text : 'Je ne parviens pas a repondre pour l instant.';
@@ -343,8 +352,24 @@
         theme: document.getElementById('profil-theme').value
       };
       sessionStorage.setItem('profil', JSON.stringify(profil));
-      alert('Profil sauvegardé !');
-      showPage('accueil');
+
+      // Appliquer la taille de texte
+      document.body.style.fontSize = profil.taille + 'px';
+
+      // Message de bienvenue personnalisé
+      var nom = profil.avatar || profil.nom || '';
+      var msg = document.querySelector('#messages .message.assistant');
+      if (msg && nom) {
+        msg.textContent = 'Bonjour ' + nom + '. Je suis là. Qu'est-ce que tu souhaites créer aujourd'hui ?';
+      }
+
+      // Titre assistant personnalisé
+      var titre = document.querySelector('.assistant-title');
+      if (titre && nom) {
+        titre.textContent = 'Or Eille AI — ' + nom;
+      }
+
+      showPage('assistant');
     }
   </script>
 </body>
