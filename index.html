@@ -45,7 +45,7 @@
     .message.assistant { background: #F7F4EF; color: #1A3A8F; align-self: flex-start; border: 1px solid #e0d8cc; border-bottom-left-radius: 4px; }
     .message.thinking { background: #f0ede8; color: #aaa; align-self: flex-start; font-style: italic; font-size: 0.9rem; }
     .input-zone { display: flex; flex-direction: column; gap: 8px; width: 100%; }
-    .input-zone textarea { width: 100%; padding: 12px 14px; border-radius: 16px; border: 2px solid #C4993A; font-family: "Basteleur"; font-size: 16px; resize: none; background: white; outline: none; min-height: 250px; max-height: 400px; box-sizing: border-box; }
+    .input-zone textarea { width: 100%; padding: 12px 14px; border-radius: 16px; border: 2px solid #C4993A; font-family: "Basteleur"; font-size: 16px; resize: none; background: white; outline: none; min-height: 180px; max-height: 300px; box-sizing: border-box; }
     .input-zone textarea:focus { border-color: #1A3A8F; }
     .input-buttons { display: flex; gap: 8px; justify-content: flex-end; margin-top: 80px; }
     @media (max-width: 600px) {
@@ -99,7 +99,7 @@
         <div class="message assistant">Bonjour. Je suis là. Qu'est-ce que tu souhaites créer aujourd'hui ?</div>
       </div>
       <div class="input-zone">
-        <textarea id="input" placeholder="ou écris ici..."></textarea>
+        <textarea id="input" placeholder="ou écris ici..." rows="6" style="min-height:150px;"></textarea>
         <div class="input-buttons">
         <button class="btn-mic" id="btn-mic" title="Parler">&#127908;</button>
         <button class="btn-speaker" id="btn-speaker" title="Activer la voix">&#128266;</button>
