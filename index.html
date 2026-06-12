@@ -23,7 +23,7 @@
     .hero-logo { width: 160px; height: 160px; margin-bottom: 32px; animation: float 4s ease-in-out infinite; }
     @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
     .hero h1 { font-family: "Basteleur"; font-size: clamp(3rem, 8vw, 6rem); color: #C4993A; line-height: 1.05; margin-bottom: 16px; }
-    .hero-slogan { font-family: "Basteleur"; font-size: clamp(1rem, 2.5vw, 1.3rem); color: #1A3A8F; margin-bottom: 52px; }
+    .hero-slogan { font-family: "Basteleur"; font-size: clamp(1rem, 2.5vw, 1.3rem); color: #1a1a1a; margin-bottom: 52px; }
     .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
     .btn-primary { background: #C4993A; color: white; border: none; padding: 16px 40px; border-radius: 50px; font-family: "Basteleur"; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(196,153,58,0.3); }
     .btn-primary:hover { transform: translateY(-2px); }
@@ -44,8 +44,8 @@
     .btn-send:disabled { background: #ddd; cursor: not-allowed; }
     .btn-mic { background: #F7F4EF; color: #C4993A; border: 2px solid #C4993A; }
     .btn-mic.recording { background: #C4993A; color: white; animation: pulse 1s infinite; }
-    .btn-speaker { background: #F7F4EF; color: #1A3A8F; border: 2px solid #1A3A8F; }
-    .btn-speaker.active { background: #1A3A8F; color: white; }
+    .btn-speaker { background: #F7F4EF; color: #1a1a1a; border: 2px solid #1A3A8F; }
+    .btn-speaker.active { background: #C4993A; color: white; }
     @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
     footer { text-align: center; padding: 20px; font-family: "Basteleur"; font-size: 0.85rem; color: #bbb; border-top: 1px solid #e0d8cc; }
     @media (max-width: 600px) { header { padding: 16px 20px; } nav { display: none; } .hero-logo { width: 130px; height: 130px; } .hero-buttons { flex-direction: column; align-items: center; } .btn-primary, .btn-secondary { width: 260px; text-align: center; } }
