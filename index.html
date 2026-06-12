@@ -77,6 +77,7 @@
       <a href="#" id="nav-accueil">Accueil</a>
       <a href="#" id="nav-assistant">Assistant</a>
       <a href="#" id="nav-abonnement" onclick="showPage('abonnement');return false;">Abonnement</a>
+      <a href="#" id="nav-profil" onclick="showPage('profil');return false;" style="color:#1A3A8F;">Profil</a>
     </nav>
   </header>
 
@@ -261,6 +262,31 @@
       }
       btn.disabled = false;
       messages.scrollTop = messages.scrollHeight;
+    }
+
+    document.getElementById('profil-taille').addEventListener('input', function() {
+      document.getElementById('taille-label').textContent = this.value + 'px';
+    });
+    document.getElementById('profil-vitesse').addEventListener('input', function() {
+      var v = parseFloat(this.value);
+      var label = v < 0.8 ? 'Lente' : v > 1.2 ? 'Rapide' : 'Normale';
+      document.getElementById('vitesse-label').textContent = label;
+    });
+
+    function sauvegarderProfil() {
+      var profil = {
+        nom: document.getElementById('profil-nom').value,
+        avatar: document.getElementById('profil-avatar').value,
+        mission: document.getElementById('profil-mission').value,
+        langue: document.getElementById('profil-langue').value,
+        police: document.getElementById('profil-police').value,
+        taille: document.getElementById('profil-taille').value,
+        vitesse: document.getElementById('profil-vitesse').value,
+        theme: document.getElementById('profil-theme').value
+      };
+      sessionStorage.setItem('profil', JSON.stringify(profil));
+      alert('Profil sauvegardé !');
+      showPage('accueil');
     }
   </script>
 </body>
