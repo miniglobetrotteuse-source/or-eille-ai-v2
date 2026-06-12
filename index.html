@@ -194,9 +194,11 @@
           <option value="OpenDyslexic">OpenDyslexic (dyslexie)</option>
         </select>
         <label style="font-family:'Basteleur',serif;font-size:0.85rem;color:#C4993A;">Taille du texte</label>
-        <input type="range" id="profil-taille" min="12" max="24" value="16" style="width:100%;margin:4px 0 8px;">
+        <input type="range" id="profil-taille" min="12" max="24" value="16" style="width:100%;margin:4px 0 4px;-webkit-appearance:auto;appearance:auto;" oninput="document.getElementById('label-taille').textContent = this.value + 'px'">
+        <div id="label-taille" style="font-family:'Basteleur',serif;font-size:0.8rem;color:#C4993A;text-align:center;margin-bottom:8px;">16px</div>
         <label style="font-family:'Basteleur',serif;font-size:0.85rem;color:#C4993A;">Vitesse de parole</label>
-        <input type="range" id="profil-vitesse" min="0.5" max="1.5" step="0.1" value="0.95" style="width:100%;margin:4px 0 8px;">
+        <input type="range" id="profil-vitesse" min="0.5" max="1.5" step="0.1" value="0.95" style="width:100%;margin:4px 0 4px;-webkit-appearance:auto;appearance:auto;" oninput="document.getElementById('label-vitesse').textContent = this.value < 0.8 ? 'Lente' : this.value > 1.2 ? 'Rapide' : 'Normale'">
+        <div id="label-vitesse" style="font-family:'Basteleur',serif;font-size:0.8rem;color:#C4993A;text-align:center;margin-bottom:8px;">Normale</div>
         <select id="profil-theme" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;">
           <option value="clair">Thème clair</option>
           <option value="sombre">Thème sombre</option>
