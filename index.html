@@ -153,7 +153,22 @@
       <div style="background:white;border-radius:12px;padding:16px;border:1px solid #e0d8cc;margin-bottom:12px;">
         <h3 style="font-family:'Basteleur',serif;color:#1A3A8F;font-size:1rem;margin-bottom:10px;">Mon identité</h3>
         <input type="text" id="profil-nom" placeholder="Prénom ou pseudonyme" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;margin-bottom:8px;box-sizing:border-box;">
-        <input type="text" id="profil-avatar" placeholder="Mon alter ego (ex: Madame Or Eille)" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;margin-bottom:8px;box-sizing:border-box;">
+        <div style="margin-bottom:12px;">
+          <label style="font-family:'Basteleur',serif;font-size:0.85rem;color:#C4993A;display:block;margin-bottom:6px;">Mon assistant est...</label>
+          <div style="display:flex;gap:8px;">
+            <label style="flex:1;border:1.5px solid #1A3A8F;border-radius:10px;padding:10px;cursor:pointer;text-align:center;">
+              <input type="radio" name="mode-assistant" value="alter_ego" checked style="display:none;">
+              <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;font-weight:bold;">Mon alter ego</div>
+              <div style="font-family:'Basteleur',serif;font-size:0.75rem;color:#888;margin-top:2px;">le pinceau de ta créativité</div>
+            </label>
+            <label style="flex:1;border:1.5px solid #C4993A;border-radius:10px;padding:10px;cursor:pointer;text-align:center;">
+              <input type="radio" name="mode-assistant" value="agent" style="display:none;">
+              <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#C4993A;font-weight:bold;">Mon agent</div>
+              <div style="font-family:'Basteleur',serif;font-size:0.75rem;color:#888;margin-top:2px;">ton assistant personnel</div>
+            </label>
+          </div>
+        </div>
+        <input type="text" id="profil-avatar" placeholder="Son nom (ex: Madame Or Eille, Ernest...)" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;margin-bottom:8px;box-sizing:border-box;">
         <textarea id="profil-mission" placeholder="Ce que je fais / ma mission..." rows="2" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;resize:none;box-sizing:border-box;"></textarea>
       </div>
 
@@ -343,6 +358,7 @@
     function sauvegarderProfil() {
       var profil = {
         nom: document.getElementById('profil-nom').value,
+        mode: document.querySelector('input[name="mode-assistant"]:checked').value,
         avatar: document.getElementById('profil-avatar').value,
         mission: document.getElementById('profil-mission').value,
         langue: document.getElementById('profil-langue').value,
@@ -360,7 +376,9 @@
       var nom = profil.avatar || profil.nom || '';
       var msg = document.querySelector('#messages .message.assistant');
       if (msg && nom) {
-        msg.textContent = "Bonjour. Je suis " + nom + ", ton alter ego creatif. Que souhaites-tu creer aujourd'hui ?";
+        var mode = profil.mode || "alter_ego";
+        var intro = mode === "alter_ego" ? "Bonjour. Je suis " + nom + ", le pinceau de ta creativite." : "Bonjour. Je suis " + nom + ", ton agent personnel.";
+        msg.textContent = intro + " Que souhaites-tu creer aujourd'hui ?";
       }
 
       // Titre assistant personnalisé
