@@ -12,14 +12,19 @@
     @font-face {
       font-family: "Basteleur";
       src: url("Basteleur-Moonlight.ttf") format("truetype");
+      font-weight: normal;
+    }
+    @font-face {
+      font-family: "BasteleurBold";
+      src: url("Basteleur-Bold.ttf") format("truetype");
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background-color: #F7F4EF; font-family: "Basteleur", serif; min-height: 100vh; display: flex; flex-direction: column; color: #1A3A8F; }
     header { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; border-bottom: 1px solid #e0d8cc; }
     .header-logo { display: flex; align-items: center; gap: 12px; }
     .header-logo img { width: 44px; height: 44px; }
-    .header-logo-text { font-family: "Basteleur"; font-size: 1.3rem; color: #C4993A; }
-    nav a { font-family: "Basteleur"; font-size: 1rem; text-decoration: none; margin-left: 24px; transition: opacity 0.2s; font-weight: bold; }
+    .header-logo-text { font-family: "BasteleurBold", "Basteleur", serif; font-size: 1.3rem; color: #C4993A; }
+    nav a { font-family: "BasteleurBold", "Basteleur", serif; font-size: 1rem; text-decoration: none; margin-left: 24px; transition: opacity 0.2s; }
     nav a:hover { opacity: 0.8; }
     #nav-accueil { color: #C4993A; }
     #nav-assistant { color: #1A3A8F; }
@@ -29,7 +34,7 @@
     .hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 24px; }
     .hero-logo { width: 160px; height: 160px; margin-bottom: 32px; animation: float 4s ease-in-out infinite; }
     @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
-    .hero h1 { font-family: "Basteleur"; font-size: clamp(3rem, 8vw, 6rem); color: #C4993A; line-height: 1.05; margin-bottom: 16px; }
+    .hero h1 { font-family: "BasteleurBold", "Basteleur", serif; font-size: clamp(3rem, 8vw, 6rem); color: #C4993A; line-height: 1.05; margin-bottom: 16px; }
     .hero-slogan { color: #1A3A8F !important; font-family: "Basteleur", serif; font-size: clamp(1rem, 2.5vw, 1.3rem); margin-bottom: 52px; font-style: italic; }
     .hero-slogan-override { font-family: "Basteleur"; font-size: clamp(1rem, 2.5vw, 1.3rem); color: #1a1a1a; margin-bottom: 52px; }
     .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
