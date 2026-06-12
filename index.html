@@ -155,17 +155,16 @@
         <input type="text" id="profil-nom" placeholder="Prénom ou pseudonyme" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;margin-bottom:8px;box-sizing:border-box;">
         <div style="margin-bottom:12px;">
           <label style="font-family:'Basteleur',serif;font-size:0.85rem;color:#C4993A;display:block;margin-bottom:6px;">Mon assistant est...</label>
+          <input type="hidden" id="mode-assistant" value="alter_ego">
           <div style="display:flex;gap:8px;">
-            <label style="flex:1;border:2px solid #C4993A;border-radius:10px;padding:10px;cursor:pointer;text-align:center;background:#fff8ee;">
-              <input type="radio" name="mode-assistant" value="alter_ego" checked style="display:none;">
+            <div id="btn-alter" onclick="selectMode('alter_ego')" style="flex:1;border:3px solid #C4993A;border-radius:10px;padding:10px;cursor:pointer;text-align:center;background:#fff8ee;">
               <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#C4993A;font-weight:bold;">Mon alter ego</div>
               <div style="font-family:'Basteleur',serif;font-size:0.75rem;color:#C4993A;margin-top:2px;font-style:italic;">le pinceau de ta créativité</div>
-            </label>
-            <label style="flex:1;border:2px solid #1A3A8F;border-radius:10px;padding:10px;cursor:pointer;text-align:center;background:#f0f3ff;">
-              <input type="radio" name="mode-assistant" value="agent" style="display:none;">
+            </div>
+            <div id="btn-agent" onclick="selectMode('agent')" style="flex:1;border:2px solid #1A3A8F;border-radius:10px;padding:10px;cursor:pointer;text-align:center;background:white;opacity:0.6;">
               <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;font-weight:bold;">Mon agent</div>
               <div style="font-family:'Basteleur',serif;font-size:0.75rem;color:#1A3A8F;margin-top:2px;font-style:italic;">ton assistant personnel</div>
-            </label>
+            </div>
           </div>
         </div>
         <input type="text" id="profil-avatar" placeholder="Son nom (ex: Ernesto, Black Mamba, Sofia...)" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;margin-bottom:8px;box-sizing:border-box;">
@@ -214,6 +213,25 @@
 
   <script>
     var speakerOn = false;
+
+    function selectMode(mode) {
+      document.getElementById('mode-assistant').value = mode;
+      if (mode === 'alter_ego') {
+        document.getElementById('btn-alter').style.border = '3px solid #C4993A';
+        document.getElementById('btn-alter').style.opacity = '1';
+        document.getElementById('btn-alter').style.background = '#fff8ee';
+        document.getElementById('btn-agent').style.border = '2px solid #1A3A8F';
+        document.getElementById('btn-agent').style.opacity = '0.6';
+        document.getElementById('btn-agent').style.background = 'white';
+      } else {
+        document.getElementById('btn-agent').style.border = '3px solid #1A3A8F';
+        document.getElementById('btn-agent').style.opacity = '1';
+        document.getElementById('btn-agent').style.background = '#f0f3ff';
+        document.getElementById('btn-alter').style.border = '2px solid #C4993A';
+        document.getElementById('btn-alter').style.opacity = '0.6';
+        document.getElementById('btn-alter').style.background = 'white';
+      }
+    }
     var recognition = null;
     var isRecording = false;
 
@@ -358,7 +376,7 @@
     function sauvegarderProfil() {
       var profil = {
         nom: document.getElementById('profil-nom').value,
-        mode: document.querySelector('input[name="mode-assistant"]:checked').value,
+        mode: document.getElementById('mode-assistant').value,
         avatar: document.getElementById('profil-avatar').value,
         mission: document.getElementById('profil-mission').value,
         langue: document.getElementById('profil-langue').value,
