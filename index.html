@@ -147,7 +147,7 @@
         var interim = '';
         for (var i = e.resultIndex; i < e.results.length; i++) {
           if (e.results[i].isFinal) {
-            finalTranscript += e.results[i][0].transcript;
+            finalTranscript += e.results[i][0].transcript + ' ';
           } else {
             interim += e.results[i][0].transcript;
           }
