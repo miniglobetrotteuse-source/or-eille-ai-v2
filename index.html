@@ -144,6 +144,55 @@
     </div>
   </div>
 
+  <div class="page" id="page-profil">
+    <div style="flex:1;overflow-y:auto;padding:20px 16px;max-width:600px;margin:0 auto;width:100%;box-sizing:border-box;">
+      <h2 style="font-family:'BasteleurBold','Basteleur',serif;font-size:1.6rem;color:#C4993A;text-align:center;margin-bottom:16px;">Mon Profil</h2>
+
+      <div style="background:white;border-radius:12px;padding:16px;border:1px solid #e0d8cc;margin-bottom:12px;">
+        <h3 style="font-family:'Basteleur',serif;color:#1A3A8F;font-size:1rem;margin-bottom:10px;">Mon identité</h3>
+        <input type="text" id="profil-nom" placeholder="Prénom ou pseudonyme" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;margin-bottom:8px;box-sizing:border-box;">
+        <input type="text" id="profil-avatar" placeholder="Mon alter ego (ex: Madame Or Eille)" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;margin-bottom:8px;box-sizing:border-box;">
+        <textarea id="profil-mission" placeholder="Ce que je fais / ma mission..." rows="2" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;resize:none;box-sizing:border-box;"></textarea>
+      </div>
+
+      <div style="background:white;border-radius:12px;padding:16px;border:1px solid #e0d8cc;margin-bottom:12px;">
+        <h3 style="font-family:'Basteleur',serif;color:#1A3A8F;font-size:1rem;margin-bottom:10px;">Langue</h3>
+        <select id="profil-langue" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;">
+          <option value="ln">🇨🇬 Lingala</option>
+          <option value="fr">🇫🇷 Français</option>
+          <option value="en">🇬🇧 English</option>
+          <option value="ar">🇸🇦 العربية</option>
+          <option value="wo">🇸🇳 Wolof</option>
+          <option value="bm">🇲🇱 Bambara</option>
+          <option value="sw">🇰🇪 Swahili</option>
+          <option value="pt">🇵🇹 Português</option>
+          <option value="es">🇪🇸 Español</option>
+        </select>
+      </div>
+
+      <div style="background:white;border-radius:12px;padding:16px;border:1px solid #e0d8cc;margin-bottom:12px;">
+        <h3 style="font-family:'Basteleur',serif;color:#1A3A8F;font-size:1rem;margin-bottom:10px;">Accessibilité</h3>
+        <select id="profil-police" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;margin-bottom:8px;">
+          <option value="Basteleur">Police normale</option>
+          <option value="Atkinson Hyperlegible">Atkinson (déficience visuelle)</option>
+          <option value="OpenDyslexic">OpenDyslexic (dyslexie)</option>
+        </select>
+        <label style="font-family:'Basteleur',serif;font-size:0.8rem;color:#888;">Taille du texte</label>
+        <input type="range" id="profil-taille" min="12" max="24" value="16" style="width:100%;margin:4px 0 8px;">
+        <label style="font-family:'Basteleur',serif;font-size:0.8rem;color:#888;">Vitesse de parole</label>
+        <input type="range" id="profil-vitesse" min="0.5" max="1.5" step="0.1" value="0.95" style="width:100%;margin:4px 0 8px;">
+        <select id="profil-theme" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;">
+          <option value="clair">Thème clair</option>
+          <option value="sombre">Thème sombre</option>
+          <option value="contraste">Contraste élevé</option>
+        </select>
+      </div>
+
+      <button onclick="sauvegarderProfil()" style="background:#C4993A;color:#1A3A8F;border:none;padding:12px 24px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;cursor:pointer;width:100%;margin-bottom:8px;">Sauvegarder</button>
+      <button onclick="showPage('accueil')" style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour</button>
+    </div>
+  </div>
+
   <footer id="main-footer" style="color:#C4993A;position:relative;clear:both;margin-top:auto;">&copy; Madame Or Eille Studio &mdash; Tous droits réservés</footer>
 
   <script>
