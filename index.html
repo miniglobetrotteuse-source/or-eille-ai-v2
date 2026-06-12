@@ -26,7 +26,7 @@
     .hero-slogan { font-family: "Basteleur"; font-size: clamp(1rem, 2.5vw, 1.3rem); color: #1A3A8F; margin-bottom: 52px; }
     .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
     .btn-primary { background: #C4993A; color: white; border: none; padding: 16px 40px; border-radius: 50px; font-family: "Basteleur"; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(196,153,58,0.3); }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(196,153,58,0.45); }
+    .btn-primary:hover { transform: translateY(-2px); }
     .btn-secondary { background: transparent; color: #C4993A; border: 2px solid #C4993A; padding: 16px 40px; border-radius: 50px; font-family: "Basteleur"; font-size: 1.1rem; cursor: pointer; transition: all 0.2s; }
     .btn-secondary:hover { background: #C4993A; color: white; }
     .assistant-page { flex: 1; display: flex; flex-direction: column; padding: 24px; max-width: 800px; margin: 0 auto; width: 100%; }
@@ -41,7 +41,6 @@
     .input-zone textarea:focus { border-color: #C4993A; }
     .btn-send, .btn-mic, .btn-speaker { border: none; width: 52px; height: 52px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; flex-shrink: 0; transition: transform 0.2s; }
     .btn-send { background: #C4993A; color: white; box-shadow: 0 4px 16px rgba(196,153,58,0.3); }
-    .btn-send:hover { transform: scale(1.05); }
     .btn-send:disabled { background: #ddd; cursor: not-allowed; }
     .btn-mic { background: #F7F4EF; color: #C4993A; border: 2px solid #C4993A; }
     .btn-mic.recording { background: #C4993A; color: white; animation: pulse 1s infinite; }
@@ -59,8 +58,8 @@
       <span class="header-logo-text">Or Eille AI</span>
     </div>
     <nav>
-      <a href="#" onclick="showPage('accueil');return false;">Accueil</a>
-      <a href="#" onclick="showPage('assistant');return false;">Assistant</a>
+      <a href="#" id="nav-accueil">Accueil</a>
+      <a href="#" id="nav-assistant">Assistant</a>
       <a href="#">Abonnement</a>
     </nav>
   </header>
@@ -69,9 +68,9 @@
     <main class="hero">
       <img class="hero-logo" src="logo.png" alt="Or Eille AI logo" />
       <h1>Or Eille AI</h1>
-      <p class="hero-slogan">L'IA qui s'exécute au doigt et à l'œil.</p>
+      <p class="hero-slogan">L'IA qui s'exécute au doigt et à l'oeil.</p>
       <div class="hero-buttons">
-        <button class="btn-primary" onclick="showPage('assistant')">Essayer gratuitement</button>
+        <button class="btn-primary" id="btn-essayer">Essayer gratuitement</button>
         <button class="btn-secondary">S'abonner</button>
       </div>
     </main>
@@ -79,87 +78,76 @@
 
   <div class="page" id="page-assistant">
     <div class="assistant-page">
-      <div class="assistant-title">Or Eille AI — Assistant</div>
+      <div class="assistant-title">Or Eille AI &mdash; Assistant</div>
       <div class="messages" id="messages">
         <div class="message assistant">Bonjour. Je suis là. Qu'est-ce que tu souhaites créer aujourd'hui ?</div>
       </div>
       <div class="input-zone">
-        <textarea id="input" placeholder="Écris ta question..." rows="1"
-          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();envoyer();}"></textarea>
-        <button class="btn-mic" id="btn-mic" onclick="toggleMic()" title="Parler">🎤</button>
-        <button class="btn-speaker" id="btn-speaker" onclick="toggleSpeaker()" title="Activer la voix">🔊</button>
-        <button class="btn-send" id="btn-send" onclick="envoyer()">➤</button>
+        <textarea id="input" placeholder="Ecris ta question..." rows="1"></textarea>
+        <button class="btn-mic" id="btn-mic" title="Parler">&#127908;</button>
+        <button class="btn-speaker" id="btn-speaker" title="Activer la voix">&#128266;</button>
+        <button class="btn-send" id="btn-send">&#9654;</button>
       </div>
     </div>
   </div>
 
-  <footer>© Madame Or Eille Studio — Tous droits réservés</footer>
+  <footer>&copy; Madame Or Eille Studio &mdash; Tous droits réservés</footer>
 
   <script>
-    const SYSTEM = `Tu es Or Eille AI, l'assistant vocal et textuel de Madame Or Eille Studio.
+    var speakerOn = false;
+    var recognition = null;
+    var isRecording = false;
 
-RÈGLE ABSOLUE : Réponds toujours à la question posée en premier. La réponse directe avant tout.
-Commence par ce que la personne A et ce qui est possible. Jamais par ce qui manque ou ce qui ne va pas.
+    var SYSTEM = "Tu es Or Eille AI, assistant de Madame Or Eille Studio. REGLE : reponds toujours a la question posee en premier. Vocabulaire francais correct, courant a soutenu. Tutoiement. Chaleureux et direct.";
 
-NIVEAU DE LANGUE : Français correct, courant à soutenu. Vocabulaire précis et riche.
-Jamais d'approximations, jamais de langage relâché sauf si c'est nécessaire au contexte.
-Tu élèves le niveau de langue de tes interlocuteurs naturellement, sans condescendance.
-
-TON : Tutoiement. Chaleureux, direct, humain. Jamais condescendant.
-Réponds dans la langue de la personne.`;
-
-    let speakerOn = false;
-    let recognition = null;
-    let isRecording = false;
+    document.getElementById('nav-accueil').addEventListener('click', function(e) { e.preventDefault(); showPage('accueil'); });
+    document.getElementById('nav-assistant').addEventListener('click', function(e) { e.preventDefault(); showPage('assistant'); });
+    document.getElementById('btn-essayer').addEventListener('click', function() { showPage('assistant'); });
+    document.getElementById('btn-send').addEventListener('click', envoyer);
+    document.getElementById('btn-mic').addEventListener('click', toggleMic);
+    document.getElementById('btn-speaker').addEventListener('click', toggleSpeaker);
+    document.getElementById('input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); envoyer(); }
+    });
 
     function showPage(p) {
-      document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
-      document.getElementById('page-'+p).classList.add('active');
+      document.querySelectorAll('.page').forEach(function(x) { x.classList.remove('active'); });
+      document.getElementById('page-' + p).classList.add('active');
     }
 
     function toggleSpeaker() {
       speakerOn = !speakerOn;
-      const btn = document.getElementById('btn-speaker');
-      btn.classList.toggle('active', speakerOn);
-      btn.title = speakerOn ? 'Désactiver la voix' : 'Activer la voix';
+      var btn = document.getElementById('btn-speaker');
+      if (speakerOn) { btn.classList.add('active'); } else { btn.classList.remove('active'); }
     }
 
     function speak(text) {
       if (!speakerOn) return;
       window.speechSynthesis.cancel();
-      const utt = new SpeechSynthesisUtterance(text);
+      var utt = new SpeechSynthesisUtterance(text);
       utt.lang = 'fr-FR';
       utt.rate = 0.95;
-      utt.pitch = 1;
       window.speechSynthesis.speak(utt);
     }
 
     function toggleMic() {
-      if (isRecording) {
-        stopMic();
-      } else {
-        startMic();
-      }
+      if (isRecording) { stopMic(); } else { startMic(); }
     }
 
     function startMic() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        alert('La reconnaissance vocale n'est pas disponible sur ce navigateur.');
-        return;
-      }
-      recognition = new SpeechRecognition();
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) { alert('Reconnaissance vocale non disponible sur ce navigateur.'); return; }
+      recognition = new SR();
       recognition.lang = 'fr-FR';
       recognition.continuous = false;
       recognition.interimResults = false;
-      recognition.onresult = (e) => {
-        const texte = e.results[0][0].transcript;
-        document.getElementById('input').value = texte;
+      recognition.onresult = function(e) {
+        document.getElementById('input').value = e.results[0][0].transcript;
         stopMic();
         envoyer();
       };
-      recognition.onerror = () => stopMic();
-      recognition.onend = () => stopMic();
+      recognition.onerror = function() { stopMic(); };
+      recognition.onend = function() { stopMic(); };
       recognition.start();
       isRecording = true;
       document.getElementById('btn-mic').classList.add('recording');
@@ -172,41 +160,41 @@ Réponds dans la langue de la personne.`;
     }
 
     async function envoyer() {
-      const input = document.getElementById('input');
-      const messages = document.getElementById('messages');
-      const btn = document.getElementById('btn-send');
-      const texte = input.value.trim();
+      var input = document.getElementById('input');
+      var messages = document.getElementById('messages');
+      var btn = document.getElementById('btn-send');
+      var texte = input.value.trim();
       if (!texte) return;
-      const msgUser = document.createElement('div');
+      var msgUser = document.createElement('div');
       msgUser.className = 'message user';
       msgUser.textContent = texte;
       messages.appendChild(msgUser);
       input.value = '';
       btn.disabled = true;
-      const thinking = document.createElement('div');
+      var thinking = document.createElement('div');
       thinking.className = 'message thinking';
-      thinking.textContent = 'Or Eille réfléchit...';
+      thinking.textContent = 'Or Eille reflechit...';
       messages.appendChild(thinking);
       messages.scrollTop = messages.scrollHeight;
-      const hist = [];
-      document.querySelectorAll('.message.user, .message.assistant').forEach(m => {
+      var hist = [];
+      document.querySelectorAll('.message.user, .message.assistant').forEach(function(m) {
         hist.push({role: m.classList.contains('user') ? 'user' : 'assistant', content: m.textContent});
       });
       try {
-        const r = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({system: SYSTEM, messages: hist})});
-        const d = await r.json();
+        var r = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({system: SYSTEM, messages: hist})});
+        var d = await r.json();
         thinking.remove();
-        const reponse = d.content?.[0]?.text || 'Je n'arrive pas à répondre pour l'instant.';
-        const msg = document.createElement('div');
+        var reponse = (d.content && d.content[0] && d.content[0].text) ? d.content[0].text : 'Je ne parviens pas a repondre pour l instant.';
+        var msg = document.createElement('div');
         msg.className = 'message assistant';
         msg.textContent = reponse;
         messages.appendChild(msg);
         speak(reponse);
       } catch(e) {
         thinking.remove();
-        const err = document.createElement('div');
+        var err = document.createElement('div');
         err.className = 'message assistant';
-        err.textContent = 'La connexion est momentanément indisponible.';
+        err.textContent = 'La connexion est momentanement indisponible.';
         messages.appendChild(err);
       }
       btn.disabled = false;
