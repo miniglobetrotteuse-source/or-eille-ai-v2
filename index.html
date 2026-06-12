@@ -36,12 +36,18 @@
     .message.user { background: #C4993A; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
     .message.assistant { background: #F7F4EF; color: #1a1a1a; align-self: flex-start; border: 1px solid #e0d8cc; border-bottom-left-radius: 4px; }
     .message.thinking { background: #f0ede8; color: #aaa; align-self: flex-start; font-style: italic; font-size: 0.9rem; }
-    .input-zone { display: flex; gap: 12px; align-items: flex-end; }
+    .input-zone { display: flex; gap: 10px; align-items: flex-end; }
     .input-zone textarea { flex: 1; padding: 14px 18px; border-radius: 16px; border: 2px solid #e0d8cc; font-family: "Basteleur"; font-size: 1rem; resize: none; background: white; outline: none; transition: border-color 0.2s; min-height: 52px; max-height: 120px; }
     .input-zone textarea:focus { border-color: #C4993A; }
-    .btn-send { background: #C4993A; color: white; border: none; width: 52px; height: 52px; border-radius: 50%; font-size: 1.4rem; cursor: pointer; transition: transform 0.2s; flex-shrink: 0; box-shadow: 0 4px 16px rgba(196,153,58,0.3); }
+    .btn-send, .btn-mic, .btn-speaker { border: none; width: 52px; height: 52px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; flex-shrink: 0; transition: transform 0.2s; }
+    .btn-send { background: #C4993A; color: white; box-shadow: 0 4px 16px rgba(196,153,58,0.3); }
     .btn-send:hover { transform: scale(1.05); }
-    .btn-send:disabled { background: #ddd; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-send:disabled { background: #ddd; cursor: not-allowed; }
+    .btn-mic { background: #F7F4EF; color: #C4993A; border: 2px solid #C4993A; }
+    .btn-mic.recording { background: #C4993A; color: white; animation: pulse 1s infinite; }
+    .btn-speaker { background: #F7F4EF; color: #1A3A8F; border: 2px solid #1A3A8F; }
+    .btn-speaker.active { background: #1A3A8F; color: white; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
     footer { text-align: center; padding: 20px; font-family: "Basteleur"; font-size: 0.85rem; color: #bbb; border-top: 1px solid #e0d8cc; }
     @media (max-width: 600px) { header { padding: 16px 20px; } nav { display: none; } .hero-logo { width: 130px; height: 130px; } .hero-buttons { flex-direction: column; align-items: center; } .btn-primary, .btn-secondary { width: 260px; text-align: center; } }
   </style>
@@ -58,6 +64,7 @@
       <a href="#">Abonnement</a>
     </nav>
   </header>
+
   <div class="page active" id="page-accueil">
     <main class="hero">
       <img class="hero-logo" src="logo.png" alt="Or Eille AI logo" />
@@ -69,25 +76,101 @@
       </div>
     </main>
   </div>
+
   <div class="page" id="page-assistant">
     <div class="assistant-page">
       <div class="assistant-title">Or Eille AI — Assistant</div>
       <div class="messages" id="messages">
-        <div class="message assistant">Bonjour. Je suis là. Qu'est-ce que tu veux créer aujourd'hui ?</div>
+        <div class="message assistant">Bonjour. Je suis là. Qu'est-ce que tu souhaites créer aujourd'hui ?</div>
       </div>
       <div class="input-zone">
-        <textarea id="input" placeholder="Écris ta question..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();envoyer();}"></textarea>
+        <textarea id="input" placeholder="Écris ta question..." rows="1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();envoyer();}"></textarea>
+        <button class="btn-mic" id="btn-mic" onclick="toggleMic()" title="Parler">🎤</button>
+        <button class="btn-speaker" id="btn-speaker" onclick="toggleSpeaker()" title="Activer la voix">🔊</button>
         <button class="btn-send" id="btn-send" onclick="envoyer()">➤</button>
       </div>
     </div>
   </div>
+
   <footer>© Madame Or Eille Studio — Tous droits réservés</footer>
+
   <script>
-    const SYSTEM = "Tu es Or Eille AI, l'assistant de Madame Or Eille Studio. Règle absolue : réponds toujours à la question posée en premier. Commence par ce que la personne A et ce qui est possible. Jamais par ce qui manque. Tutoiement. Chaleureux et direct.";
+    const SYSTEM = `Tu es Or Eille AI, l'assistant vocal et textuel de Madame Or Eille Studio.
+
+RÈGLE ABSOLUE : Réponds toujours à la question posée en premier. La réponse directe avant tout.
+Commence par ce que la personne A et ce qui est possible. Jamais par ce qui manque ou ce qui ne va pas.
+
+NIVEAU DE LANGUE : Français correct, courant à soutenu. Vocabulaire précis et riche.
+Jamais d'approximations, jamais de langage relâché sauf si c'est nécessaire au contexte.
+Tu élèves le niveau de langue de tes interlocuteurs naturellement, sans condescendance.
+
+TON : Tutoiement. Chaleureux, direct, humain. Jamais condescendant.
+Réponds dans la langue de la personne.`;
+
+    let speakerOn = false;
+    let recognition = null;
+    let isRecording = false;
+
     function showPage(p) {
       document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
       document.getElementById('page-'+p).classList.add('active');
     }
+
+    function toggleSpeaker() {
+      speakerOn = !speakerOn;
+      const btn = document.getElementById('btn-speaker');
+      btn.classList.toggle('active', speakerOn);
+      btn.title = speakerOn ? 'Désactiver la voix' : 'Activer la voix';
+    }
+
+    function speak(text) {
+      if (!speakerOn) return;
+      window.speechSynthesis.cancel();
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.lang = 'fr-FR';
+      utt.rate = 0.95;
+      utt.pitch = 1;
+      window.speechSynthesis.speak(utt);
+    }
+
+    function toggleMic() {
+      if (isRecording) {
+        stopMic();
+      } else {
+        startMic();
+      }
+    }
+
+    function startMic() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert('La reconnaissance vocale n'est pas disponible sur ce navigateur.');
+        return;
+      }
+      recognition = new SpeechRecognition();
+      recognition.lang = 'fr-FR';
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.onresult = (e) => {
+        const texte = e.results[0][0].transcript;
+        document.getElementById('input').value = texte;
+        stopMic();
+        envoyer();
+      };
+      recognition.onerror = () => stopMic();
+      recognition.onend = () => stopMic();
+      recognition.start();
+      isRecording = true;
+      document.getElementById('btn-mic').classList.add('recording');
+    }
+
+    function stopMic() {
+      if (recognition) recognition.stop();
+      isRecording = false;
+      document.getElementById('btn-mic').classList.remove('recording');
+    }
+
     async function envoyer() {
       const input = document.getElementById('input');
       const messages = document.getElementById('messages');
@@ -113,15 +196,17 @@
         const r = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({system: SYSTEM, messages: hist})});
         const d = await r.json();
         thinking.remove();
+        const reponse = d.content?.[0]?.text || 'Je n'arrive pas à répondre pour l'instant.';
         const msg = document.createElement('div');
         msg.className = 'message assistant';
-        msg.textContent = d.content?.[0]?.text || 'Pas de réponse.';
+        msg.textContent = reponse;
         messages.appendChild(msg);
+        speak(reponse);
       } catch(e) {
         thinking.remove();
         const err = document.createElement('div');
         err.className = 'message assistant';
-        err.textContent = 'Connexion impossible pour l\'instant.';
+        err.textContent = 'La connexion est momentanément indisponible.';
         messages.appendChild(err);
       }
       btn.disabled = false;
