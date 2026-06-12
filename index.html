@@ -15,8 +15,11 @@
     .header-logo { display: flex; align-items: center; gap: 12px; }
     .header-logo img { width: 44px; height: 44px; }
     .header-logo-text { font-family: "Basteleur"; font-size: 1.3rem; color: #C4993A; }
-    nav a { font-family: "Basteleur"; font-size: 1rem; color: #1a1a1a; text-decoration: none; margin-left: 24px; opacity: 0.6; transition: opacity 0.2s; }
-    nav a:hover { opacity: 1; }
+    nav a { font-family: "Basteleur"; font-size: 1rem; text-decoration: none; margin-left: 24px; transition: opacity 0.2s; font-weight: bold; }
+    nav a:hover { opacity: 0.8; }
+    #nav-accueil { color: #C4993A; }
+    #nav-assistant { color: #1A3A8F; }
+    #nav-abonnement { color: #C4993A; }
     .page { display: none; flex: 1; flex-direction: column; }
     .page.active { display: flex; }
     .hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 24px; }
@@ -60,7 +63,7 @@
     <nav>
       <a href="#" id="nav-accueil">Accueil</a>
       <a href="#" id="nav-assistant">Assistant</a>
-      <a href="#">Abonnement</a>
+      <a href="#" id="nav-abonnement">Abonnement</a>
     </nav>
   </header>
 
