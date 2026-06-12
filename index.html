@@ -19,7 +19,7 @@
       src: url("Basteleur-Bold.ttf") format("truetype");
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background-color: #F7F4EF; font-family: "Basteleur", serif; min-height: 100vh; display: flex; flex-direction: column; color: #1A3A8F; }
+    body { background-color: #F7F4EF; font-family: "Basteleur", serif; min-height: 100vh; display: flex; flex-direction: column; color: #1A3A8F; } .page.active { display: flex; flex-direction: column; flex: 1; }
     header { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; border-bottom: 1px solid #e0d8cc; }
     .header-logo { display: flex; align-items: center; gap: 12px; }
     .header-logo img { width: 44px; height: 44px; }
@@ -144,7 +144,7 @@
     </div>
   </div>
 
-  <footer id="main-footer" style="color:#C4993A;">&copy; Madame Or Eille Studio &mdash; Tous droits réservés</footer>
+  <footer id="main-footer" style="color:#C4993A;position:relative;clear:both;margin-top:auto;">&copy; Madame Or Eille Studio &mdash; Tous droits réservés</footer>
 
   <script>
     var speakerOn = false;
