@@ -144,7 +144,7 @@
     </div>
   </div>
 
-  <footer style="color:#C4993A;">&copy; Madame Or Eille Studio &mdash; Tous droits réservés</footer>
+  <footer id="main-footer" style="color:#C4993A;">&copy; Madame Or Eille Studio &mdash; Tous droits réservés</footer>
 
   <script>
     var speakerOn = false;
@@ -166,6 +166,8 @@
     function showPage(p) {
       document.querySelectorAll('.page').forEach(function(x) { x.classList.remove('active'); });
       document.getElementById('page-' + p).classList.add('active');
+      var footer = document.getElementById('main-footer');
+      if (footer) footer.style.display = (p === 'accueil') ? 'block' : 'none';
     }
 
     function toggleSpeaker() {
