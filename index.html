@@ -139,12 +139,27 @@
       if (!SR) { alert('Reconnaissance vocale non disponible sur ce navigateur.'); return; }
       recognition = new SR();
       recognition.lang = 'fr-FR';
-      recognition.continuous = false;
-      recognition.interimResults = false;
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      var finalTranscript = '';
+      var silenceTimer = null;
       recognition.onresult = function(e) {
-        document.getElementById('input').value = e.results[0][0].transcript;
-        stopMic();
-        envoyer();
+        var interim = '';
+        for (var i = e.resultIndex; i < e.results.length; i++) {
+          if (e.results[i].isFinal) {
+            finalTranscript += e.results[i][0].transcript;
+          } else {
+            interim += e.results[i][0].transcript;
+          }
+        }
+        document.getElementById('input').value = finalTranscript + interim;
+        clearTimeout(silenceTimer);
+        silenceTimer = setTimeout(function() {
+          if (finalTranscript.trim()) {
+            stopMic();
+            envoyer();
+          }
+        }, 1500);
       };
       recognition.onerror = function() { stopMic(); };
       recognition.onend = function() { stopMic(); };
