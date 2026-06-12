@@ -10,7 +10,7 @@
       src: url("Basteleur-Moonlight.ttf") format("truetype");
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background-color: #F7F4EF; font-family: "Basteleur", serif; min-height: 100vh; display: flex; flex-direction: column; }
+    body { background-color: #F7F4EF; font-family: "Basteleur", serif; min-height: 100vh; display: flex; flex-direction: column; color: #1A3A8F; }
     header { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; border-bottom: 1px solid #e0d8cc; }
     .header-logo { display: flex; align-items: center; gap: 12px; }
     .header-logo img { width: 44px; height: 44px; }
@@ -37,7 +37,7 @@
     .messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; min-height: 300px; max-height: 60vh; padding: 16px; background: white; border-radius: 16px; border: 1px solid #e0d8cc; }
     .message { padding: 14px 18px; border-radius: 12px; font-family: "Basteleur"; font-size: 1rem; line-height: 1.5; max-width: 85%; }
     .message.user { background: #C4993A; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-    .message.assistant { background: #F7F4EF; color: #1a1a1a; align-self: flex-start; border: 1px solid #e0d8cc; border-bottom-left-radius: 4px; }
+    .message.assistant { background: #F7F4EF; color: #1A3A8F; align-self: flex-start; border: 1px solid #e0d8cc; border-bottom-left-radius: 4px; }
     .message.thinking { background: #f0ede8; color: #aaa; align-self: flex-start; font-style: italic; font-size: 0.9rem; }
     .input-zone { display: flex; gap: 10px; align-items: flex-end; }
     .input-zone textarea { flex: 1; padding: 14px 18px; border-radius: 16px; border: 2px solid #e0d8cc; font-family: "Basteleur"; font-size: 1rem; resize: none; background: white; outline: none; transition: border-color 0.2s; min-height: 52px; max-height: 120px; }
