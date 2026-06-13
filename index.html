@@ -441,10 +441,18 @@
         <button class="img-opt-btn" onclick="selectOpt(this,'forme')">✏️ Forme libre</button>
       </div>
 
-      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Série ou image seule ?</p>
-      <div style="display:flex;gap:8px;margin-bottom:8px;">
-        <button class="img-opt-btn img-opt-active" onclick="selectOpt(this,'serie')">Image seule</button>
-        <button class="img-opt-btn" onclick="selectOpt(this,'serie')">Série (cohérence garantie)</button>
+      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:4px;">Éléments fixes et variables</p>
+      <p style="font-size:0.7rem;color:rgba(42,42,42,.4);margin-bottom:8px;">Utile si vous avez des éléments qui ne changent jamais (fauteuils, logo) et d'autres qui changent (décor, fond, lumière)</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+        <button class="img-opt-btn img-opt-active" onclick="selectOpt(this,'serie')">Image unique</button>
+        <button class="img-opt-btn" onclick="selectOpt(this,'serie')">Tout fixe (série identique)</button>
+        <button class="img-opt-btn" onclick="selectOpt(this,'serie')">Éléments fixes + variables</button>
+      </div>
+      <div id="variables-section" style="display:none;background:#F7F4EF;border-radius:8px;padding:12px;margin-bottom:8px;">
+        <p style="font-size:0.75rem;color:#C4993A;margin-bottom:6px;">Qu'est-ce qui ne change jamais ?</p>
+        <input type="text" placeholder="ex: mes deux fauteuils, le logo en haut à gauche" style="width:100%;padding:8px;border:1px solid rgba(196,153,58,.3);border-radius:6px;font-size:0.8rem;box-sizing:border-box;margin-bottom:8px;"/>
+        <p style="font-size:0.75rem;color:#1A3A8F;margin-bottom:6px;">Qu'est-ce qui change ?</p>
+        <input type="text" placeholder="ex: les murs, le lustre, la lumière" style="width:100%;padding:8px;border:1px solid rgba(26,58,143,.2);border-radius:6px;font-size:0.8rem;box-sizing:border-box;"/>
       </div>
     </div>
 
@@ -481,6 +489,11 @@
     }
 
     function selectOpt(btn, group) {
+      if (group === 'serie' && btn.textContent.includes('fixes + variables')) {
+        document.getElementById('variables-section').style.display = 'block';
+      } else if (group === 'serie') {
+        document.getElementById('variables-section').style.display = 'none';
+      }
       btn.closest('div').querySelectorAll('.img-opt-btn').forEach(function(b) {
         b.classList.remove('img-opt-active');
       });
