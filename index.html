@@ -419,5 +419,13 @@
       showPage('assistant');
     }
   </script>
+  <script src="cgu.js"></script>
+  <script src="ethics.js"></script>
+  <script>
+    // Initialisation CGU au chargement
+    window.addEventListener('load', () => {
+      if (window.CGU) CGU.init();
+    });
+  </script>
 </body>
 </html>
