@@ -590,6 +590,185 @@
   <div class="page" id="page-redaction" style="padding:20px;max-width:640px;margin:0 auto;">
     <h2 style="font-family:'Basteleur',serif;color:#E0B020;text-align:center;font-size:1.8rem;margin-bottom:24px;">Contenu : Texte</h2>
 
+  </div>
+
+
+  <!-- PAGE IMAGE -->
+  <div class="page" id="page-image" style="padding:20px;max-width:640px;margin:0 auto;">
+    <h2 style="font-family:'Basteleur',serif;color:#D4A520;text-align:center;font-size:1.8rem;margin-bottom:8px;">Composition d'image</h2>
+
+    <!-- Choix du mode -->
+    <div style="display:flex;gap:12px;margin-bottom:24px;">
+      <button onclick="setImageMode('da')" id="img-mode-da" style="flex:1;padding:8px 12px;border-radius:50px;border:2px solid #E0B020;background:#E0B020;font-family:'Basteleur',serif;cursor:pointer;">
+        <span style="color:#1A3A8F;font-size:0.85rem;">🎨 Mode D.A.</span><br>
+        <span style="color:#1A3A8F;font-size:0.65rem;">Respecter ma charte</span>
+      </button>
+      <button onclick="setImageMode('libre')" id="img-mode-libre" style="flex:1;padding:8px 12px;border-radius:50px;border:2px solid #1A3A8F;background:#1A3A8F;font-family:'Basteleur',serif;cursor:pointer;">
+        <span style="color:#E0B020;font-size:0.85rem;">✨ Mode Libre</span><br>
+        <span style="color:#E0B020;font-size:0.65rem;">Créer sans contrainte</span>
+      </button>
+    </div>
+
+    <!-- Mode DA -->
+    <div id="img-da-section" style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:12px;">Mes images de référence</p>
+      <div style="border:2px dashed rgba(212,165,32,.3);border-radius:12px;padding:20px;text-align:center;margin-bottom:12px;">
+        <p style="color:rgba(42,42,42,.5);font-size:0.8rem;">Déposez vos images de référence ici<br>(fauteuils, logo, visuels de marque)</p>
+        <input type="file" multiple accept="image/*" style="margin-top:8px;font-size:0.8rem;"/>
+      </div>
+      <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:4px;">Ces images seront intégrées telles quelles. Non modifiées.</p>
+    </div>
+
+    <!-- Description de la scène -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:12px;">Ce que je veux</p>
+      <textarea id="img-description" placeholder="Décrivez la scène... ex: un salon parisien avec lumière chaude, mes deux fauteuils au centre" style="width:100%;min-height:100px;border:1px solid rgba(212,165,32,.3);border-radius:8px;padding:12px;font-family:'Basteleur',serif;font-size:0.85rem;resize:none;box-sizing:border-box;"></textarea>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button onclick="startImgMic()" id="img-mic-btn" style="padding:10px 16px;border-radius:50px;border:1px solid rgba(196,153,58,.4);background:white;font-size:1.1rem;cursor:pointer;" title="Dicter">🎙️</button>
+        <button onclick="effacerDernierMot()" style="padding:10px 16px;border-radius:50px;border:1px solid rgba(42,42,42,.2);background:white;font-size:0.75rem;font-family:'Basteleur',serif;cursor:pointer;">← Mot</button>
+        <button onclick="document.getElementById('img-description').value=''" style="padding:10px 16px;border-radius:50px;border:1px solid rgba(196,58,58,.3);background:white;color:rgba(196,58,58,.7);font-size:0.75rem;font-family:'Basteleur',serif;cursor:pointer;">Tout effacer</button>
+      </div>
+    </div>
+
+    <!-- Options -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:12px;">Options</p>
+      
+      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Format</p>
+      <div style="display:flex;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
+        <button data-group="format" class="img-opt-btn img-opt-active" onclick="selectOpt(this,'format')">Carré 1:1</button>
+        <button data-group="format" class="img-opt-btn" onclick="selectOpt(this,'format')">Portrait 4:5</button>
+        <button data-group="format" class="img-opt-btn" onclick="selectOpt(this,'format')">Paysage 16:9</button>
+        <button data-group="format" class="img-opt-btn" onclick="selectOpt(this,'format')">Story 9:16</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
+        <button data-group="format" class="img-opt-btn" onclick="selectOpt(this,'format')">Bannière YouTube</button>
+        <button data-group="format" class="img-opt-btn" onclick="selectOpt(this,'format')">LinkedIn bannière</button>
+        <button data-group="format" class="img-opt-btn" onclick="selectOpt(this,'format')">Pinterest</button>
+        <button data-group="format" class="img-opt-btn" onclick="selectOpt(this,'format')">Twitter/X</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:16px;">
+        <button data-group="format" class="img-opt-btn" style="background:#1A3A8F;color:#F7F4EF;border-color:#1A3A8F;" onclick="selectOpt(this,'format')">✦ Tous les formats</button>
+      </div>
+      <p style="font-size:0.7rem;color:rgba(42,42,42,.4);margin-bottom:12px;">
+        Bannière YouTube : 2560×1440px · LinkedIn : 1584×396px · Pinterest : 1000×1500px · Twitter : 1500×500px
+      </p>
+
+      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Format personnalisé</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;">
+        <input type="number" placeholder="Largeur px" style="width:100px;padding:6px;border:1px solid rgba(212,165,32,.3);border-radius:8px;font-size:0.8rem;"/>
+        <span style="color:#2a2a2a;">×</span>
+        <input type="number" placeholder="Hauteur px" style="width:100px;padding:6px;border:1px solid rgba(212,165,32,.3);border-radius:8px;font-size:0.8rem;"/>
+      </div>
+
+      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:4px;">Forme du cadre</p>
+      <p style="font-size:0.7rem;color:rgba(42,42,42,.4);margin-bottom:8px;">Classiques</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+        <button data-group="forme" class="img-opt-btn img-opt-active" onclick="selectOpt(this,'forme')">⬜ Rectangle</button>
+        <button data-group="forme" class="img-opt-btn" onclick="selectOpt(this,'forme')">⭕ Rond</button>
+        <button data-group="forme" class="img-opt-btn" onclick="selectOpt(this,'forme')">🥚 Ovale</button>
+        <button data-group="forme" class="img-opt-btn" onclick="selectOpt(this,'forme')">💎 Losange</button>
+        <button data-group="forme" class="img-opt-btn" onclick="selectOpt(this,'forme')">△ Triangle</button>
+      </div>
+      <p style="font-size:0.7rem;color:rgba(42,42,42,.4);margin-bottom:8px;">Créatives</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+        <button data-group="forme" class="img-opt-btn" onclick="selectOpt(this,'forme')">❤️ Cœur</button>
+        <button data-group="forme" class="img-opt-btn" onclick="selectOpt(this,'forme')">⭐ Étoile</button>
+        <button data-group="forme" class="img-opt-btn" onclick="selectOpt(this,'forme')">🌸 Fleur</button>
+        <button data-group="forme" class="img-opt-btn" onclick="selectOpt(this,'forme')">🦋 Papillon</button>
+        <button data-group="forme" class="img-opt-btn" onclick="selectOpt(this,'forme')">🌙 Lune</button>
+        <button data-group="forme" class="img-opt-btn" onclick="selectOpt(this,'forme')">☁️ Nuage</button>
+        <button data-group="forme" class="img-opt-btn" onclick="selectOpt(this,'forme')">🏠 Maison</button>
+        <button data-group="forme" class="img-opt-btn" onclick="selectOpt(this,'forme')">🐻 Ours</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:16px;">
+        <button data-group="forme" class="img-opt-btn" onclick="selectOpt(this,'forme')">✏️ Forme libre</button>
+      </div>
+
+      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:4px;">Éléments fixes et variables</p>
+      <p style="font-size:0.7rem;color:rgba(42,42,42,.4);margin-bottom:8px;">Utile si vous avez des éléments qui ne changent jamais (fauteuils, logo) et d'autres qui changent (décor, fond, lumière)</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+        <button data-group="serie" class="img-opt-btn img-opt-active" onclick="selectOpt(this,'serie')">Image unique</button>
+        <button data-group="serie" class="img-opt-btn" onclick="selectOpt(this,'serie')">Tout fixe (série identique)</button>
+        <button data-group="serie" class="img-opt-btn" onclick="selectOpt(this,'serie')">Éléments fixes + variables</button>
+      </div>
+      <div id="variables-section" style="display:none;background:#F7F4EF;border-radius:8px;padding:12px;margin-bottom:8px;">
+        <p style="font-size:0.75rem;color:#C4993A;margin-bottom:6px;">Qu'est-ce qui ne change jamais ?</p>
+        <input type="text" placeholder="ex: mes deux fauteuils, le logo en haut à gauche" style="width:100%;padding:8px;border:1px solid rgba(196,153,58,.3);border-radius:6px;font-size:0.8rem;box-sizing:border-box;margin-bottom:8px;"/>
+        <p style="font-size:0.75rem;color:#1A3A8F;margin-bottom:6px;">Qu'est-ce qui change ?</p>
+        <input type="text" placeholder="ex: les murs, le lustre, la lumière" style="width:100%;padding:8px;border:1px solid rgba(26,58,143,.2);border-radius:6px;font-size:0.8rem;box-sizing:border-box;"/>
+      </div>
+    </div>
+
+    <!-- Bouton générer -->
+    <button style="width:100%;padding:16px;background:#D4A520;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;margin-bottom:8px;">
+      Générer
+    </button>
+    <!-- Zone résultats -->
+    <div id="img-results" style="display:none;margin-top:24px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">Vos créations</p>
+      <div id="img-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px;"></div>
+      <button onclick="telechargerTout()" style="width:100%;padding:12px;background:white;border:1px solid rgba(212,165,32,.4);border-radius:50px;font-family:'Basteleur',serif;font-size:0.85rem;color:#E0B020;cursor:pointer;margin-bottom:8px;">⬇️ Télécharger tout</button>
+    </div>
+
+    <!-- Zone de résultat -->
+    <div id="img-result-zone" style="display:none;margin-top:24px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">Vos créations</p>
+      <div id="img-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;"></div>
+      <button onclick="exporterTout()" style="width:100%;margin-top:16px;padding:12px;background:white;border:1px solid rgba(212,165,32,.4);border-radius:50px;font-family:'Basteleur',serif;font-size:0.85rem;color:#E0B020;cursor:pointer;">
+        ⬇️ Télécharger tout
+      </button>
+    </div>
+
+    <button onclick="showPage('accueil')" style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;margin-top:16px;">← Retour</button>
+  </div>
+
+  <style>
+    .img-opt-btn { padding:8px 14px;border-radius:50px;border:1px solid rgba(212,165,32,.4);background:white;color:#2a2a2a;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer; }
+    .img-opt-btn.img-opt-active { background:#D4A520;color:#1A3A8F;border-color:#D4A520; }
+  </style>
+
+  <script>
+    function setImageMode(mode) {
+      var daSection = document.getElementById('img-da-section');
+      var daBtn = document.getElementById('img-mode-da');
+      var libreBtn = document.getElementById('img-mode-libre');
+      daBtn.style.opacity = '1';
+      libreBtn.style.opacity = '1';
+      if (mode === 'da') {
+        daSection.style.display = 'block';
+        daBtn.style.border = '3px solid #1A3A8F';
+        libreBtn.style.border = '2px solid #1A3A8F';
+      } else {
+        daSection.style.display = 'none';
+        daBtn.style.border = '2px solid #E0B020';
+        libreBtn.style.border = '3px solid #E0B020';
+      }
+    }
+
+    function selectOpt(btn, group) {
+      // Désactiver tous les boutons du même groupe
+      document.querySelectorAll('[data-group="' + group + '"]').forEach(function(b) {
+        b.classList.remove('img-opt-active');
+      });
+      btn.classList.add('img-opt-active');
+
+      // Gestion éléments fixes/variables
+      if (group === 'serie') {
+        if (btn.textContent.includes('fixes + variables')) {
+          document.getElementById('variables-section').style.display = 'block';
+        } else {
+          document.getElementById('variables-section').style.display = 'none';
+        }
+      }
+    }
+  </script>
+
+
+  <!-- PAGE RÉDACTION -->
+  <div class="page" id="page-redaction" style="padding:20px;max-width:640px;margin:0 auto;">
+    <h2 style="font-family:'Basteleur',serif;color:#E0B020;text-align:center;font-size:1.8rem;margin-bottom:24px;">Contenu : Texte</h2>
+
     <!-- Légende -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
       <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">✍️ Générer une légende</p>
