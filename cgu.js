@@ -86,7 +86,7 @@ publicités, collaborations commerciales, NFTs, etc.
 
 En cas d'usage commercial, l'utilisateur s'engage à :
 a) Déclarer son usage commercial dans les 30 jours suivant le premier revenu
-b) Verser une redevance de [X]% des revenus générés grâce aux créations
+b) Verser une redevance de 3% des revenus générés grâce aux créations
 c) Mentionner "Créé avec Or Eille AI" dans ses œuvres
 
 Note : Le pourcentage exact sera défini par contrat avec un juriste spécialisé.
