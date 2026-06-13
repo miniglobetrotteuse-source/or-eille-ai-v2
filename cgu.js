@@ -91,6 +91,8 @@ Sont interdits, sans exception : tout contenu impliquant des mineurs à caractè
 
 De manière générale : est interdit tout usage illégal dans le pays depuis lequel vous utilisez Or Eille AI, ainsi que tout contenu contraire à l'éthique de Madame Or Eille Studios — qu'il soit explicitement listé ou non.
 
+Sont également interdits : tout contenu filmant une personne en situation de vulnérabilité — détresse, pauvreté, maladie, migration, enfant, bénéficiaire d'un don — sans floutage de son visage et de tout élément permettant de l'identifier. Or Eille AI applique un floutage automatique dans ces situations. Cette règle n'est pas optionnelle. Elle s'applique même lorsque la personne filmée semble consentante, car une personne en situation de vulnérabilité ne dispose pas d'un consentement pleinement libre et éclairé. Tout contenu exploitant la générosité, la solidarité ou la pauvreté d'autrui à des fins personnelles — visibilité, voyage gratuit, notoriété — est également interdit.
+
 ─────────────────────────────────────
 6. RESPECT ET COMMUNICATION
 ─────────────────────────────────────
