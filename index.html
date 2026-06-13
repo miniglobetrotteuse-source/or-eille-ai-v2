@@ -1069,6 +1069,160 @@
   </script>
 
 
+  <!-- PAGE AGENDA -->
+  <div class="page" id="page-agenda" style="padding:20px;max-width:640px;margin:0 auto;">
+    <h2 style="font-family:'Basteleur',serif;color:#E0B020;text-align:center;font-size:1.8rem;margin-bottom:24px;">Agenda</h2>
+
+    <!-- Phase de lune -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;border-left:3px solid #E0B020;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:4px;">🌙 Phase lunaire actuelle</p>
+      <p id="agenda-moon" style="font-family:'Basteleur',serif;font-size:0.85rem;color:#2a2a2a;font-style:italic;"></p>
+    </div>
+
+    <!-- Événements proches -->
+    <div id="agenda-events-section" style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;display:none;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">📌 Événements dans les 30 prochains jours</p>
+      <div id="agenda-events"></div>
+    </div>
+
+    <!-- Générer calendrier éditorial -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:4px;">✨ Générer mon calendrier éditorial</p>
+      <p style="font-size:0.72rem;color:rgba(42,42,42,.5);margin-bottom:12px;">L'IA propose 7 à 10 idées de contenu sur 2 semaines</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input type="text" id="agenda-niche" placeholder="Votre niche — ex: cuisine africaine, beauté naturelle..." style="flex:1;padding:12px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;"/>
+        <button onclick="startRedMic('agenda-niche')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+        <button data-group="agenda-plat" class="red-btn red-btn-active" onclick="selectAgendaPlat(this,'Instagram')">Instagram</button>
+        <button data-group="agenda-plat" class="red-btn" onclick="selectAgendaPlat(this,'TikTok')">TikTok</button>
+        <button data-group="agenda-plat" class="red-btn" onclick="selectAgendaPlat(this,'YouTube')">YouTube</button>
+        <button data-group="agenda-plat" class="red-btn" onclick="selectAgendaPlat(this,'Podcast')">Podcast</button>
+        <button data-group="agenda-plat" class="red-btn" onclick="selectAgendaPlat(this,'Newsletter')">Newsletter</button>
+      </div>
+      <input type="hidden" id="agenda-platform" value="Instagram"/>
+      <button onclick="genererCalendrier()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">✨ Générer</button>
+    </div>
+
+    <!-- Planifier une idée -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">📅 Planifier une idée</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input type="text" id="agenda-idea" placeholder="Titre de l'idée..." style="flex:1;padding:12px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;"/>
+        <button onclick="startRedMic('agenda-idea')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+      </div>
+      <input type="date" id="agenda-date" style="width:100%;padding:12px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;margin-bottom:8px;box-sizing:border-box;"/>
+      <button onclick="planifierIdee()" style="width:100%;padding:12px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">+ Planifier</button>
+    </div>
+
+    <!-- Liste des idées planifiées -->
+    <div id="agenda-planned" style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;display:none;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">📋 Mes idées planifiées</p>
+      <div id="agenda-planned-list"></div>
+    </div>
+
+    <!-- Zone résultat calendrier -->
+    <div id="agenda-result" style="display:none;background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">Mon calendrier éditorial</p>
+      <div id="agenda-result-text" style="font-family:'Basteleur',serif;font-size:0.85rem;line-height:1.7;white-space:pre-wrap;"></div>
+      <button onclick="copierAgenda()" style="margin-top:12px;padding:10px 20px;background:white;border:1px solid rgba(224,176,32,.4);border-radius:50px;font-family:'Basteleur',serif;font-size:0.8rem;color:#E0B020;cursor:pointer;">📋 Copier</button>
+    </div>
+
+    <button onclick="showPage('accueil')" style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour</button>
+  </div>
+
+  <script>
+    // Initialiser l'agenda au chargement
+    function initAgenda() {
+      if (!window.CALENDAR) return;
+
+      // Phase de lune
+      var moon = document.getElementById('agenda-moon');
+      if (moon) moon.textContent = CALENDAR.getMoonPhase();
+
+      // Événements proches
+      var events = CALENDAR.getUpcomingEvents();
+      if (events.length > 0) {
+        var eventsDiv = document.getElementById('agenda-events');
+        var eventsSection = document.getElementById('agenda-events-section');
+        if (eventsDiv && eventsSection) {
+          eventsSection.style.display = 'block';
+          eventsDiv.innerHTML = events.slice(0,4).map(function(e) {
+            return '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(42,42,42,.08);">' +
+              '<span style="font-family:Basteleur,serif;font-size:0.75rem;color:#E0B020;min-width:40px;">J-' + e.daysLeft + '</span>' +
+              '<span style="font-family:Basteleur,serif;font-size:0.8rem;color:#2a2a2a;">' + e.label + '</span>' +
+            '</div>';
+          }).join('');
+        }
+      }
+
+      // Idées planifiées
+      afficherIdeesPlanifiees();
+    }
+
+    function selectAgendaPlat(btn, plat) {
+      document.querySelectorAll('[data-group="agenda-plat"]').forEach(function(b) {
+        b.classList.remove('red-btn-active');
+      });
+      btn.classList.add('red-btn-active');
+      document.getElementById('agenda-platform').value = plat;
+    }
+
+    async function genererCalendrier() {
+      var niche = document.getElementById('agenda-niche').value.trim();
+      var platform = document.getElementById('agenda-platform').value;
+      if (!niche) { alert('Décrivez votre niche.'); return; }
+      var result = document.getElementById('agenda-result');
+      var resultText = document.getElementById('agenda-result-text');
+      result.style.display = 'block';
+      resultText.textContent = 'Génération en cours...';
+      result.scrollIntoView({ behavior: 'smooth' });
+      await CALENDAR.generateIdeas(niche, platform, '2 semaines', true);
+    }
+
+    function planifierIdee() {
+      var titre = document.getElementById('agenda-idea').value.trim();
+      var date = document.getElementById('agenda-date').value;
+      if (!titre) { alert('Entrez le titre de votre idée.'); return; }
+      CALENDAR.addIdea(titre, document.getElementById('agenda-platform').value, date);
+      document.getElementById('agenda-idea').value = '';
+      document.getElementById('agenda-date').value = '';
+      afficherIdeesPlanifiees();
+    }
+
+    function afficherIdeesPlanifiees() {
+      if (!window.CALENDAR) return;
+      var d = CALENDAR.get();
+      var planned = d.ideas.filter(function(i) { return i.status === 'planned'; });
+      var section = document.getElementById('agenda-planned');
+      var list = document.getElementById('agenda-planned-list');
+      if (!planned.length) { section.style.display = 'none'; return; }
+      section.style.display = 'block';
+      list.innerHTML = planned.slice(0,10).map(function(i) {
+        return '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(42,42,42,.08);">' +
+          '<div style="flex:1;">' +
+            '<div style="font-family:Basteleur,serif;font-size:0.85rem;color:#2a2a2a;">' + i.title + '</div>' +
+            (i.scheduledDate ? '<div style="font-size:0.7rem;color:rgba(42,42,42,.5);">📅 ' + i.scheduledDate + '</div>' : '') +
+          '</div>' +
+          '<button onclick="supprimerIdee('' + i.id + '')" style="background:none;border:none;color:rgba(200,50,50,.6);font-size:1rem;cursor:pointer;">×</button>' +
+        '</div>';
+      }).join('');
+    }
+
+    function supprimerIdee(id) {
+      var d = CALENDAR.get();
+      d.ideas = d.ideas.filter(function(x) { return x.id !== id; });
+      CALENDAR.save(d);
+      afficherIdeesPlanifiees();
+    }
+
+    function copierAgenda() {
+      var texte = document.getElementById('agenda-result-text').textContent;
+      navigator.clipboard.writeText(texte).then(function() { alert('Copié !'); });
+    }
+  </script>
+
+
   <footer id="main-footer" style="color:#E0B020;position:relative;clear:both;margin-top:auto;">&copy; Madame Or Eille Studio &mdash; Tous droits réservés</footer>
 
   <script>
@@ -1143,6 +1297,7 @@
       assistant:   "Vous êtes dans l'Assistant. Dites-moi ce que vous souhaitez créer aujourd'hui.",
       abonnement:  "Voici nos formules d'abonnement. Mensuel à 18 euros ou annuel à 200 euros.",
       profil:      "Configurez votre profil. Dites-moi comment vous appeler.",
+      agenda:      "Vous êtes dans l'Agenda. Planifiez votre contenu, générez un calendrier éditorial et suivez vos idées.",
       redaction:   "Vous êtes dans le module Contenu Texte. Légendes, titres, recyclage, ebook.",
       image:       "Vous êtes dans le module Image. Le bouton doré : Mode DA, pour respecter votre charte graphique. Le bouton bleu : Mode Libre, pour créer sans contrainte. Quel mode choisissez-vous ?",
       accessibilite: "Paramètres d'accessibilité. Configurez l'interface selon vos besoins.",
