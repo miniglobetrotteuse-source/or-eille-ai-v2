@@ -23,7 +23,8 @@
     header { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; border-bottom: 1px solid #e0d8cc; }
     .header-logo { display: flex; align-items: center; gap: 12px; }
     .header-logo img { width: 44px; height: 44px; }
-    .header-logo-text { font-family: "BasteleurBold", "Basteleur", serif; font-size: 1.3rem; color: #C8960C; }
+    .header-logo-text { font-family: "BasteleurBold", "Basteleur", serif; font-size: 1.3rem; color: #C8960C; line-height: 1.1; }
+    .header-logo-slogan { font-family: "Basteleur", serif; font-size: 0.6rem; color: #1A3A8F; letter-spacing: 0.05em; font-style: italic; }
     nav a { font-family: "BasteleurBold", "Basteleur", serif; font-size: 1rem; text-decoration: none; margin-left: 24px; transition: opacity 0.2s; }
     nav a:hover { opacity: 0.8; }
     #nav-accueil { color: #C8960C; }
@@ -78,7 +79,10 @@
   <header>
     <div class="header-logo">
       <img src="logo.png" alt="Or Eille AI" />
-      <span class="header-logo-text">Or Eille AI</span>
+      <div>
+        <div class="header-logo-text">Or Eille AI</div>
+        <div class="header-logo-slogan">L'IA qui s'exécute au doigt et à l'œil.</div>
+      </div>
     </div>
     <nav>
       <a href="#" id="nav-accueil">Accueil</a>
