@@ -377,10 +377,10 @@
         };
         imgRecog.onend = function() {
           // Délai de 800ms avant de relancer pour éviter les captures multiples
-          if (imgMicActive) setTimeout(listen, 800);
+          if (imgMicActive) setTimeout(listen, 8000);
         };
         imgRecog.onerror = function() {
-          if (imgMicActive) setTimeout(listen, 1000);
+          if (imgMicActive) setTimeout(listen, 8000);
         };
         imgRecog.start();
       }
