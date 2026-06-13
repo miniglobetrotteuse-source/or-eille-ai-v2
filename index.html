@@ -207,9 +207,101 @@
       </div>
 
       <button onclick="sauvegarderProfil()" style="background:#C4993A;color:#1A3A8F;border:none;padding:12px 24px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;cursor:pointer;width:100%;margin-bottom:8px;">Sauvegarder</button>
+      <button onclick="showPage('accessibilite')" style="background:none;border:1px solid rgba(196,153,58,.4);color:#C4993A;padding:12px 24px;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;width:100%;margin-bottom:8px;">⚙️ Paramètres d'accessibilité</button>
       <button onclick="showPage('accueil')" style="font-family:Basteleur,serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour</button>
     </div>
   </div>
+
+  <!-- PAGE ACCESSIBILITÉ -->
+  <div class="page" id="page-accessibilite" style="padding:20px;max-width:600px;margin:0 auto;">
+    <h2 style="font-family:'Basteleur',serif;color:#C4993A;text-align:center;font-size:1.8rem;margin-bottom:24px;">Accessibilité</h2>
+
+    <!-- Taille du texte -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:12px;">Taille du texte</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button onclick="setA11y('fontSize','small')" class="a11y-btn" id="a11y-font-small">Petit</button>
+        <button onclick="setA11y('fontSize','normal')" class="a11y-btn a11y-active" id="a11y-font-normal">Normal</button>
+        <button onclick="setA11y('fontSize','large')" class="a11y-btn" id="a11y-font-large">Grand</button>
+        <button onclick="setA11y('fontSize','xlarge')" class="a11y-btn" id="a11y-font-xlarge">Très grand</button>
+      </div>
+    </div>
+
+    <!-- Espacement des lignes -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:12px;">Espacement des lignes</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button onclick="setA11y('lineHeight','tight')" class="a11y-btn" id="a11y-lh-tight">Serré</button>
+        <button onclick="setA11y('lineHeight','normal')" class="a11y-btn a11y-active" id="a11y-lh-normal">Normal</button>
+        <button onclick="setA11y('lineHeight','airy')" class="a11y-btn" id="a11y-lh-airy">Aéré</button>
+        <button onclick="setA11y('lineHeight','veryairy')" class="a11y-btn" id="a11y-lh-veryairy">Très aéré</button>
+      </div>
+    </div>
+
+    <!-- Police dyslexie -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:12px;">Police adaptée dyslexie</p>
+      <div style="display:flex;gap:8px;">
+        <button onclick="setA11y('dyslexiaFont',false)" class="a11y-btn a11y-active" id="a11y-dys-no">Non</button>
+        <button onclick="setA11y('dyslexiaFont',true)" class="a11y-btn" id="a11y-dys-yes">Oui — Lexend</button>
+      </div>
+    </div>
+
+    <!-- Contraste -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:12px;">Contraste</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button onclick="setA11y('contrast','normal')" class="a11y-btn a11y-active" id="a11y-ct-normal">Normal</button>
+        <button onclick="setA11y('contrast','high')" class="a11y-btn" id="a11y-ct-high">Renforcé</button>
+        <button onclick="setA11y('contrast','max')" class="a11y-btn" id="a11y-ct-max">Maximum</button>
+      </div>
+    </div>
+
+    <!-- Guide vocal -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:12px;">Guide vocal</p>
+      <div style="display:flex;gap:8px;">
+        <button onclick="setA11y('voiceGuide',true)" class="a11y-btn a11y-active" id="a11y-vg-yes">Activé</button>
+        <button onclick="setA11y('voiceGuide',false)" class="a11y-btn" id="a11y-vg-no">Désactivé</button>
+      </div>
+    </div>
+
+    <!-- Langue des signes -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:24px;">
+      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:4px;">Langue des signes</p>
+      <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:12px;">Avatar LSF — bientôt disponible</p>
+      <div style="display:flex;gap:8px;">
+        <button onclick="setA11y('signLanguage',false)" class="a11y-btn a11y-active" id="a11y-lsf-no">Non</button>
+        <button onclick="setA11y('signLanguage',true)" class="a11y-btn" id="a11y-lsf-yes">Oui</button>
+      </div>
+    </div>
+
+    <button onclick="saveA11y()" style="background:#C4993A;color:#1A3A8F;border:none;padding:12px 24px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;cursor:pointer;width:100%;margin-bottom:8px;">Enregistrer mes préférences</button>
+    <button onclick="showPage('profil')" style="font-family:Basteleur,serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour au profil</button>
+  </div>
+
+  <style>
+    .a11y-btn { padding:8px 16px;border-radius:50px;border:1px solid rgba(196,153,58,.4);background:white;color:#2a2a2a;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer; }
+    .a11y-btn.a11y-active { background:#C4993A;color:#1A3A8F;border-color:#C4993A; }
+  </style>
+
+  <script>
+    var a11yState = window.A11Y_CONFIG ? A11Y_CONFIG.get() : {};
+
+    function setA11y(key, val) {
+      a11yState[key] = val;
+    }
+
+    function saveA11y() {
+      if (window.A11Y_CONFIG) {
+        A11Y_CONFIG.save(a11yState);
+        A11Y_CONFIG.apply();
+        A11Y_CONFIG.markConfigured();
+      }
+      showPage('profil');
+    }
+  </script>
+
 
   <footer id="main-footer" style="color:#C4993A;position:relative;clear:both;margin-top:auto;">&copy; Madame Or Eille Studio &mdash; Tous droits réservés</footer>
 
