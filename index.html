@@ -523,6 +523,13 @@
     <button style="width:100%;padding:16px;background:#D4A520;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;margin-bottom:8px;">
       Générer
     </button>
+    <!-- Zone résultats -->
+    <div id="img-results" style="display:none;margin-top:24px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">Vos créations</p>
+      <div id="img-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px;"></div>
+      <button onclick="telechargerTout()" style="width:100%;padding:12px;background:white;border:1px solid rgba(212,165,32,.4);border-radius:50px;font-family:'Basteleur',serif;font-size:0.85rem;color:#E0B020;cursor:pointer;margin-bottom:8px;">⬇️ Télécharger tout</button>
+    </div>
+
     <button onclick="showPage('accueil')" style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour</button>
   </div>
 
@@ -647,6 +654,32 @@
         window.speechSynthesis.cancel();
         window.speechSynthesis.speak(utt);
       }
+    }
+
+    function afficherResultats(urls) {
+      var grid = document.getElementById('img-grid');
+      var results = document.getElementById('img-results');
+      grid.innerHTML = '';
+      urls.forEach(function(url, i) {
+        var div = document.createElement('div');
+        div.style.cssText = 'position:relative;border-radius:12px;overflow:hidden;';
+        div.innerHTML = '<img src="' + url + '" style="width:100%;border-radius:12px;" />' +
+          '<button onclick="telecharger('' + url + '',' + i + ')" style="position:absolute;bottom:8px;right:8px;background:rgba(224,176,32,.9);border:none;border-radius:20px;padding:6px 12px;font-size:0.75rem;cursor:pointer;font-family:Basteleur,serif;color:#1A3A8F;">⬇️</button>';
+        grid.appendChild(div);
+      });
+      results.style.display = 'block';
+    }
+
+    function telecharger(url, index) {
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'oreille-ai-image-' + (index+1) + '.png';
+      a.click();
+    }
+
+    function telechargerTout() {
+      var imgs = document.getElementById('img-grid').querySelectorAll('img');
+      imgs.forEach(function(img, i) { telecharger(img.src, i); });
     }
 
     function effacerDernierMot() {
