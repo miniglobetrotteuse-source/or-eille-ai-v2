@@ -377,10 +377,16 @@
         };
         imgRecog.onend = function() {
           // Délai de 800ms avant de relancer pour éviter les captures multiples
-          if (imgMicActive) setTimeout(listen, 8000);
+          if (imgMicActive) {
+            var profil = JSON.parse(sessionStorage.getItem('profil') || '{}');
+            var vitesse = profil.vitesse || 16;
+            // Délai inversement proportionnel à la vitesse : vitesse 8=lent→8s, vitesse 24=rapide→3s
+            var delai = Math.round(8000 - ((vitesse - 8) / 16) * 5000);
+            setTimeout(listen, delai);
+          }
         };
         imgRecog.onerror = function() {
-          if (imgMicActive) setTimeout(listen, 8000);
+          if (imgMicActive) setTimeout(listen, 3000);
         };
         imgRecog.start();
       }
