@@ -767,12 +767,41 @@
   <div class="page" id="page-redaction" style="padding:20px;max-width:640px;margin:0 auto;">
     <h2 style="font-family:'Basteleur',serif;color:#E0B020;text-align:center;font-size:1.8rem;margin-bottom:24px;">Contenu : Texte</h2>
 
-    <!-- Légende -->
+    <!-- 1. Créer du contenu -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
-      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">✍️ Générer une légende</p>
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:4px;">✍️ Créer du contenu</p>
+      <p style="font-size:0.72rem;color:rgba(42,42,42,.5);margin-bottom:12px;">Décrivez votre idée — l'IA génère le texte adapté pour chaque plateforme</p>
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <textarea id="red-idee" placeholder="Mon idée de contenu..." style="flex:1;min-height:80px;border:1px solid rgba(224,176,32,.3);border-radius:8px;padding:10px;font-family:'Basteleur',serif;font-size:0.85rem;resize:none;box-sizing:border-box;"></textarea>
+        <button onclick="startRedMic('red-idee')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;align-self:flex-start;">🎙️</button>
+      </div>
+      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Format</p>
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+        <button data-group="red-format" class="red-btn red-btn-active" onclick="selectRedOpt(this,'red-format','post')">Post</button>
+        <button data-group="red-format" class="red-btn" onclick="selectRedOpt(this,'red-format','story')">Story</button>
+        <button data-group="red-format" class="red-btn" onclick="selectRedOpt(this,'red-format','reel')">Reel</button>
+        <button data-group="red-format" class="red-btn" onclick="selectRedOpt(this,'red-format','carrousel')">Carrousel</button>
+        <button data-group="red-format" class="red-btn" onclick="selectRedOpt(this,'red-format','video')">Vidéo courte</button>
+      </div>
+      <input type="hidden" id="red-format-val" value="post"/>
+      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Plateformes (plusieurs possibles)</p>
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+        <button data-group="red-plats" class="red-btn" onclick="togglePlatform(this,'instagram')">📸 Instagram</button>
+        <button data-group="red-plats" class="red-btn" onclick="togglePlatform(this,'tiktok')">🎵 TikTok</button>
+        <button data-group="red-plats" class="red-btn" onclick="togglePlatform(this,'youtube')">▶️ YouTube</button>
+        <button data-group="red-plats" class="red-btn" onclick="togglePlatform(this,'linkedin')">💼 LinkedIn</button>
+        <button data-group="red-plats" class="red-btn" onclick="togglePlatform(this,'pinterest')">📌 Pinterest</button>
+        <button data-group="red-plats" class="red-btn" onclick="togglePlatform(this,'snapchat')">👻 Snapchat</button>
+      </div>
+      <button onclick="creerContenu()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">✨ Créer</button>
+    </div>
+
+    <!-- 2. Générer une légende -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">💬 Générer une légende</p>
       <div style="display:flex;gap:8px;margin-bottom:8px;">
         <input type="text" id="red-topic" placeholder="Sujet du contenu..." style="flex:1;padding:12px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.9rem;"/>
-        <button onclick="startRedMic('red-topic')" id="red-mic-topic" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+        <button onclick="startRedMic('red-topic')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
       </div>
       <select id="red-platform" style="width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;margin-bottom:8px;">
         <option value="instagram">Instagram</option>
@@ -791,33 +820,50 @@
       </div>
       <div id="red-ton-libre-section" style="display:none;margin-bottom:8px;">
         <div style="display:flex;gap:8px;">
-          <input type="text" id="red-ton-libre" placeholder="Ex: inspiré de Whitney Houston, style Bridgerton, ambiance automne..." style="flex:1;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.8rem;"/>
+          <input type="text" id="red-ton-libre" placeholder="Ex: inspiré de Whitney Houston, style Bridgerton..." style="flex:1;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.8rem;"/>
           <button onclick="startRedMic('red-ton-libre')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
         </div>
       </div>
       <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;margin-bottom:8px;">
         <input type="checkbox" id="red-hashtags" checked /> Inclure des hashtags
       </label>
-      <button onclick="genererLegende()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">Générer la légende</button>
+      <button onclick="genererLegende()" style="width:100%;padding:12px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">Générer la légende</button>
     </div>
 
-    <!-- Titres -->
+    <!-- 3. Générateur de titres -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
       <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">💡 Générateur de titres</p>
       <div style="display:flex;gap:8px;margin-bottom:8px;">
         <input type="text" id="red-titre-sujet" placeholder="Sujet..." style="flex:1;padding:12px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.9rem;"/>
         <button onclick="startRedMic('red-titre-sujet')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
       </div>
-      <button onclick="genererTitres()" style="width:100%;padding:12px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">Générer 10 titres</button>
+      <button onclick="genererTitres()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">Générer 10 titres</button>
     </div>
 
-    <!-- Recyclage -->
+    <!-- 4. Créer un carrousel -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:4px;">🎠 Créer un carrousel</p>
+      <p style="font-size:0.72rem;color:rgba(42,42,42,.5);margin-bottom:12px;">L'IA crée les textes slide par slide</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input type="text" id="red-carousel-sujet" placeholder="Sujet du carrousel..." style="flex:1;padding:12px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.9rem;"/>
+        <button onclick="startRedMic('red-carousel-sujet')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <button data-group="slides" class="red-btn red-btn-active" onclick="selectRedOpt(this,'slides','5')">5 slides</button>
+        <button data-group="slides" class="red-btn" onclick="selectRedOpt(this,'slides','7')">7 slides</button>
+        <button data-group="slides" class="red-btn" onclick="selectRedOpt(this,'slides','10')">10 slides</button>
+      </div>
+      <input type="hidden" id="red-slides-count" value="5"/>
+      <button onclick="genererCarrousel()" style="width:100%;padding:12px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">🎠 Générer le carrousel</button>
+    </div>
+
+    <!-- 5. Recycler du contenu -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
       <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">♻️ Recycler du contenu</p>
       <textarea id="red-original" placeholder="Collez votre contenu original ici..." style="width:100%;min-height:80px;border:1px solid rgba(224,176,32,.3);border-radius:8px;padding:10px;font-family:'Basteleur',serif;font-size:0.85rem;resize:none;box-sizing:border-box;margin-bottom:8px;"></textarea>
       <div style="display:flex;gap:8px;margin-bottom:8px;">
         <label style="flex:1;padding:10px;border:1px dashed rgba(224,176,32,.4);border-radius:8px;text-align:center;cursor:pointer;font-family:'Basteleur',serif;font-size:0.8rem;color:#E0B020;">
-          📎 Importer un fichier (txt, pdf, doc)
+          📎 Importer un fichier
           <input type="file" accept=".txt,.pdf,.doc,.docx" style="display:none;" onchange="importerFichier(this)"/>
         </label>
         <button onclick="startRedMic('red-original')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
@@ -830,7 +876,7 @@
           <option value="podcast">Podcast</option>
           <option value="article">Article</option>
         </select>
-        <span style="color:#2a2a2a;">→</span>
+        <span>→</span>
         <select id="red-to" style="flex:1;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.8rem;">
           <option value="carousel">Carrousel</option>
           <option value="stories">Stories</option>
@@ -842,50 +888,20 @@
       <button onclick="recyclerContenu()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">♻️ Recycler</button>
     </div>
 
-    <!-- Ebook -->
+    <!-- 6. Créer un ebook -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
-      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">📚 Créer un ebook</p>
-      <input type="text" id="red-ebook-titre" placeholder="Titre de votre ebook..." style="width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;margin-bottom:8px;box-sizing:border-box;"/>
-      <button onclick="genererEbook()" style="width:100%;padding:12px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">📚 Générer l'ebook</button>
-    </div>
-
-    <!-- Zone résultat -->
-    <div id="red-result" style="display:none;background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
-      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">Résultat</p>
-      <div id="red-result-text" style="font-family:'Basteleur',serif;font-size:0.85rem;line-height:1.7;white-space:pre-wrap;"></div>
-      <button onclick="copierResultat()" style="margin-top:12px;padding:10px 20px;background:white;border:1px solid rgba(224,176,32,.4);border-radius:50px;font-family:'Basteleur',serif;font-size:0.8rem;color:#E0B020;cursor:pointer;">📋 Copier</button>
-    </div>
-
-    <!-- Créateur de carrousel -->
-    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
-      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:4px;">🎠 Créer un carrousel</p>
-      <p style="font-size:0.72rem;color:rgba(42,42,42,.5);margin-bottom:12px;">Décrivez votre sujet — l'IA crée les textes slide par slide</p>
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:4px;">📚 Créer un ebook</p>
+      <p style="font-size:0.72rem;color:rgba(42,42,42,.5);margin-bottom:12px;">Décrivez votre idée — l'IA propose le titre et les chapitres</p>
       <div style="display:flex;gap:8px;margin-bottom:8px;">
-        <input type="text" id="red-carousel-sujet" placeholder="Sujet du carrousel..." style="flex:1;padding:12px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.9rem;"/>
-        <button onclick="startRedMic('red-carousel-sujet')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+        <input type="text" id="red-ebook-titre" placeholder="Votre idée d'ebook..." style="flex:1;padding:12px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.9rem;"/>
+        <button onclick="startRedMic('red-ebook-titre')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
       </div>
-      <div style="display:flex;gap:8px;margin-bottom:8px;">
-        <button data-group="slides" class="red-btn red-btn-active" onclick="selectRedOpt(this,'slides','5')">5 slides</button>
-        <button data-group="slides" class="red-btn" onclick="selectRedOpt(this,'slides','7')">7 slides</button>
-        <button data-group="slides" class="red-btn" onclick="selectRedOpt(this,'slides','10')">10 slides</button>
-      </div>
-      <input type="hidden" id="red-slides-count" value="5"/>
-      <button onclick="genererCarrousel()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">🎠 Générer le carrousel</button>
+      <button onclick="genererEbook()" style="width:100%;padding:12px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">📚 Générer</button>
     </div>
 
-    <!-- Format du post -->
+    <!-- 7. Préparer mon post -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
-      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">📱 Préparer mon post</p>
-      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
-        <button data-group="postformat" class="red-btn red-btn-active" onclick="selectRedOpt(this,'postformat','post_court')">Post court</button>
-        <button data-group="postformat" class="red-btn" onclick="selectRedOpt(this,'postformat','post_long')">Post long</button>
-        <button data-group="postformat" class="red-btn" onclick="selectRedOpt(this,'postformat','story')">Story</button>
-        <button data-group="postformat" class="red-btn" onclick="selectRedOpt(this,'postformat','reel')">Reel</button>
-      </div>
-      <input type="hidden" id="red-post-format" value="post_court"/>
-
-      <!-- Checklist avant publication -->
-      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">✅ Checklist avant publication</p>
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">🚀 Préparer mon post</p>
       <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
         <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-hashtags"/> Hashtags ajoutés</label>
         <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-lien"/> Lien dans la bio à jour</label>
@@ -893,178 +909,21 @@
         <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-tags"/> Personnes taguées</label>
         <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-sous-titres"/> Sous-titres (pour les malentendants)</label>
         <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-son"/> Son vérifié (droits d'auteur)</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-batterie"/> Batterie suffisante</label>
       </div>
-      <button onclick="lancerValidation()" style="width:100%;padding:12px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">🚀 Valider et publier (60s)</button>
+      <div id="chk-batterie-info" style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:12px;"></div>
+      <button onclick="lancerValidation()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">✅ Valider et publier</button>
+    </div>
+
+    <!-- Zone résultat -->
+    <div id="red-result" style="display:none;background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">Résultat</p>
+      <div id="red-result-text" style="font-family:'Basteleur',serif;font-size:0.85rem;line-height:1.7;white-space:pre-wrap;"></div>
+      <div id="red-copy-buttons" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;"></div>
     </div>
 
     <button onclick="showPage('accueil')" style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour</button>
   </div>
-
-  <style>
-    .red-btn { padding:6px 12px;border-radius:50px;border:1px solid rgba(224,176,32,.3);background:white;color:#2a2a2a;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer; }
-    .red-btn.red-btn-active { background:#E0B020;color:#1A3A8F;border-color:#E0B020; }
-  </style>
-
-  <script>
-    var redTone = 'chaleureux';
-    var redMicRecog = null;
-
-    function setRedTone(tone) {
-      redTone = tone;
-      document.querySelectorAll('[data-group="tone"]').forEach(function(b) {
-        b.classList.remove('red-btn-active');
-        if (b.textContent.toLowerCase().includes(tone) || (tone === 'libre' && b.textContent.includes('Libre'))) {
-          b.classList.add('red-btn-active');
-        }
-      });
-      var libreSection = document.getElementById('red-ton-libre-section');
-      if (libreSection) libreSection.style.display = (tone === 'libre') ? 'block' : 'none';
-    }
-
-    function startRedMic(targetId) {
-      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SR) { alert('Utilisez Chrome ou Safari.'); return; }
-      redMicRecog = new SR();
-      redMicRecog.lang = 'fr-FR';
-      redMicRecog.continuous = false;
-      redMicRecog.interimResults = false;
-      redMicRecog.onresult = function(e) {
-        document.getElementById(targetId).value = e.results[0][0].transcript;
-      };
-      redMicRecog.start();
-    }
-
-    function afficherResultatRed(texte) {
-      var zone = document.getElementById('red-result');
-      document.getElementById('red-result-text').textContent = texte;
-      zone.style.display = 'block';
-      zone.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function copierResultat() {
-      var texte = document.getElementById('red-result-text').textContent;
-      navigator.clipboard.writeText(texte).then(function() {
-        alert('Copié !');
-      });
-    }
-
-    var redOptValues = {};
-
-    function selectRedOpt(btn, group, value) {
-      document.querySelectorAll('[data-group="' + group + '"]').forEach(function(b) {
-        b.classList.remove('red-btn-active');
-      });
-      btn.classList.add('red-btn-active');
-      var hidden = document.getElementById('red-' + (group === 'slides' ? 'slides-count' : 'post-format'));
-      if (hidden) hidden.value = value;
-    }
-
-    async function genererCarrousel() {
-      var sujet = document.getElementById('red-carousel-sujet').value.trim();
-      var slides = document.getElementById('red-slides-count').value || '5';
-      if (!sujet) { alert('Décrivez votre sujet.'); return; }
-      afficherResultatRed('Création du carrousel en cours...');
-      var result = await CONTENT.generateCaption({
-        topic: sujet,
-        platform: 'instagram',
-        tone: 'Carrousel de ' + slides + ' slides. Pour chaque slide : un titre court en majuscules, puis 2-3 lignes de texte. Format : SLIDE 1\n[titre]\n[texte]\n\nSLIDE 2...',
-        includeHashtags: true
-      }, true);
-      if (result) afficherResultatRed(result);
-      else afficherResultatRed('Erreur — vérifiez votre connexion.');
-    }
-
-    function lancerValidation() {
-      var checks = [
-        { id: 'chk-hashtags', label: 'Hashtags' },
-        { id: 'chk-lien', label: 'Lien dans la bio' },
-        { id: 'chk-localisation', label: 'Localisation' },
-        { id: 'chk-tags', label: 'Tags' },
-        { id: 'chk-sous-titres', label: 'Sous-titres' },
-        { id: 'chk-son', label: 'Son vérifié' },
-      ];
-      var warnings = checks.filter(function(c) {
-        return !document.getElementById(c.id).checked;
-      });
-
-      if (window.PUBLISH) {
-        window.PUBLISH.showValidationModal({
-          caption: document.getElementById('red-result-text')?.textContent || '',
-          hashtags: document.getElementById('chk-hashtags').checked ? ['ok'] : [],
-          hasSubtitles: document.getElementById('chk-sous-titres').checked,
-          soundCleared: document.getElementById('chk-son').checked,
-          platform: document.getElementById('red-post-format')?.value || 'instagram'
-        }, function() {
-          alert('✅ Contenu archivé ! Vous pouvez maintenant le copier et publier sur votre plateforme.');
-        });
-      } else {
-        var msg = warnings.length > 0
-          ? '⚠️ Attention — éléments manquants :\n' + warnings.map(function(w) { return '• ' + w.label; }).join('\n')
-          : '✅ Tout est prêt ! Vous pouvez publier.';
-        alert(msg);
-      }
-    }
-
-    function importerFichier(input) {
-      var file = input.files[0];
-      if (!file) return;
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        document.getElementById('red-original').value = e.target.result;
-      };
-      reader.readAsText(file);
-    }
-
-    async function genererLegende() {
-      var topic = document.getElementById('red-topic').value.trim();
-      if (!topic) { alert('Décrivez votre sujet.'); return; }
-      afficherResultatRed('Génération en cours...');
-      var tonFinal = redTone;
-      if (redTone === 'libre') {
-        tonFinal = document.getElementById('red-ton-libre').value || 'chaleureux';
-      }
-      var result = await CONTENT.generateCaption({
-        topic: topic,
-        platform: document.getElementById('red-platform').value,
-        tone: tonFinal,
-        includeHashtags: document.getElementById('red-hashtags').checked
-      }, true);
-      if (result) afficherResultatRed(result);
-      else afficherResultatRed('Erreur — vérifiez votre connexion.');
-    }
-
-    async function genererTitres() {
-      var topic = document.getElementById('red-titre-sujet').value.trim();
-      if (!topic) { alert('Décrivez votre sujet.'); return; }
-      afficherResultatRed('Génération en cours...');
-      var result = await CONTENT.generateTitles(topic, 10, true);
-      if (result) afficherResultatRed(result);
-      else afficherResultatRed('Erreur — vérifiez votre connexion.');
-    }
-
-    async function recyclerContenu() {
-      var original = document.getElementById('red-original').value.trim();
-      if (!original) { alert('Collez votre contenu original.'); return; }
-      afficherResultatRed('Recyclage en cours...');
-      var result = await CONTENT.recycleContent(
-        original,
-        document.getElementById('red-from').value,
-        document.getElementById('red-to').value,
-        true
-      );
-      if (result) afficherResultatRed(result);
-      else afficherResultatRed('Erreur — vérifiez votre connexion.');
-    }
-
-    async function genererEbook() {
-      var titre = document.getElementById('red-ebook-titre').value.trim();
-      if (!titre) { alert('Entrez le titre de votre ebook.'); return; }
-      afficherResultatRed('Génération de l\'ebook en cours...');
-      var result = await CONTENT.generateEbook({ title: titre, chapters: 5 }, true);
-      if (result) afficherResultatRed(result);
-      else afficherResultatRed('Erreur — vérifiez votre connexion.');
-    }
-  </script>
 
 
   <!-- PAGE AGENDA -->
