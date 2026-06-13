@@ -602,11 +602,50 @@
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); envoyer(); }
     });
 
+    var PAGE_WELCOME = {
+      accueil:     "Bienvenue sur Or Eille AI. L'IA qui s'exécute au doigt et à l'œil.",
+      assistant:   "Vous êtes dans l'Assistant. Dites-moi ce que vous souhaitez créer aujourd'hui.",
+      abonnement:  "Voici nos formules d'abonnement. Mensuel à 18 euros ou annuel à 200 euros.",
+      profil:      "Configurez votre profil. Dites-moi comment vous appeler.",
+      image:       "Vous êtes dans le module Image. Deux modes : Mode DA pour respecter votre charte, ou Mode Libre pour créer sans contrainte. Quel mode choisissez-vous ?",
+      accessibilite: "Paramètres d'accessibilité. Configurez l'interface selon vos besoins.",
+    };
+
     function showPage(p) {
       document.querySelectorAll('.page').forEach(function(x) { x.classList.remove('active'); });
       document.getElementById('page-' + p).classList.add('active');
       var footer = document.getElementById('main-footer');
       if (footer) footer.style.display = (p === 'accueil') ? 'block' : 'none';
+      // Accueil vocal
+      if (PAGE_WELCOME[p] && window.speechSynthesis) {
+        var utt = new SpeechSynthesisUtterance(PAGE_WELCOME[p]);
+        utt.lang = 'fr-FR';
+        utt.rate = 0.9;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utt);
+      }
+    }
+
+    function genererImage() {
+      var desc = document.getElementById('img-description');
+      if (!desc || !desc.value.trim()) {
+        alert('Décrivez ce que vous voulez créer.');
+        return;
+      }
+      if (window.speechSynthesis) {
+        var utt = new SpeechSynthesisUtterance('Génération en cours. Veuillez patienter.');
+        utt.lang = 'fr-FR';
+        window.speechSynthesis.speak(utt);
+      }
+      // Connecteur Replicate — activer avec la clé API
+      var key = localStorage.getItem('moe_replicate_key');
+      if (!key) {
+        alert('Clé Replicate non configurée. Activez votre abonnement Replicate pour générer des images.');
+        return;
+      }
+      if (window.IMAGE_EDITOR) {
+        IMAGE_EDITOR.REPLICATE.generate(desc.value);
+      }
     }
 
     function toggleSpeaker() {
