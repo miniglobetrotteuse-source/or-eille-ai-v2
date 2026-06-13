@@ -530,7 +530,16 @@
       <button onclick="telechargerTout()" style="width:100%;padding:12px;background:white;border:1px solid rgba(212,165,32,.4);border-radius:50px;font-family:'Basteleur',serif;font-size:0.85rem;color:#E0B020;cursor:pointer;margin-bottom:8px;">⬇️ Télécharger tout</button>
     </div>
 
-    <button onclick="showPage('accueil')" style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour</button>
+    <!-- Zone de résultat -->
+    <div id="img-result-zone" style="display:none;margin-top:24px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">Vos créations</p>
+      <div id="img-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;"></div>
+      <button onclick="exporterTout()" style="width:100%;margin-top:16px;padding:12px;background:white;border:1px solid rgba(212,165,32,.4);border-radius:50px;font-family:'Basteleur',serif;font-size:0.85rem;color:#E0B020;cursor:pointer;">
+        ⬇️ Télécharger tout
+      </button>
+    </div>
+
+    <button onclick="showPage('accueil')" style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;margin-top:16px;">← Retour</button>
   </div>
 
   <style>
@@ -680,6 +689,35 @@
     function telechargerTout() {
       var imgs = document.getElementById('img-grid').querySelectorAll('img');
       imgs.forEach(function(img, i) { telecharger(img.src, i); });
+    }
+
+    function afficherResultats(urls) {
+      var zone = document.getElementById('img-result-zone');
+      var grid = document.getElementById('img-grid');
+      grid.innerHTML = '';
+      urls.forEach(function(url, i) {
+        var div = document.createElement('div');
+        div.style.cssText = 'position:relative;border-radius:12px;overflow:hidden;';
+        div.innerHTML = '<img src="' + url + '" style="width:100%;border-radius:12px;" />' +
+          '<button onclick="telechargerImage('' + url + '',' + i + ')" style="position:absolute;bottom:8px;right:8px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;padding:6px 12px;font-size:0.75rem;cursor:pointer;">⬇️</button>';
+        grid.appendChild(div);
+      });
+      zone.style.display = 'block';
+      zone.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function telechargerImage(url, index) {
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = 'oreille-ai-image-' + (index + 1) + '.png';
+      link.click();
+    }
+
+    function exporterTout() {
+      var imgs = document.getElementById('img-grid').querySelectorAll('img');
+      imgs.forEach(function(img, i) {
+        setTimeout(function() { telechargerImage(img.src, i); }, i * 500);
+      });
     }
 
     function effacerDernierMot() {
