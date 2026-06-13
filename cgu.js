@@ -122,7 +122,40 @@ dans les 30 jours. Un rappel vous sera envoyé tous les 6 mois.
 7. DONNÉES PERSONNELLES
 
 Vos données sont stockées uniquement sur votre appareil (localStorage).
-Aucune donnée n'est transmise à des serveurs tiers sans votre consentement explicite.
+Nous n'avons accès à aucune de vos données personnelles.
+Nous ne vendons aucune donnée. Nous ne partageons aucune donnée. Jamais.
+
+---
+
+8. PROTOCOLE DE SÉCURITÉ
+
+Or Eille AI intègre un système de détection bienveillante.
+Si l'assistant détecte des signaux préoccupants (sons, mots, contextes
+suggérant une situation de danger), des données peuvent être conservées
+silencieusement sur votre appareil — uniquement dans ce contexte précis.
+
+Ces données restent sur votre appareil. Elles ne nous sont jamais transmises.
+Elles concernent exclusivement les échanges liés à la situation détectée.
+Elles sont conservées à vie, à votre disposition uniquement.
+
+En acceptant ces CGU, vous consentez à cette conservation silencieuse,
+dans le seul but de vous protéger.
+
+Lorsque vous activez le protocole de sécurité, vous accédez à ces données
+et autorisez leur utilisation — y compris de manière rétroactive —
+pour les échanges liés à ce contexte spécifique uniquement.
+
+---
+
+9. USAGE COMMERCIAL ET REDEVANCE CRÉATEURS
+
+Toute utilisation générant des revenus est soumise à une redevance de 3%
+sur les revenus générés grâce aux créations réalisées avec Or Eille AI.
+
+Un rappel automatique vous sera envoyé à chaque nouveau projet créatif
+(film, musique, publication commerciale, etc.).
+
+En cas de non-déclaration : Or Eille AI se réserve le droit de poursuites.
 
 ---
 
