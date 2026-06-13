@@ -340,6 +340,7 @@
     // Micro pour la page Image
     var imgRecog = null;
     var imgMicActive = false;
+    var imgTexte = '';
 
     function startImgMic() {
       var btn = document.getElementById('img-mic-btn');
@@ -348,43 +349,50 @@
 
       if (imgMicActive) {
         imgMicActive = false;
-        if (imgRecog) imgRecog.stop();
+        if (imgRecog) { try { imgRecog.stop(); } catch(e) {} }
         btn.textContent = '🎙️';
         btn.style.background = 'white';
         return;
       }
 
       imgMicActive = true;
+      imgTexte = document.getElementById('img-description').value || '';
       btn.textContent = '⏹️';
       btn.style.background = '#E0B020';
 
-      imgRecog = new SR();
-      imgRecog.lang = 'fr-FR';
-      imgRecog.continuous = true;
-      imgRecog.interimResults = false;
+      function ecouter() {
+        if (!imgMicActive) return;
+        imgRecog = new SR();
+        imgRecog.lang = 'fr-FR';
+        imgRecog.continuous = false;
+        imgRecog.interimResults = false;
 
-      imgRecog.onresult = function(e) {
-        var ta = document.getElementById('img-description');
-        var texte = '';
-        for (var i = 0; i < e.results.length; i++) {
-          texte += e.results[i][0].transcript + ' ';
-        }
-        ta.value = texte.trim();
-      };
+        imgRecog.onresult = function(e) {
+          var nouveau = e.results[0][0].transcript.trim();
+          if (nouveau) {
+            imgTexte = imgTexte ? imgTexte + ' ' + nouveau : nouveau;
+            document.getElementById('img-description').value = imgTexte;
+          }
+        };
 
-      imgRecog.onerror = function() {
-        imgMicActive = false;
-        btn.textContent = '🎙️';
-        btn.style.background = 'white';
-      };
+        imgRecog.onend = function() {
+          if (imgMicActive) setTimeout(ecouter, 500);
+        };
 
-      imgRecog.onend = function() {
-        imgMicActive = false;
-        btn.textContent = '🎙️';
-        btn.style.background = 'white';
-      };
+        imgRecog.onerror = function(e) {
+          if (e.error === 'no-speech' && imgMicActive) {
+            setTimeout(ecouter, 500);
+          } else {
+            imgMicActive = false;
+            btn.textContent = '🎙️';
+            btn.style.background = 'white';
+          }
+        };
 
-      imgRecog.start();
+        try { imgRecog.start(); } catch(e) {}
+      }
+
+      ecouter();
     }
     var neuroState = {};
     function toggleNeuro(type) {
