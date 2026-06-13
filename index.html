@@ -304,8 +304,8 @@
   </div>
 
   <style>
-    .a11y-btn { padding:8px 16px;border-radius:50px;border:1px solid rgba(196,153,58,.4);background:white;color:#2a2a2a;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer; }
-    .a11y-btn.a11y-active { background:#C4993A;color:#1A3A8F;border-color:#C4993A; }
+    .a11y-btn { padding:8px 16px;border-radius:50px;border:1px solid rgba(196,153,58,.4);background:white;color:#2a2a2a;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;transition:all 0.2s; }
+    .a11y-btn.a11y-active { background:#C4993A !important;color:#F7F4EF !important;border-color:#C4993A !important; }
   </style>
 
   <script>
@@ -313,6 +313,17 @@
 
     function setA11y(key, val) {
       a11yState[key] = val;
+      // Mettre à jour visuellement tous les boutons du même groupe
+      document.querySelectorAll('[onclick*="setA11y(\'' + key + '\'"]').forEach(function(btn) {
+        btn.classList.remove('a11y-active');
+      });
+      // Trouver et activer le bon bouton
+      document.querySelectorAll('.a11y-btn').forEach(function(btn) {
+        var onclick = btn.getAttribute('onclick') || '';
+        if (onclick.includes("setA11y('" + key + "'," + (typeof val === 'boolean' ? val : "'" + val + "'") + ")")) {
+          btn.classList.add('a11y-active');
+        }
+      });
     }
 
     var neuroState = {};
