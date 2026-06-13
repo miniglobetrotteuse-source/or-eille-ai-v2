@@ -550,7 +550,17 @@
   <script>
     function setImageMode(mode) {
       var daSection = document.getElementById('img-da-section');
-      daSection.style.display = (mode === 'da') ? 'block' : 'none';
+      var daBtn = document.getElementById('img-mode-da');
+      var libreBtn = document.getElementById('img-mode-libre');
+      if (mode === 'da') {
+        daSection.style.display = 'block';
+        daBtn.style.opacity = '1';
+        libreBtn.style.opacity = '0.6';
+      } else {
+        daSection.style.display = 'none';
+        daBtn.style.opacity = '0.6';
+        libreBtn.style.opacity = '1';
+      }
     }
 
     function selectOpt(btn, group) {
