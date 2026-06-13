@@ -424,7 +424,7 @@
   <script>
     // Initialisation CGU au chargement
     window.addEventListener('load', () => {
-      if (window.CGU) CGU.init();
+      if (window.CGU && !CGU.isAccepted()) { setTimeout(() => CGU.showModal(), 1500); }
     });
   </script>
 </body>
