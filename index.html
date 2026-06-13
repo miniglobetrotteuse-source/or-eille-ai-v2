@@ -382,7 +382,7 @@
             var vitesse = profil.vitesse || 16;
             // Délai inversement proportionnel à la vitesse : vitesse 8=lent→8s, vitesse 24=rapide→3s
             var delai = Math.round(8000 - ((vitesse - 8) / 16) * 5000);
-            setTimeout(listen, delai);
+            setTimeout(listen, 2000);
           }
         };
         imgRecog.onerror = function() {
