@@ -605,11 +605,18 @@
         <option value="pinterest">Pinterest</option>
         <option value="snapchat">Snapchat</option>
       </select>
-      <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
         <button onclick="setRedTone('chaleureux')" data-group="tone" class="red-btn red-btn-active">Chaleureux</button>
         <button onclick="setRedTone('professionnel')" data-group="tone" class="red-btn">Professionnel</button>
         <button onclick="setRedTone('humoristique')" data-group="tone" class="red-btn">Humoristique</button>
         <button onclick="setRedTone('inspirant')" data-group="tone" class="red-btn">Inspirant</button>
+        <button onclick="setRedTone('libre')" data-group="tone" class="red-btn">✏️ Libre</button>
+      </div>
+      <div id="red-ton-libre-section" style="display:none;margin-bottom:8px;">
+        <div style="display:flex;gap:8px;">
+          <input type="text" id="red-ton-libre" placeholder="Ex: inspiré de Whitney Houston, style Bridgerton, ambiance automne..." style="flex:1;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.8rem;"/>
+          <button onclick="startRedMic('red-ton-libre')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+        </div>
       </div>
       <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;margin-bottom:8px;">
         <input type="checkbox" id="red-hashtags" checked /> Inclure des hashtags
@@ -688,8 +695,12 @@
       redTone = tone;
       document.querySelectorAll('[data-group="tone"]').forEach(function(b) {
         b.classList.remove('red-btn-active');
-        if (b.textContent.toLowerCase().includes(tone)) b.classList.add('red-btn-active');
+        if (b.textContent.toLowerCase().includes(tone) || (tone === 'libre' && b.textContent.includes('Libre'))) {
+          b.classList.add('red-btn-active');
+        }
       });
+      var libreSection = document.getElementById('red-ton-libre-section');
+      if (libreSection) libreSection.style.display = (tone === 'libre') ? 'block' : 'none';
     }
 
     function startRedMic(targetId) {
@@ -733,10 +744,14 @@
       var topic = document.getElementById('red-topic').value.trim();
       if (!topic) { alert('Décrivez votre sujet.'); return; }
       afficherResultatRed('Génération en cours...');
+      var tonFinal = redTone;
+      if (redTone === 'libre') {
+        tonFinal = document.getElementById('red-ton-libre').value || 'chaleureux';
+      }
       var result = await CONTENT.generateCaption({
         topic: topic,
         platform: document.getElementById('red-platform').value,
-        tone: redTone,
+        tone: tonFinal,
         includeHashtags: document.getElementById('red-hashtags').checked
       }, true);
       if (result) afficherResultatRed(result);
