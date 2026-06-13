@@ -23,38 +23,38 @@
     header { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; border-bottom: 1px solid #e0d8cc; }
     .header-logo { display: flex; align-items: center; gap: 12px; }
     .header-logo img { width: 64px; height: 64px; }
-    .header-logo-text { font-family: "BasteleurBold", "Basteleur", serif; font-size: 1.3rem; color: #C4993A; line-height: 1.1; }
+    .header-logo-text { font-family: "BasteleurBold", "Basteleur", serif; font-size: 1.3rem; color: #D4A520; line-height: 1.1; }
     .header-logo-slogan { font-family: "Basteleur", serif; font-size: 0.6rem; color: #1A3A8F; letter-spacing: 0.05em; font-style: italic; }
     nav a { font-family: "BasteleurBold", "Basteleur", serif; font-size: 1rem; text-decoration: none; margin-left: 24px; transition: opacity 0.2s; }
     nav a:hover { opacity: 0.8; }
-    #nav-accueil { color: #C4993A; }
+    #nav-accueil { color: #D4A520; }
     #nav-assistant { color: #1A3A8F; }
-    #nav-abonnement { color: #C4993A; }
+    #nav-abonnement { color: #D4A520; }
     .page { display: none; flex: 1; flex-direction: column; }
     .page.active { display: flex; }
     .hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 24px; }
     .hero-logo { width: 160px; height: 160px; margin-bottom: 32px; animation: float 4s ease-in-out infinite; }
     @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
-    .hero h1 { font-family: "BasteleurBold", "Basteleur", serif; font-size: clamp(3rem, 8vw, 6rem); color: #C4993A; line-height: 1.05; margin-bottom: 16px; }
+    .hero h1 { font-family: "BasteleurBold", "Basteleur", serif; font-size: clamp(3rem, 8vw, 6rem); color: #D4A520; line-height: 1.05; margin-bottom: 16px; }
     .hero-slogan { color: #1A3A8F !important; font-family: "Basteleur", serif; font-size: clamp(1rem, 2.5vw, 1.3rem); margin-bottom: 52px; font-style: italic; }
     .hero-slogan-override { font-family: "Basteleur"; font-size: clamp(1rem, 2.5vw, 1.3rem); color: #1a1a1a; margin-bottom: 52px; }
     .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-    .btn-primary { background: #1A3A8F; color: #C4993A; border: none; padding: 12px 28px; border-radius: 50px; font-family: "Basteleur"; font-size: 0.95rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(26,58,143,0.3); }
+    .btn-primary { background: #1A3A8F; color: #D4A520; border: none; padding: 12px 28px; border-radius: 50px; font-family: "Basteleur"; font-size: 0.95rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(26,58,143,0.3); }
     .btn-primary:hover { transform: translateY(-2px); }
-    .btn-secondary { background: #C4993A; color: #1A3A8F; border: 2px solid #C4993A; padding: 12px 28px; border-radius: 50px; font-family: "Basteleur"; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; }
-    .btn-secondary:hover { background: #C4993A; color: white; }
+    .btn-secondary { background: #D4A520; color: #1A3A8F; border: 2px solid #D4A520; padding: 12px 28px; border-radius: 50px; font-family: "Basteleur"; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; }
+    .btn-secondary:hover { background: #D4A520; color: white; }
     .assistant-page { flex: 1; display: flex; flex-direction: column; padding: 24px; padding-bottom: 100px; max-width: 800px; margin: 0 auto; width: 100%; }
-    .assistant-title { font-family: "Basteleur"; font-size: 1.8rem; color: #C4993A; margin-bottom: 20px; text-align: center; }
+    .assistant-title { font-family: "Basteleur"; font-size: 1.8rem; color: #D4A520; margin-bottom: 20px; text-align: center; }
     .messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; min-height: 300px; max-height: 60vh; padding: 16px; background: white; border-radius: 16px; border: 1px solid #e0d8cc; }
     .message { padding: 14px 18px; border-radius: 12px; font-family: "Basteleur"; font-size: 1rem; line-height: 1.5; max-width: 85%; display: inline-block; word-wrap: break-word; }
-    .message.user { background: #C4993A; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+    .message.user { background: #D4A520; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
     .message.assistant { background: #F7F4EF; color: #1A3A8F; align-self: flex-start; border: 1px solid #e0d8cc; border-bottom-left-radius: 4px; }
     .message.thinking { background: #f0ede8; color: #aaa; align-self: flex-start; font-style: italic; font-size: 0.9rem; }
     .input-zone { display: flex; flex-direction: column; gap: 8px; width: 100%; }
-    .input-zone textarea { width: 100%; padding: 12px 14px; border-radius: 16px; border: 2px solid #C4993A; font-family: "Basteleur"; font-size: 16px; resize: none; background: white; outline: none; min-height: 180px; max-height: 300px; box-sizing: border-box; }
+    .input-zone textarea { width: 100%; padding: 12px 14px; border-radius: 16px; border: 2px solid #D4A520; font-family: "Basteleur"; font-size: 16px; resize: none; background: white; outline: none; min-height: 180px; max-height: 300px; box-sizing: border-box; }
     .input-zone textarea:focus { border-color: #1A3A8F; }
     #page-profil input, #page-profil textarea, #page-profil select { color: #1A3A8F; }
-    #page-profil input::placeholder, #page-profil textarea::placeholder { color: #C4993A; opacity: 0.7; }
+    #page-profil input::placeholder, #page-profil textarea::placeholder { color: #D4A520; opacity: 0.7; }
     .input-buttons { display: flex; gap: 8px; justify-content: flex-end; margin-top: 80px; }
     @media (max-width: 600px) {
       .input-zone { flex-wrap: wrap; }
@@ -62,12 +62,12 @@
       .input-zone .btn-mic, .input-zone .btn-speaker, .input-zone .btn-send, .input-zone button { width: 46px; height: 46px; font-size: 1.2rem; }
     }
     .btn-send, .btn-mic, .btn-speaker, .btn-crayon { border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1rem; cursor: pointer; flex-shrink: 0; transition: transform 0.2s; }
-    .btn-send { background: #C4993A; color: white; box-shadow: 0 4px 16px rgba(196,153,58,0.3); }
+    .btn-send { background: #D4A520; color: white; box-shadow: 0 4px 16px rgba(196,153,58,0.3); }
     .btn-send:disabled { background: #ddd; cursor: not-allowed; }
-    .btn-mic { background: #F7F4EF; color: #C4993A; border: 2px solid #C4993A; }
-    .btn-mic.recording { background: #C4993A; color: white; animation: pulse 1s infinite; }
+    .btn-mic { background: #F7F4EF; color: #D4A520; border: 2px solid #D4A520; }
+    .btn-mic.recording { background: #D4A520; color: white; animation: pulse 1s infinite; }
     .btn-speaker { background: #F7F4EF; color: #1a1a1a; border: 2px solid #1A3A8F; }
-    .btn-speaker.active { background: #C4993A; color: white; }
+    .btn-speaker.active { background: #D4A520; color: white; }
     @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
     .btn-zone { display:flex; gap:10px; justify-content:flex-end; margin-top:8px; }
     .input-zone textarea { width:100%; padding:12px 16px; border-radius:16px; border:2px solid #e0d8cc; font-family:"Basteleur",serif; font-size:16px; resize:none; background:white; outline:none; min-height:56px; max-height:150px; box-sizing:border-box; }
@@ -124,24 +124,24 @@
 
   <div class="page" id="page-abonnement">
     <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;gap:32px;">
-      <h2 style="font-family:'Basteleur',serif;font-size:2rem;color:#C4993A;">Choisissez votre formule</h2>
+      <h2 style="font-family:'Basteleur',serif;font-size:2rem;color:#D4A520;">Choisissez votre formule</h2>
       
       <div style="display:flex;flex-direction:column;gap:20px;width:100%;max-width:500px;">
         
         <div style="background:white;border:2px solid #1A3A8F;border-radius:20px;padding:28px;text-align:center;">
           <div style="font-family:'Basteleur',serif;font-size:1.5rem;color:#1A3A8F;margin-bottom:8px;">Mensuel</div>
-          <div style="font-family:'Basteleur',serif;font-size:2.5rem;color:#C4993A;margin-bottom:8px;">18€<span style="font-size:1rem;">/mois</span></div>
+          <div style="font-family:'Basteleur',serif;font-size:2.5rem;color:#D4A520;margin-bottom:8px;">18€<span style="font-size:1rem;">/mois</span></div>
           <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;margin-bottom:20px;">Sans engagement · Résiliation à tout moment</div>
-          <a href="https://buy.stripe.com/8x2aEP64j4Xo0sDeIBbsc02" style="display:block;background:#1A3A8F;color:#C4993A;padding:14px 28px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;text-decoration:none;">S'abonner</a>
+          <a href="https://buy.stripe.com/8x2aEP64j4Xo0sDeIBbsc02" style="display:block;background:#1A3A8F;color:#D4A520;padding:14px 28px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;text-decoration:none;">S'abonner</a>
         </div>
 
-        <div style="background:white;border:2px solid #C4993A;border-radius:20px;padding:28px;text-align:center;position:relative;">
-          <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#C4993A;color:white;font-family:'Basteleur',serif;font-size:0.8rem;padding:4px 16px;border-radius:20px;">Meilleure offre</div>
-          <div style="font-family:'Basteleur',serif;font-size:1.5rem;color:#C4993A;margin-bottom:8px;">Annuel</div>
+        <div style="background:white;border:2px solid #D4A520;border-radius:20px;padding:28px;text-align:center;position:relative;">
+          <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#D4A520;color:white;font-family:'Basteleur',serif;font-size:0.8rem;padding:4px 16px;border-radius:20px;">Meilleure offre</div>
+          <div style="font-family:'Basteleur',serif;font-size:1.5rem;color:#D4A520;margin-bottom:8px;">Annuel</div>
           <div style="font-family:'Basteleur',serif;font-size:2.5rem;color:#1A3A8F;margin-bottom:4px;">200€<span style="font-size:1rem;">/an</span></div>
-          <div style="font-family:'Basteleur',serif;font-size:0.85rem;color:#C4993A;margin-bottom:4px;">soit 16,67€/mois</div>
-          <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#C4993A;margin-bottom:20px;">16€ d'économie par rapport au mensuel · soit 16,67€/mois</div>
-          <a href="https://buy.stripe.com/fZu00b3Wb61sdfpeIBbsc03" style="display:block;background:#C4993A;color:#1A3A8F;padding:14px 28px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;text-decoration:none;">S'abonner</a>
+          <div style="font-family:'Basteleur',serif;font-size:0.85rem;color:#D4A520;margin-bottom:4px;">soit 16,67€/mois</div>
+          <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#D4A520;margin-bottom:20px;">16€ d'économie par rapport au mensuel · soit 16,67€/mois</div>
+          <a href="https://buy.stripe.com/fZu00b3Wb61sdfpeIBbsc03" style="display:block;background:#D4A520;color:#1A3A8F;padding:14px 28px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;text-decoration:none;">S'abonner</a>
         </div>
 
       </div>
@@ -152,18 +152,18 @@
 
   <div class="page" id="page-profil">
     <div style="flex:1;overflow-y:auto;padding:20px 16px;max-width:600px;margin:0 auto;width:100%;box-sizing:border-box;">
-      <h2 style="font-family:'BasteleurBold','Basteleur',serif;font-size:1.6rem;color:#C4993A;text-align:center;margin-bottom:16px;">Mon Profil</h2>
+      <h2 style="font-family:'BasteleurBold','Basteleur',serif;font-size:1.6rem;color:#D4A520;text-align:center;margin-bottom:16px;">Mon Profil</h2>
 
       <div style="background:white;border-radius:12px;padding:16px;border:1px solid #e0d8cc;margin-bottom:12px;">
         <h3 style="font-family:'Basteleur',serif;color:#1A3A8F;font-size:1rem;margin-bottom:10px;">Mon identité</h3>
         <input type="text" id="profil-nom" placeholder="Prénom ou pseudonyme" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;margin-bottom:8px;box-sizing:border-box;">
         <div style="margin-bottom:12px;">
-          <label style="font-family:'Basteleur',serif;font-size:0.85rem;color:#C4993A;display:block;margin-bottom:6px;">Mon assistant est...</label>
+          <label style="font-family:'Basteleur',serif;font-size:0.85rem;color:#D4A520;display:block;margin-bottom:6px;">Mon assistant est...</label>
           <input type="hidden" id="mode-assistant" value="alter_ego">
           <div style="display:flex;gap:8px;">
-            <div id="btn-alter" onclick="selectMode('alter_ego')" style="flex:1;border:3px solid #C4993A;border-radius:10px;padding:10px;cursor:pointer;text-align:center;background:#fff8ee;">
-              <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#C4993A;font-weight:bold;">Mon alter ego</div>
-              <div style="font-family:'Basteleur',serif;font-size:0.75rem;color:#C4993A;margin-top:2px;font-style:italic;">le pinceau de ta créativité</div>
+            <div id="btn-alter" onclick="selectMode('alter_ego')" style="flex:1;border:3px solid #D4A520;border-radius:10px;padding:10px;cursor:pointer;text-align:center;background:#fff8ee;">
+              <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#D4A520;font-weight:bold;">Mon alter ego</div>
+              <div style="font-family:'Basteleur',serif;font-size:0.75rem;color:#D4A520;margin-top:2px;font-style:italic;">le pinceau de ta créativité</div>
             </div>
             <div id="btn-agent" onclick="selectMode('agent')" style="flex:1;border:2px solid #1A3A8F;border-radius:10px;padding:10px;cursor:pointer;text-align:center;background:white;opacity:0.6;">
               <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;font-weight:bold;">Mon agent</div>
@@ -197,12 +197,12 @@
           <option value="Atkinson Hyperlegible">Atkinson (déficience visuelle)</option>
           <option value="OpenDyslexic">OpenDyslexic (dyslexie)</option>
         </select>
-        <label style="font-family:'Basteleur',serif;font-size:0.85rem;color:#C4993A;">Taille du texte</label>
+        <label style="font-family:'Basteleur',serif;font-size:0.85rem;color:#D4A520;">Taille du texte</label>
         <input type="range" id="profil-taille" min="12" max="24" value="16" style="width:100%;margin:4px 0 4px;-webkit-appearance:auto;appearance:auto;" oninput="document.getElementById('label-taille').textContent = this.value + 'px'">
-        <div id="label-taille" style="font-family:'Basteleur',serif;font-size:0.8rem;color:#C4993A;text-align:center;margin-bottom:8px;">16px</div>
-        <label style="font-family:'Basteleur',serif;font-size:0.85rem;color:#C4993A;">Vitesse de parole</label>
+        <div id="label-taille" style="font-family:'Basteleur',serif;font-size:0.8rem;color:#D4A520;text-align:center;margin-bottom:8px;">16px</div>
+        <label style="font-family:'Basteleur',serif;font-size:0.85rem;color:#D4A520;">Vitesse de parole</label>
         <input type="range" id="profil-vitesse" min="0.5" max="1.5" step="0.1" value="0.95" style="width:100%;margin:4px 0 4px;-webkit-appearance:auto;appearance:auto;" oninput="document.getElementById('label-vitesse').textContent = this.value < 0.8 ? 'Lente' : this.value > 1.2 ? 'Rapide' : 'Normale'">
-        <div id="label-vitesse" style="font-family:'Basteleur',serif;font-size:0.8rem;color:#C4993A;text-align:center;margin-bottom:8px;">Normale</div>
+        <div id="label-vitesse" style="font-family:'Basteleur',serif;font-size:0.8rem;color:#D4A520;text-align:center;margin-bottom:8px;">Normale</div>
         <select id="profil-theme" style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.9rem;">
           <option value="clair">Thème clair</option>
           <option value="sombre">Thème sombre</option>
@@ -210,19 +210,19 @@
         </select>
       </div>
 
-      <button onclick="sauvegarderProfil()" style="background:#C4993A;color:#1A3A8F;border:none;padding:12px 24px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;cursor:pointer;width:100%;margin-bottom:8px;">Sauvegarder</button>
-      <button onclick="showPage('accessibilite')" style="background:none;border:1px solid rgba(196,153,58,.4);color:#C4993A;padding:12px 24px;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;width:100%;margin-bottom:8px;">⚙️ Paramètres d'accessibilité</button>
+      <button onclick="sauvegarderProfil()" style="background:#D4A520;color:#1A3A8F;border:none;padding:12px 24px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;cursor:pointer;width:100%;margin-bottom:8px;">Sauvegarder</button>
+      <button onclick="showPage('accessibilite')" style="background:none;border:1px solid rgba(196,153,58,.4);color:#D4A520;padding:12px 24px;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;width:100%;margin-bottom:8px;">⚙️ Paramètres d'accessibilité</button>
       <button onclick="showPage('accueil')" style="font-family:Basteleur,serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour</button>
     </div>
   </div>
 
   <!-- PAGE ACCESSIBILITÉ -->
   <div class="page" id="page-accessibilite" style="padding:20px;max-width:600px;margin:0 auto;">
-    <h2 style="font-family:'Basteleur',serif;color:#C4993A;text-align:center;font-size:1.8rem;margin-bottom:24px;">Accessibilité</h2>
+    <h2 style="font-family:'Basteleur',serif;color:#D4A520;text-align:center;font-size:1.8rem;margin-bottom:24px;">Accessibilité</h2>
 
     <!-- Taille du texte -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
-      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:12px;">Taille du texte</p>
+      <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:12px;">Taille du texte</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button onclick="setA11y('fontSize','small')" class="a11y-btn" id="a11y-font-small">Petit</button>
         <button onclick="setA11y('fontSize','normal')" class="a11y-btn a11y-active" id="a11y-font-normal">Normal</button>
@@ -233,7 +233,7 @@
 
     <!-- Espacement des lignes -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
-      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:12px;">Espacement des lignes</p>
+      <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:12px;">Espacement des lignes</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button onclick="setA11y('lineHeight','tight')" class="a11y-btn" id="a11y-lh-tight">Serré</button>
         <button onclick="setA11y('lineHeight','normal')" class="a11y-btn a11y-active" id="a11y-lh-normal">Normal</button>
@@ -244,7 +244,7 @@
 
     <!-- Police dyslexie -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
-      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:12px;">Police adaptée dyslexie</p>
+      <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:12px;">Police adaptée dyslexie</p>
       <div style="display:flex;gap:8px;">
         <button onclick="setA11y('dyslexiaFont',false)" class="a11y-btn a11y-active" id="a11y-dys-no">Non</button>
         <button onclick="setA11y('dyslexiaFont',true)" class="a11y-btn" id="a11y-dys-yes">Oui — Lexend</button>
@@ -253,7 +253,7 @@
 
     <!-- Contraste -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
-      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:12px;">Contraste</p>
+      <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:12px;">Contraste</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button onclick="setA11y('contrast','normal')" class="a11y-btn a11y-active" id="a11y-ct-normal">Normal</button>
         <button onclick="setA11y('contrast','high')" class="a11y-btn" id="a11y-ct-high">Renforcé</button>
@@ -263,7 +263,7 @@
 
     <!-- Guide vocal -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
-      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:12px;">Guide vocal</p>
+      <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:12px;">Guide vocal</p>
       <div style="display:flex;gap:8px;">
         <button onclick="setA11y('voiceGuide',true)" class="a11y-btn a11y-active" id="a11y-vg-yes">Activé</button>
         <button onclick="setA11y('voiceGuide',false)" class="a11y-btn" id="a11y-vg-no">Désactivé</button>
@@ -272,7 +272,7 @@
 
     <!-- Langue des signes -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:24px;">
-      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:4px;">Langue des signes</p>
+      <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:4px;">Langue des signes</p>
       <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:12px;">Avatar LSF — bientôt disponible</p>
       <div style="display:flex;gap:8px;">
         <button onclick="setA11y('signLanguage',false)" class="a11y-btn a11y-active" id="a11y-lsf-no">Non</button>
@@ -282,7 +282,7 @@
 
     <!-- Profil neurodivergence -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
-      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:4px;">Profil neurologique</p>
+      <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:4px;">Profil neurologique</p>
       <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:12px;">Ces informations restent sur votre appareil uniquement.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button onclick="toggleNeuro('tdah')" class="a11y-btn" id="a11y-tdah">TDAH</button>
@@ -296,20 +296,20 @@
 
     <!-- Sensibilités sensorielles -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:24px;">
-      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:12px;">Sensibilités sensorielles</p>
+      <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:12px;">Sensibilités sensorielles</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button onclick="setA11y('colorBlind',false)" class="a11y-btn a11y-active" id="a11y-cb-no">Pas de daltonisme</button>
         <button onclick="setA11y('colorBlind',true)" class="a11y-btn" id="a11y-cb-yes">Daltonisme</button>
       </div>
     </div>
 
-    <button onclick="saveA11y()" style="background:#C4993A;color:#1A3A8F;border:none;padding:12px 24px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;cursor:pointer;width:100%;margin-bottom:8px;">Enregistrer mes préférences</button>
+    <button onclick="saveA11y()" style="background:#D4A520;color:#1A3A8F;border:none;padding:12px 24px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;cursor:pointer;width:100%;margin-bottom:8px;">Enregistrer mes préférences</button>
     <button onclick="showPage('profil')" style="font-family:Basteleur,serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour au profil</button>
   </div>
 
   <style>
     .a11y-btn { padding:8px 16px;border-radius:50px;border:1px solid rgba(196,153,58,.4);background:white;color:#2a2a2a;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;transition:all 0.2s; }
-    .a11y-btn.a11y-active { background:#C4993A !important;color:#F7F4EF !important;border-color:#C4993A !important; }
+    .a11y-btn.a11y-active { background:#D4A520 !important;color:#F7F4EF !important;border-color:#D4A520 !important; }
   </style>
 
   <script>
@@ -352,7 +352,7 @@
   </script>
 
 
-  <footer id="main-footer" style="color:#C4993A;position:relative;clear:both;margin-top:auto;">&copy; Madame Or Eille Studio &mdash; Tous droits réservés</footer>
+  <footer id="main-footer" style="color:#D4A520;position:relative;clear:both;margin-top:auto;">&copy; Madame Or Eille Studio &mdash; Tous droits réservés</footer>
 
   <script>
     var speakerOn = false;
@@ -361,20 +361,20 @@
       document.getElementById('mode-assistant').value = mode;
       var avatarInput = document.getElementById('profil-avatar');
       if (mode === 'alter_ego') {
-        document.getElementById('btn-alter').style.border = '3px solid #C4993A';
+        document.getElementById('btn-alter').style.border = '3px solid #D4A520';
         document.getElementById('btn-alter').style.opacity = '1';
         document.getElementById('btn-alter').style.background = '#fff8ee';
         document.getElementById('btn-agent').style.border = '2px solid #1A3A8F';
         document.getElementById('btn-agent').style.opacity = '0.6';
         document.getElementById('btn-agent').style.background = 'white';
-        avatarInput.style.color = '#C4993A';
-        avatarInput.style.borderColor = '#C4993A';
+        avatarInput.style.color = '#D4A520';
+        avatarInput.style.borderColor = '#D4A520';
         avatarInput.placeholder = 'Son nom en doré (ex: Ernesto, Sofia...)';
       } else {
         document.getElementById('btn-agent').style.border = '3px solid #1A3A8F';
         document.getElementById('btn-agent').style.opacity = '1';
         document.getElementById('btn-agent').style.background = '#f0f3ff';
-        document.getElementById('btn-alter').style.border = '2px solid #C4993A';
+        document.getElementById('btn-alter').style.border = '2px solid #D4A520';
         document.getElementById('btn-alter').style.opacity = '0.6';
         document.getElementById('btn-alter').style.background = 'white';
         avatarInput.style.color = '#1A3A8F';
@@ -562,14 +562,14 @@
         var mode = profil.mode || "alter_ego";
         var intro = mode === "alter_ego" ? "Bonjour. Je suis " + nom + ", le pinceau de ta creativite." : "Bonjour. Je suis " + nom + ", ton agent personnel.";
         msg.textContent = intro + " Que souhaites-tu creer aujourd'hui ?";
-        msg.style.color = mode === "alter_ego" ? "#C4993A" : "#1A3A8F";
+        msg.style.color = mode === "alter_ego" ? "#D4A520" : "#1A3A8F";
       }
 
       // Titre assistant personnalisé
       var titre = document.querySelector('.assistant-title');
       if (titre && nom) {
         titre.textContent = 'Or Eille AI — ' + nom;
-        titre.style.color = (profil.mode === 'agent') ? '#1A3A8F' : '#C4993A';
+        titre.style.color = (profil.mode === 'agent') ? '#1A3A8F' : '#D4A520';
       }
 
       showPage('assistant');
