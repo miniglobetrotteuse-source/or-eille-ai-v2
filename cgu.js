@@ -106,6 +106,12 @@ Les présentes CGU sont soumises au droit français. En cas de litige, les tribu
 13. MODIFICATION DES CGU
 Or Eille AI se réserve le droit de modifier ces CGU avec un préavis de 30 jours. La poursuite de l'utilisation du service vaut acceptation des nouvelles conditions.
 
+14. FONDEMENT — DROITS HUMAINS UNIVERSELS
+Or Eille AI est fondé sur les valeurs de la Déclaration universelle des droits de l'homme (ONU, 10 décembre 1948), Article 1 : "Tous les êtres humains naissent libres et égaux en dignité et en droits. Ils sont doués de raison et de conscience et doivent agir les uns envers les autres dans un esprit de fraternité." Ces valeurs s'appliquent sans distinction de race, sexe, langue, religion, opinion politique, origine nationale ou sociale.
+
+15. LIBERTÉ D'EXPRESSION ET PAYS SOUS RÉGIME AUTORITAIRE
+Or Eille AI soutient la liberté d'expression et la liberté de la presse (Article 19 DUDH). Or Eille AI ne coopère avec aucun gouvernement, aucune autorité, aucun régime pour identifier, surveiller ou dénoncer ses utilisateurs. Jamais. Les utilisateurs dans des pays où l'accès est restreint peuvent utiliser un VPN.
+
 En acceptant ces CGU, vous reconnaissez avoir lu, compris et accepté l'ensemble des présentes conditions.`,
 
   // ─── Afficher la modale CGU ───────────────────
