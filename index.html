@@ -337,6 +337,28 @@
       });
     }
 
+    // Micro pour la page Image
+    var imgRecog = null;
+    function startImgMic() {
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) { alert('Utilisez Chrome ou Safari.'); return; }
+      imgRecog = new SR();
+      imgRecog.lang = 'fr-FR';
+      imgRecog.continuous = false;
+      imgRecog.interimResults = false;
+      var btn = document.getElementById('img-mic-btn');
+      btn.style.background = '#E0B020';
+      imgRecog.onresult = function(e) {
+        var text = e.results[0][0].transcript;
+        var ta = document.getElementById('img-description');
+        ta.value = ta.value ? ta.value + ' ' + text : text;
+        btn.style.background = 'white';
+      };
+      imgRecog.onerror = function() { btn.style.background = 'white'; };
+      imgRecog.onend = function() { btn.style.background = 'white'; };
+      imgRecog.start();
+    }
+
     var neuroState = {};
     function toggleNeuro(type) {
       neuroState[type] = !neuroState[type];
@@ -383,7 +405,11 @@
     <!-- Description de la scène -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
       <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:12px;">Ce que je veux</p>
-      <textarea placeholder="Décrivez la scène... ex: un salon parisien avec lumière chaude, mes deux fauteuils au centre" style="width:100%;min-height:100px;border:1px solid rgba(212,165,32,.3);border-radius:8px;padding:12px;font-family:'Basteleur',serif;font-size:0.85rem;resize:none;box-sizing:border-box;"></textarea>
+      <textarea id="img-description" placeholder="Décrivez la scène... ex: un salon parisien avec lumière chaude, mes deux fauteuils au centre" style="width:100%;min-height:100px;border:1px solid rgba(212,165,32,.3);border-radius:8px;padding:12px;font-family:'Basteleur',serif;font-size:0.85rem;resize:none;box-sizing:border-box;"></textarea>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button onclick="startImgMic()" id="img-mic-btn" style="padding:10px 16px;border-radius:50px;border:1px solid rgba(196,153,58,.4);background:white;font-size:1.1rem;cursor:pointer;" title="Dicter">🎙️</button>
+        <button onclick="document.getElementById('img-description').value=''" style="padding:10px 16px;border-radius:50px;border:1px solid rgba(42,42,42,.2);background:white;font-size:0.75rem;font-family:'Basteleur',serif;cursor:pointer;">Effacer</button>
+      </div>
     </div>
 
     <!-- Options -->
