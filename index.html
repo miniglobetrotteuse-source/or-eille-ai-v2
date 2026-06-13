@@ -770,29 +770,159 @@
     <!-- 1. Créer du contenu -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
       <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">✍️ Créer du contenu</p>
-      <div style="position:relative;margin-bottom:8px;">
+      <div style="position:relative;margin-bottom:12px;">
         <textarea id="red-idee" placeholder="Décrivez votre idée..." style="width:100%;min-height:120px;border:1px solid rgba(224,176,32,.3);border-radius:8px;padding:14px;padding-right:48px;font-family:'Basteleur',serif;font-size:1rem;resize:none;box-sizing:border-box;"></textarea>
         <button onclick="startRedMic('red-idee')" style="position:absolute;right:8px;bottom:8px;padding:8px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
       </div>
       <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Format</p>
-      <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
         <button class="red-btn red-btn-active" onclick="selectFormat(this,'post')">🗒 Post</button>
         <button class="red-btn" onclick="selectFormat(this,'story')">⏱ Story</button>
         <button class="red-btn" onclick="selectFormat(this,'reel')">🎬 Reel</button>
         <button class="red-btn" onclick="selectFormat(this,'carrousel')">🎠 Carrousel</button>
       </div>
       <input type="hidden" id="red-format-val" value="post"/>
-      <p style="font-size:0.8rem;color:#2a2a2a;margin-top:12px;margin-bottom:8px;">Plateformes</p>
+      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Plateformes</p>
       <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
-        <button onclick="togglePlat(this,'instagram')" style="padding:8px 14px;border-radius:50px;border:2px solid transparent;opacity:0.4;background:#E1306C;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">Instagram</button>
-        <button onclick="togglePlat(this,'tiktok')" style="padding:8px 14px;border-radius:50px;border:2px solid transparent;opacity:0.4;background:#010101;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">TikTok</button>
-        <button onclick="togglePlat(this,'youtube')" style="padding:8px 14px;border-radius:50px;border:2px solid transparent;opacity:0.4;background:#FF0000;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">YouTube</button>
-        <button onclick="togglePlat(this,'linkedin')" style="padding:8px 14px;border-radius:50px;border:2px solid transparent;opacity:0.4;background:#0077B5;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">LinkedIn</button>
-        <button onclick="togglePlat(this,'pinterest')" style="padding:8px 14px;border-radius:50px;border:2px solid transparent;opacity:0.4;background:#E60023;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">Pinterest</button>
-        <button onclick="togglePlat(this,'snapchat')" style="padding:8px 14px;border-radius:50px;border:2px solid transparent;opacity:0.4;background:#FFFC00;color:#010101;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">Snapchat</button>
+        <button onclick="togglePlat(this,'instagram')" style="padding:8px 14px;border-radius:50px;border:none;opacity:0.45;background:#E1306C;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">Instagram</button>
+        <button onclick="togglePlat(this,'tiktok')" style="padding:8px 14px;border-radius:50px;border:none;opacity:0.45;background:#010101;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">TikTok</button>
+        <button onclick="togglePlat(this,'youtube')" style="padding:8px 14px;border-radius:50px;border:none;opacity:0.45;background:#FF0000;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">YouTube</button>
+        <button onclick="togglePlat(this,'linkedin')" style="padding:8px 14px;border-radius:50px;border:none;opacity:0.45;background:#0077B5;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">LinkedIn</button>
+        <button onclick="togglePlat(this,'pinterest')" style="padding:8px 14px;border-radius:50px;border:none;opacity:0.45;background:#E60023;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">Pinterest</button>
+        <button onclick="togglePlat(this,'snapchat')" style="padding:8px 14px;border-radius:50px;border:none;opacity:0.45;background:#FFFC00;color:#010101;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">Snapchat</button>
       </div>
-      <button onclick="showPage('accueil')" style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour</button>
+      <button onclick="creerContenu()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">✨ Créer</button>
     </div>
+
+    <!-- 2. Générer une légende -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">💬 Générer une légende</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input type="text" id="red-topic" placeholder="Sujet du contenu..." style="flex:1;padding:12px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.9rem;"/>
+        <button onclick="startRedMic('red-topic')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+      </div>
+      <select id="red-platform" style="width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;margin-bottom:8px;">
+        <option value="instagram">Instagram</option>
+        <option value="tiktok">TikTok</option>
+        <option value="youtube">YouTube</option>
+        <option value="linkedin">LinkedIn</option>
+        <option value="pinterest">Pinterest</option>
+        <option value="snapchat">Snapchat</option>
+      </select>
+      <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+        <button onclick="setRedTone('chaleureux')" data-group="tone" class="red-btn red-btn-active">Chaleureux</button>
+        <button onclick="setRedTone('professionnel')" data-group="tone" class="red-btn">Professionnel</button>
+        <button onclick="setRedTone('humoristique')" data-group="tone" class="red-btn">Humoristique</button>
+        <button onclick="setRedTone('inspirant')" data-group="tone" class="red-btn">Inspirant</button>
+        <button onclick="setRedTone('libre')" data-group="tone" class="red-btn">✏️ Libre</button>
+      </div>
+      <div id="red-ton-libre-section" style="display:none;margin-bottom:8px;">
+        <div style="display:flex;gap:8px;">
+          <input type="text" id="red-ton-libre" placeholder="Ex: inspiré de Whitney Houston, style Bridgerton..." style="flex:1;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.8rem;"/>
+          <button onclick="startRedMic('red-ton-libre')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;margin-bottom:8px;">
+        <input type="checkbox" id="red-hashtags" checked /> Inclure des hashtags
+      </label>
+      <button onclick="genererLegende()" style="width:100%;padding:12px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">Générer la légende</button>
+    </div>
+
+    <!-- 3. Générateur de titres -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">💡 Générateur de titres</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input type="text" id="red-titre-sujet" placeholder="Sujet..." style="flex:1;padding:12px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.9rem;"/>
+        <button onclick="startRedMic('red-titre-sujet')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+      </div>
+      <button onclick="genererTitres()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">Générer 10 titres</button>
+    </div>
+
+    <!-- 4. Créer un carrousel -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:4px;">🎠 Créer un carrousel</p>
+      <p style="font-size:0.72rem;color:rgba(42,42,42,.5);margin-bottom:12px;">L'IA crée les textes slide par slide</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input type="text" id="red-carousel-sujet" placeholder="Sujet du carrousel..." style="flex:1;padding:12px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.9rem;"/>
+        <button onclick="startRedMic('red-carousel-sujet')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <button data-group="slides" class="red-btn red-btn-active" onclick="selectSlides(this,'5')">5 slides</button>
+        <button data-group="slides" class="red-btn" onclick="selectSlides(this,'7')">7 slides</button>
+        <button data-group="slides" class="red-btn" onclick="selectSlides(this,'10')">10 slides</button>
+      </div>
+      <input type="hidden" id="red-slides-count" value="5"/>
+      <button onclick="genererCarrousel()" style="width:100%;padding:12px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">🎠 Générer</button>
+    </div>
+
+    <!-- 5. Recycler du contenu -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">♻️ Recycler du contenu</p>
+      <div style="position:relative;margin-bottom:8px;">
+        <textarea id="red-original" placeholder="Collez votre contenu original ici..." style="width:100%;min-height:80px;border:1px solid rgba(224,176,32,.3);border-radius:8px;padding:10px;padding-right:48px;font-family:'Basteleur',serif;font-size:0.85rem;resize:none;box-sizing:border-box;"></textarea>
+        <button onclick="startRedMic('red-original')" style="position:absolute;right:8px;bottom:8px;padding:8px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;padding:10px;border:1px dashed rgba(224,176,32,.4);border-radius:8px;cursor:pointer;font-family:'Basteleur',serif;font-size:0.8rem;color:#E0B020;margin-bottom:8px;">
+        📎 Importer un fichier (txt, doc, pdf)
+        <input type="file" accept=".txt,.doc,.docx" style="display:none;" onchange="importerFichier(this)"/>
+      </label>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+        <select id="red-from" style="flex:1;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.8rem;">
+          <option value="reel">Reel</option>
+          <option value="texte">Texte</option>
+          <option value="video">Vidéo</option>
+          <option value="podcast">Podcast</option>
+          <option value="article">Article</option>
+        </select>
+        <span style="color:#2a2a2a;">→</span>
+        <select id="red-to" style="flex:1;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.8rem;">
+          <option value="carrousel">Carrousel</option>
+          <option value="stories">Stories</option>
+          <option value="newsletter">Newsletter</option>
+          <option value="reel">Reel</option>
+          <option value="twitter">Twitter/X</option>
+        </select>
+      </div>
+      <button onclick="recyclerContenu()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">♻️ Recycler</button>
+    </div>
+
+    <!-- 6. Créer un ebook -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:4px;">📚 Créer un livre numérique</p>
+      <p style="font-size:0.72rem;color:rgba(42,42,42,.5);margin-bottom:12px;">Décrivez votre idée — l'IA propose le titre et les chapitres</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input type="text" id="red-ebook-titre" placeholder="Votre idée de livre..." style="flex:1;padding:12px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.9rem;"/>
+        <button onclick="startRedMic('red-ebook-titre')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+      </div>
+      <button onclick="genererEbook()" style="width:100%;padding:12px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">📚 Générer</button>
+    </div>
+
+    <!-- 7. Préparer mon post -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">🚀 Préparer mon post</p>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-hashtags"/> Hashtags ajoutés</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-lien"/> Lien dans la bio à jour</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-localisation"/> Localisation ajoutée si besoin</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-tags"/> Personnes taguées</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-sous-titres"/> Sous-titres ajoutés</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-son"/> Son vérifié (droits d'auteur)</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-batterie"/> Batterie suffisante <span id="chk-batterie-info" style="color:rgba(42,42,42,.5);font-size:0.75rem;"></span></label>
+      </div>
+      <button onclick="lancerValidation()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">✅ Valider et publier</button>
+    </div>
+
+    <!-- Zone résultat -->
+    <div id="red-result" style="display:none;background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">Résultat</p>
+      <div id="red-result-text" style="font-family:'Basteleur',serif;font-size:0.85rem;line-height:1.7;white-space:pre-wrap;"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+        <button onclick="copierResultat()" style="padding:8px 16px;border-radius:50px;border:1px solid rgba(224,176,32,.4);background:white;color:#E0B020;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">📋 Copier</button>
+        <div id="red-copy-platforms"></div>
+      </div>
+    </div>
+
+    <button onclick="showPage('accueil')" style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour</button>
   </div>
 
 
