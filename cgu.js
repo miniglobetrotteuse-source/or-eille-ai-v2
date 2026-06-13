@@ -136,26 +136,37 @@ En acceptant ces CGU, vous reconnaissez avoir lu et compris les présentes condi
     const modal = document.createElement('div');
     modal.id = 'cguModal';
     modal.style.cssText = `
-      position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:99999;
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      padding:1.5rem;gap:1rem;
+      position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:99999;
+      display:flex;align-items:center;justify-content:center;
+      padding:1rem;font-family:'Basteleur',serif;
     `;
     modal.innerHTML = `
-      <div style="max-width:480px;width:100%;background:#2c2318;border:1px solid rgba(201,168,76,.3);padding:1.5rem;max-height:80vh;overflow-y:auto">
-        <h2 style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#c9a84c;font-size:1.2rem;margin-bottom:1rem">Conditions d'utilisation</h2>
-        <pre style="font-family:'Josefin Sans',sans-serif;font-size:.54rem;color:rgba(240,232,216,.75);line-height:1.7;white-space:pre-wrap;margin-bottom:1rem">${this.TEXT}</pre>
-        <div style="margin-bottom:.8rem">
-          <p style="font-size:.58rem;color:#e8d49a;margin-bottom:.5rem">Quel est votre usage ?</p>
-          <label style="display:flex;align-items:center;gap:.5rem;font-size:.58rem;color:rgba(240,232,216,.75);margin-bottom:.3rem;cursor:pointer">
-            <input type="radio" name="usageType" value="personal" checked style="accent-color:#c9a84c"/> Usage personnel (gratuit)
+      <div style="max-width:520px;width:100%;background:#0a0a0a;border:1px solid #C4993A;padding:2rem;max-height:90vh;display:flex;flex-direction:column;gap:1.2rem;">
+        
+        <div style="text-align:center;border-bottom:1px solid rgba(196,153,58,.3);padding-bottom:1rem;">
+          <div style="font-size:2rem;margin-bottom:.5rem;">👂</div>
+          <h2 style="color:#C4993A;font-size:1.1rem;font-weight:400;letter-spacing:.1em;margin:0;">Or Eille AI</h2>
+          <p style="color:rgba(247,244,239,.5);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;margin:.3rem 0 0;">Conditions d'utilisation</p>
+        </div>
+
+        <div style="overflow-y:auto;flex:1;max-height:45vh;padding-right:.5rem;">
+          <div style="font-size:.7rem;color:rgba(247,244,239,.8);line-height:1.8;white-space:pre-wrap;">${this.TEXT}</div>
+        </div>
+
+        <div style="border-top:1px solid rgba(196,153,58,.3);padding-top:1rem;">
+          <p style="font-size:.7rem;color:#C4993A;margin-bottom:.8rem;">Votre usage :</p>
+          <label style="display:flex;align-items:center;gap:.6rem;font-size:.7rem;color:rgba(247,244,239,.8);margin-bottom:.5rem;cursor:pointer;">
+            <input type="radio" name="usageType" value="personal" checked style="accent-color:#C4993A;"/> Usage personnel — gratuit
           </label>
-          <label style="display:flex;align-items:center;gap:.5rem;font-size:.58rem;color:rgba(240,232,216,.75);cursor:pointer">
-            <input type="radio" name="usageType" value="commercial" style="accent-color:#c9a84c"/> Usage commercial (redevance applicable)
+          <label style="display:flex;align-items:center;gap:.6rem;font-size:.7rem;color:rgba(247,244,239,.8);cursor:pointer;">
+            <input type="radio" name="usageType" value="commercial" style="accent-color:#C4993A;"/> Usage commercial — redevance applicable
           </label>
         </div>
-        <button onclick="CGU.acceptFromModal()" style="width:100%;padding:.8rem;background:#c9a84c;color:#1a1410;border:none;font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;font-weight:400">
+
+        <button onclick="CGU.acceptFromModal()" style="width:100%;padding:1rem;background:#C4993A;color:#0a0a0a;border:none;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;font-weight:600;">
           J'accepte les conditions
         </button>
+
       </div>
     `;
     document.body.appendChild(modal);
