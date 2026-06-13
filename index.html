@@ -352,6 +352,97 @@
   </script>
 
 
+  <!-- PAGE IMAGE -->
+  <div class="page" id="page-image" style="padding:20px;max-width:640px;margin:0 auto;">
+    <h2 style="font-family:'Basteleur',serif;color:#D4A520;text-align:center;font-size:1.8rem;margin-bottom:8px;">Composition d'image</h2>
+    <p style="text-align:center;font-family:'Basteleur',serif;color:#1A3A8F;font-style:italic;font-size:0.85rem;margin-bottom:24px;">Bientôt disponible</p>
+
+    <!-- Choix du mode -->
+    <div style="display:flex;gap:12px;margin-bottom:24px;">
+      <button onclick="setImageMode('da')" id="img-mode-da" style="flex:1;padding:16px;border-radius:12px;border:2px solid #D4A520;background:#D4A520;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">
+        🎨 Mode DA<br><span style="font-size:0.7rem;font-weight:normal;">Respecter ma charte</span>
+      </button>
+      <button onclick="setImageMode('libre')" id="img-mode-libre" style="flex:1;padding:16px;border-radius:12px;border:2px solid rgba(212,165,32,.4);background:white;color:#2a2a2a;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">
+        ✨ Mode Libre<br><span style="font-size:0.7rem;font-weight:normal;">Créer sans contrainte</span>
+      </button>
+    </div>
+
+    <!-- Mode DA -->
+    <div id="img-da-section" style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:12px;">Mes images de référence</p>
+      <div style="border:2px dashed rgba(212,165,32,.3);border-radius:12px;padding:20px;text-align:center;margin-bottom:12px;">
+        <p style="color:rgba(42,42,42,.5);font-size:0.8rem;">Déposez vos images de référence ici<br>(fauteuils, logo, visuels de marque)</p>
+        <input type="file" multiple accept="image/*" style="margin-top:8px;font-size:0.8rem;"/>
+      </div>
+      <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:4px;">Ces images seront intégrées telles quelles. Non modifiées.</p>
+    </div>
+
+    <!-- Description de la scène -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:12px;">Ce que je veux</p>
+      <textarea placeholder="Décrivez la scène... ex: un salon parisien avec lumière chaude, mes deux fauteuils au centre" style="width:100%;min-height:100px;border:1px solid rgba(212,165,32,.3);border-radius:8px;padding:12px;font-family:'Basteleur',serif;font-size:0.85rem;resize:none;box-sizing:border-box;"></textarea>
+    </div>
+
+    <!-- Options -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#D4A520;margin-bottom:12px;">Options</p>
+      
+      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Format</p>
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+        <button class="img-opt-btn img-opt-active" onclick="selectOpt(this,'format')">Carré 1:1</button>
+        <button class="img-opt-btn" onclick="selectOpt(this,'format')">Portrait 4:5</button>
+        <button class="img-opt-btn" onclick="selectOpt(this,'format')">Paysage 16:9</button>
+        <button class="img-opt-btn" onclick="selectOpt(this,'format')">Story 9:16</button>
+      </div>
+
+      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Série ou image seule ?</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <button class="img-opt-btn img-opt-active" onclick="selectOpt(this,'serie')">Image seule</button>
+        <button class="img-opt-btn" onclick="selectOpt(this,'serie')">Série (cohérence garantie)</button>
+      </div>
+    </div>
+
+    <!-- Bouton générer -->
+    <button style="width:100%;padding:16px;background:#D4A520;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;cursor:not-allowed;opacity:0.6;margin-bottom:8px;">
+      Générer — disponible bientôt
+    </button>
+    <button onclick="showPage('accueil')" style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour</button>
+  </div>
+
+  <style>
+    .img-opt-btn { padding:8px 14px;border-radius:50px;border:1px solid rgba(212,165,32,.4);background:white;color:#2a2a2a;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer; }
+    .img-opt-btn.img-opt-active { background:#D4A520;color:#1A3A8F;border-color:#D4A520; }
+  </style>
+
+  <script>
+    function setImageMode(mode) {
+      var daBtn = document.getElementById('img-mode-da');
+      var libreBtn = document.getElementById('img-mode-libre');
+      var daSection = document.getElementById('img-da-section');
+      if (mode === 'da') {
+        daBtn.style.background = '#D4A520';
+        daBtn.style.color = '#1A3A8F';
+        libreBtn.style.background = 'white';
+        libreBtn.style.color = '#2a2a2a';
+        daSection.style.display = 'block';
+      } else {
+        daBtn.style.background = 'white';
+        daBtn.style.color = '#2a2a2a';
+        libreBtn.style.background = '#D4A520';
+        libreBtn.style.color = '#1A3A8F';
+        daSection.style.display = 'none';
+      }
+    }
+
+    function selectOpt(btn, group) {
+      btn.closest('div').querySelectorAll('.img-opt-btn').forEach(function(b) {
+        b.classList.remove('img-opt-active');
+      });
+      btn.classList.add('img-opt-active');
+    }
+  </script>
+
+
   <footer id="main-footer" style="color:#E0B020;position:relative;clear:both;margin-top:auto;">&copy; Madame Or Eille Studio &mdash; Tous droits réservés</footer>
 
   <script>
