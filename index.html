@@ -679,6 +679,47 @@
       <button onclick="copierResultat()" style="margin-top:12px;padding:10px 20px;background:white;border:1px solid rgba(224,176,32,.4);border-radius:50px;font-family:'Basteleur',serif;font-size:0.8rem;color:#E0B020;cursor:pointer;">📋 Copier</button>
     </div>
 
+    <!-- Créateur de carrousel -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:4px;">🎠 Créer un carrousel</p>
+      <p style="font-size:0.72rem;color:rgba(42,42,42,.5);margin-bottom:12px;">Décrivez votre sujet — l'IA crée les textes slide par slide</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input type="text" id="red-carousel-sujet" placeholder="Sujet du carrousel..." style="flex:1;padding:12px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.9rem;"/>
+        <button onclick="startRedMic('red-carousel-sujet')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <button data-group="slides" class="red-btn red-btn-active" onclick="selectRedOpt(this,'slides','5')">5 slides</button>
+        <button data-group="slides" class="red-btn" onclick="selectRedOpt(this,'slides','7')">7 slides</button>
+        <button data-group="slides" class="red-btn" onclick="selectRedOpt(this,'slides','10')">10 slides</button>
+      </div>
+      <input type="hidden" id="red-slides-count" value="5"/>
+      <button onclick="genererCarrousel()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">🎠 Générer le carrousel</button>
+    </div>
+
+    <!-- Format du post -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">📱 Préparer mon post</p>
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+        <button data-group="postformat" class="red-btn red-btn-active" onclick="selectRedOpt(this,'postformat','post_court')">Post court</button>
+        <button data-group="postformat" class="red-btn" onclick="selectRedOpt(this,'postformat','post_long')">Post long</button>
+        <button data-group="postformat" class="red-btn" onclick="selectRedOpt(this,'postformat','story')">Story</button>
+        <button data-group="postformat" class="red-btn" onclick="selectRedOpt(this,'postformat','reel')">Reel</button>
+      </div>
+      <input type="hidden" id="red-post-format" value="post_court"/>
+
+      <!-- Checklist avant publication -->
+      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">✅ Checklist avant publication</p>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-hashtags"/> Hashtags ajoutés</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-lien"/> Lien dans la bio à jour</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-localisation"/> Localisation ajoutée si besoin</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-tags"/> Personnes taguées</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-sous-titres"/> Sous-titres (pour les malentendants)</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.8rem;"><input type="checkbox" id="chk-son"/> Son vérifié (droits d'auteur)</label>
+      </div>
+      <button onclick="lancerValidation()" style="width:100%;padding:12px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">🚀 Valider et publier (60s)</button>
+    </div>
+
     <button onclick="showPage('accueil')" style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour</button>
   </div>
 
@@ -728,6 +769,63 @@
       navigator.clipboard.writeText(texte).then(function() {
         alert('Copié !');
       });
+    }
+
+    var redOptValues = {};
+
+    function selectRedOpt(btn, group, value) {
+      document.querySelectorAll('[data-group="' + group + '"]').forEach(function(b) {
+        b.classList.remove('red-btn-active');
+      });
+      btn.classList.add('red-btn-active');
+      var hidden = document.getElementById('red-' + (group === 'slides' ? 'slides-count' : 'post-format'));
+      if (hidden) hidden.value = value;
+    }
+
+    async function genererCarrousel() {
+      var sujet = document.getElementById('red-carousel-sujet').value.trim();
+      var slides = document.getElementById('red-slides-count').value || '5';
+      if (!sujet) { alert('Décrivez votre sujet.'); return; }
+      afficherResultatRed('Création du carrousel en cours...');
+      var result = await CONTENT.generateCaption({
+        topic: sujet,
+        platform: 'instagram',
+        tone: 'Carrousel de ' + slides + ' slides. Pour chaque slide : un titre court en majuscules, puis 2-3 lignes de texte. Format : SLIDE 1\n[titre]\n[texte]\n\nSLIDE 2...',
+        includeHashtags: true
+      }, true);
+      if (result) afficherResultatRed(result);
+      else afficherResultatRed('Erreur — vérifiez votre connexion.');
+    }
+
+    function lancerValidation() {
+      var checks = [
+        { id: 'chk-hashtags', label: 'Hashtags' },
+        { id: 'chk-lien', label: 'Lien dans la bio' },
+        { id: 'chk-localisation', label: 'Localisation' },
+        { id: 'chk-tags', label: 'Tags' },
+        { id: 'chk-sous-titres', label: 'Sous-titres' },
+        { id: 'chk-son', label: 'Son vérifié' },
+      ];
+      var warnings = checks.filter(function(c) {
+        return !document.getElementById(c.id).checked;
+      });
+
+      if (window.PUBLISH) {
+        window.PUBLISH.showValidationModal({
+          caption: document.getElementById('red-result-text')?.textContent || '',
+          hashtags: document.getElementById('chk-hashtags').checked ? ['ok'] : [],
+          hasSubtitles: document.getElementById('chk-sous-titres').checked,
+          soundCleared: document.getElementById('chk-son').checked,
+          platform: document.getElementById('red-post-format')?.value || 'instagram'
+        }, function() {
+          alert('✅ Contenu archivé ! Vous pouvez maintenant le copier et publier sur votre plateforme.');
+        });
+      } else {
+        var msg = warnings.length > 0
+          ? '⚠️ Attention — éléments manquants :\n' + warnings.map(function(w) { return '• ' + w.label; }).join('\n')
+          : '✅ Tout est prêt ! Vous pouvez publier.';
+        alert(msg);
+      }
     }
 
     function importerFichier(input) {
