@@ -326,4 +326,4 @@ const A11Y_CONFIG = {
 };
 
 window.A11Y_CONFIG = A11Y_CONFIG;
-window.addEventListener('load', () => setTimeout(() => A11Y_CONFIG.init(), 500));
+
