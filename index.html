@@ -665,19 +665,7 @@
       }
     }
 
-    function afficherResultats(urls) {
-      var grid = document.getElementById('img-grid');
-      var results = document.getElementById('img-results');
-      grid.innerHTML = '';
-      urls.forEach(function(url, i) {
-        var div = document.createElement('div');
-        div.style.cssText = 'position:relative;border-radius:12px;overflow:hidden;';
-        div.innerHTML = '<img src="' + url + '" style="width:100%;border-radius:12px;" />' +
-          '<button onclick="telecharger('' + url + '',' + i + ')" style="position:absolute;bottom:8px;right:8px;background:rgba(224,176,32,.9);border:none;border-radius:20px;padding:6px 12px;font-size:0.75rem;cursor:pointer;font-family:Basteleur,serif;color:#1A3A8F;">⬇️</button>';
-        grid.appendChild(div);
-      });
-      results.style.display = 'block';
-    }
+
 
     function telecharger(url, index) {
       var a = document.createElement('a');
