@@ -340,59 +340,52 @@
     // Micro pour la page Image
     var imgRecog = null;
     var imgMicActive = false;
-    var imgTranscript = '';
 
     function startImgMic() {
       var btn = document.getElementById('img-mic-btn');
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) { alert('Utilisez Chrome ou Safari.'); return; }
+
       if (imgMicActive) {
-        // Arrêter
         imgMicActive = false;
         if (imgRecog) imgRecog.stop();
         btn.textContent = '🎙️';
         btn.style.background = 'white';
         return;
       }
-      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SR) { alert('Utilisez Chrome ou Safari.'); return; }
-      imgTranscript = document.getElementById('img-description').value || '';
+
       imgMicActive = true;
       btn.textContent = '⏹️';
       btn.style.background = '#E0B020';
 
-      var lastTranscript = '';
-      function listen() {
-        if (!imgMicActive) return;
-        imgRecog = new SR();
-        imgRecog.lang = 'fr-FR';
-        imgRecog.continuous = false;
-        imgRecog.interimResults = false;
-        imgRecog.onresult = function(e) {
-          var newText = e.results[0][0].transcript.trim();
-          // Éviter les doublons
-          if (newText && newText !== lastTranscript) {
-            lastTranscript = newText;
-            imgTranscript = imgTranscript ? imgTranscript + ' ' + newText : newText;
-            document.getElementById('img-description').value = imgTranscript;
-          }
-        };
-        imgRecog.onend = function() {
-          // Délai de 800ms avant de relancer pour éviter les captures multiples
-          if (imgMicActive) {
-            var profil = JSON.parse(sessionStorage.getItem('profil') || '{}');
-            var vitesse = profil.vitesse || 16;
-            // Délai inversement proportionnel à la vitesse : vitesse 8=lent→8s, vitesse 24=rapide→3s
-            var delai = Math.round(8000 - ((vitesse - 8) / 16) * 5000);
-            setTimeout(listen, 2000);
-          }
-        };
-        imgRecog.onerror = function() {
-          if (imgMicActive) setTimeout(listen, 3000);
-        };
-        imgRecog.start();
-      }
-      listen();
-    }
+      imgRecog = new SR();
+      imgRecog.lang = 'fr-FR';
+      imgRecog.continuous = true;
+      imgRecog.interimResults = false;
 
+      imgRecog.onresult = function(e) {
+        var ta = document.getElementById('img-description');
+        var texte = '';
+        for (var i = 0; i < e.results.length; i++) {
+          texte += e.results[i][0].transcript + ' ';
+        }
+        ta.value = texte.trim();
+      };
+
+      imgRecog.onerror = function() {
+        imgMicActive = false;
+        btn.textContent = '🎙️';
+        btn.style.background = 'white';
+      };
+
+      imgRecog.onend = function() {
+        imgMicActive = false;
+        btn.textContent = '🎙️';
+        btn.style.background = 'white';
+      };
+
+      imgRecog.start();
+    }
     var neuroState = {};
     function toggleNeuro(type) {
       neuroState[type] = !neuroState[type];
