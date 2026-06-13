@@ -75,7 +75,9 @@ L'accès à Or Eille AI est gratuit pour un usage personnel — toute création 
 ─────────────────────────────────────
 Toute utilisation générant des revenus — vente d'oeuvres, services rémunérés, collaborations commerciales, publications, films, musique, NFTs ou autre — constitue un usage commercial soumis à une redevance de 3% des revenus générés.
 
-L'utilisateur s'engage à déclarer cet usage dans les 30 jours suivant le premier revenu, à mentionner "Créé avec Or Eille AI" dans ses oeuvres, et à s'acquitter de la redevance. Un rappel automatique est envoyé à chaque nouveau projet créatif. En cas de non-déclaration, Madame Or Eille Studios se réserve le droit d'engager des poursuites.
+La redevance de 3% ne s'applique qu'à partir de 3 000€ de revenus mensuels générés grâce aux créations Or Eille AI. En dessous de ce seuil, aucune redevance n'est due.
+
+L'utilisateur s'engage à déclarer cet usage dans les 30 jours suivant le franchissement du seuil, à mentionner "Créé avec Or Eille AI" dans ses oeuvres, et à s'acquitter de la redevance. Un rappel automatique est envoyé à chaque nouveau projet créatif. En cas de non-déclaration, Madame Or Eille Studios se réserve le droit d'engager des poursuites.
 
 ─────────────────────────────────────
 4. FILIGRANE NUMÉRIQUE
