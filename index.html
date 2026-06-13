@@ -313,14 +313,18 @@
 
     function setA11y(key, val) {
       a11yState[key] = val;
-      // Mettre à jour visuellement tous les boutons du même groupe
-      document.querySelectorAll('[onclick*="setA11y(\'' + key + '\'"]').forEach(function(btn) {
-        btn.classList.remove('a11y-active');
-      });
-      // Trouver et activer le bon bouton
+      // Désactiver tous les boutons qui partagent la même clé
       document.querySelectorAll('.a11y-btn').forEach(function(btn) {
-        var onclick = btn.getAttribute('onclick') || '';
-        if (onclick.includes("setA11y('" + key + "'," + (typeof val === 'boolean' ? val : "'" + val + "'") + ")")) {
+        var oc = btn.getAttribute('onclick') || '';
+        if (oc.indexOf("setA11y('" + key + "'") !== -1) {
+          btn.classList.remove('a11y-active');
+        }
+      });
+      // Activer le bouton cliqué — on cherche celui dont la valeur correspond
+      document.querySelectorAll('.a11y-btn').forEach(function(btn) {
+        var oc = btn.getAttribute('onclick') || '';
+        var valStr = typeof val === 'boolean' ? String(val) : "'" + val + "'";
+        if (oc.indexOf("setA11y('" + key + "'," + valStr + ")") !== -1) {
           btn.classList.add('a11y-active');
         }
       });
