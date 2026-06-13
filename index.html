@@ -687,7 +687,7 @@
         var div = document.createElement('div');
         div.style.cssText = 'position:relative;border-radius:12px;overflow:hidden;';
         div.innerHTML = '<img src="' + url + '" style="width:100%;border-radius:12px;" />' +
-          '<button onclick="telechargerImage('' + url + '',' + i + ')" style="position:absolute;bottom:8px;right:8px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;padding:6px 12px;font-size:0.75rem;cursor:pointer;">⬇️</button>';
+          '<button onclick="telechargerImage(\'' + url + '\',' + i + ')" style="position:absolute;bottom:8px;right:8px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;padding:6px 12px;font-size:0.75rem;cursor:pointer;">⬇️</button>';
         grid.appendChild(div);
       });
       zone.style.display = 'block';
