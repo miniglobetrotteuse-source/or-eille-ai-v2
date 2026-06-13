@@ -359,6 +359,7 @@
       btn.textContent = '⏹️';
       btn.style.background = '#E0B020';
 
+      var lastTranscript = '';
       function listen() {
         if (!imgMicActive) return;
         imgRecog = new SR();
@@ -366,15 +367,20 @@
         imgRecog.continuous = false;
         imgRecog.interimResults = false;
         imgRecog.onresult = function(e) {
-          var newText = e.results[0][0].transcript;
-          imgTranscript = imgTranscript ? imgTranscript + ' ' + newText : newText;
-          document.getElementById('img-description').value = imgTranscript;
+          var newText = e.results[0][0].transcript.trim();
+          // Éviter les doublons
+          if (newText && newText !== lastTranscript) {
+            lastTranscript = newText;
+            imgTranscript = imgTranscript ? imgTranscript + ' ' + newText : newText;
+            document.getElementById('img-description').value = imgTranscript;
+          }
         };
         imgRecog.onend = function() {
-          if (imgMicActive) listen(); // relancer si toujours actif
+          // Délai de 800ms avant de relancer pour éviter les captures multiples
+          if (imgMicActive) setTimeout(listen, 800);
         };
         imgRecog.onerror = function() {
-          if (imgMicActive) setTimeout(listen, 300);
+          if (imgMicActive) setTimeout(listen, 1000);
         };
         imgRecog.start();
       }
