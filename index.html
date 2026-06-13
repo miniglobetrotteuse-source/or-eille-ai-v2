@@ -412,11 +412,13 @@
 
     <!-- Choix du mode -->
     <div style="display:flex;gap:12px;margin-bottom:24px;">
-      <button onclick="setImageMode('da')" id="img-mode-da" style="flex:1;padding:16px;border-radius:12px;border:2px solid #E0B020;background:#E0B020;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">
-        Mode DA<br><span style="font-size:0.7rem;font-weight:normal;">Respecter ma charte</span>
+      <button onclick="setImageMode('da')" id="img-mode-da" style="flex:1;padding:16px;border-radius:12px;border:2px solid #E0B020;background:#E0B020;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">
+        <span style="color:#1A3A8F;font-size:1rem;">Mode DA</span><br>
+        <span style="color:#1A3A8F;font-size:0.7rem;">Respecter ma charte</span>
       </button>
-      <button onclick="setImageMode('libre')" id="img-mode-libre" style="flex:1;padding:16px;border-radius:12px;border:2px solid #1A3A8F;background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">
-        Mode Libre<br><span style="font-size:0.7rem;font-weight:normal;">Créer sans contrainte</span>
+      <button onclick="setImageMode('libre')" id="img-mode-libre" style="flex:1;padding:16px;border-radius:12px;border:2px solid #1A3A8F;background:#1A3A8F;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">
+        <span style="color:#E0B020;font-size:1rem;">Mode Libre</span><br>
+        <span style="color:#E0B020;font-size:0.7rem;">Créer sans contrainte</span>
       </button>
     </div>
 
@@ -525,22 +527,8 @@
 
   <script>
     function setImageMode(mode) {
-      var daBtn = document.getElementById('img-mode-da');
-      var libreBtn = document.getElementById('img-mode-libre');
       var daSection = document.getElementById('img-da-section');
-      if (mode === 'da') {
-        daBtn.style.background = '#D4A520';
-        daBtn.style.color = '#1A3A8F';
-        libreBtn.style.background = 'white';
-        libreBtn.style.color = '#2a2a2a';
-        daSection.style.display = 'block';
-      } else {
-        daBtn.style.background = 'white';
-        daBtn.style.color = '#2a2a2a';
-        libreBtn.style.background = '#D4A520';
-        libreBtn.style.color = '#1A3A8F';
-        daSection.style.display = 'none';
-      }
+      daSection.style.display = (mode === 'da') ? 'block' : 'none';
     }
 
     function selectOpt(btn, group) {
