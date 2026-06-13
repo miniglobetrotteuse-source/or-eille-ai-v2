@@ -126,7 +126,14 @@ Or Eille AI est accessible aux personnes de 18 ans et plus. Les mineurs peuvent 
 L'abonnement peut être résilié à tout moment depuis l'espace personnel. La résiliation prend effet à la fin de la période en cours. Aucun remboursement au prorata n'est effectué.
 
 ─────────────────────────────────────
-12. DROIT APPLICABLE
+12. RESPONSABILITÉ LIMITÉE
+─────────────────────────────────────
+Madame Or Eille Studios ne peut être tenue responsable des usages frauduleux, détournés ou contraires aux présentes conditions, réalisés par des tiers en violation de celles-ci.
+
+Madame Or Eille Studios se réserve le droit d'engager des poursuites pour tout préjudice subi — qu'il soit moral, commercial ou réputationnel — causé par l'usage abusif de la plateforme ou par tout comportement portant atteinte à l'image de la marque.
+
+─────────────────────────────────────
+13. DROIT APPLICABLE
 ─────────────────────────────────────
 Les présentes conditions sont régies par le droit français. En cas de litige, les tribunaux français sont seuls compétents.
 
