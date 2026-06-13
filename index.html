@@ -770,13 +770,16 @@
     <!-- 1. Créer du contenu -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
       <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">✍️ Créer du contenu</p>
-      <textarea id="red-idee" placeholder="Décrivez votre idée..." style="width:100%;min-height:120px;border:1px solid rgba(224,176,32,.3);border-radius:8px;padding:14px;font-family:'Basteleur',serif;font-size:1rem;resize:none;box-sizing:border-box;margin-bottom:8px;"></textarea>
+      <div style="position:relative;margin-bottom:8px;">
+        <textarea id="red-idee" placeholder="Décrivez votre idée..." style="width:100%;min-height:120px;border:1px solid rgba(224,176,32,.3);border-radius:8px;padding:14px;padding-right:48px;font-family:'Basteleur',serif;font-size:1rem;resize:none;box-sizing:border-box;"></textarea>
+        <button onclick="startRedMic('red-idee')" style="position:absolute;right:8px;bottom:8px;padding:8px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+      </div>
       <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Format</p>
       <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
-        <button class="red-btn red-btn-active" onclick="selectFormat(this,'post')">Post</button>
-        <button class="red-btn" onclick="selectFormat(this,'story')">Story</button>
-        <button class="red-btn" onclick="selectFormat(this,'reel')">Reel</button>
-        <button class="red-btn" onclick="selectFormat(this,'carrousel')">Carrousel</button>
+        <button class="red-btn red-btn-active" onclick="selectFormat(this,'post')">🗒 Post</button>
+        <button class="red-btn" onclick="selectFormat(this,'story')">⏱ Story</button>
+        <button class="red-btn" onclick="selectFormat(this,'reel')">🎬 Reel</button>
+        <button class="red-btn" onclick="selectFormat(this,'carrousel')">🎠 Carrousel</button>
       </div>
       <input type="hidden" id="red-format-val" value="post"/>
       <p style="font-size:0.8rem;color:#2a2a2a;margin-top:12px;margin-bottom:8px;">Plateformes</p>
