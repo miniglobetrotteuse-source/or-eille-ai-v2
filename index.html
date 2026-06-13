@@ -552,14 +552,16 @@
       var daSection = document.getElementById('img-da-section');
       var daBtn = document.getElementById('img-mode-da');
       var libreBtn = document.getElementById('img-mode-libre');
+      daBtn.style.opacity = '1';
+      libreBtn.style.opacity = '1';
       if (mode === 'da') {
         daSection.style.display = 'block';
-        daBtn.style.opacity = '1';
-        libreBtn.style.opacity = '0.6';
+        daBtn.style.border = '3px solid #1A3A8F';
+        libreBtn.style.border = '2px solid #1A3A8F';
       } else {
         daSection.style.display = 'none';
-        daBtn.style.opacity = '0.6';
-        libreBtn.style.opacity = '1';
+        daBtn.style.border = '2px solid #E0B020';
+        libreBtn.style.border = '3px solid #E0B020';
       }
     }
 
