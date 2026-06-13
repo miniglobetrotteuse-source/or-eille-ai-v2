@@ -435,9 +435,14 @@
     }
   </script>
 </body>
-</html>  <script src="legal.js"></script>
+</html>  <script src="accessibility_config.js"></script>
+  <script src="legal.js"></script>
   <script src="cgu.js"></script>
   <script src="ethics.js"></script>
   <script>
-// CGU affichées uniquement au clic sur Essayer gratuitement
+// Accessibilité — appliquer les préférences sauvegardées
+    window.addEventListener('load', () => {
+      if (window.A11Y_CONFIG) A11Y_CONFIG.apply();
+    });
+    // CGU affichées uniquement au clic sur Essayer gratuitement
   </script>
