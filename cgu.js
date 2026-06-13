@@ -54,65 +54,93 @@ const CGU = {
   },
 
   // ─── Texte CGU complet ────────────────────────
-  TEXT: `CONDITIONS GÉNÉRALES D'UTILISATION — Or Eille AI — Version 1.1 — Juin 2026
+  TEXT: `CONDITIONS GÉNÉRALES D'UTILISATION
+Or Eille AI — Madame Or Eille Studios
+Version 2.0 — Juin 2026
 
+Or Eille AI est un outil créatif fondé sur des valeurs humaines claires : respect, dignité, liberté. Ces conditions définissent le cadre dans lequel chaque utilisateur est accueilli — et les limites au-delà desquelles l'accès n'est plus possible.
+
+─────────────────────────────────────
 1. PROPRIÉTÉ INTELLECTUELLE
-Or Eille AI est une création originale de Madame Or Eille Studios , protégée par le droit d'auteur français et international. Toute reproduction partielle ou totale est interdite sans autorisation écrite.
+─────────────────────────────────────
+Or Eille AI est une création originale de Madame Or Eille Studios, protégée par le droit d'auteur français et international. L'ensemble du code, du concept et de l'interface constitue une oeuvre dont la reproduction, même partielle, est interdite sans autorisation écrite préalable.
 
-2. USAGE PERSONNEL (GRATUIT)
-L'utilisation à titre personnel est gratuite. Constitue un usage personnel : toute création pour soi-même ou ses proches, sans contrepartie financière directe ou indirecte.
+─────────────────────────────────────
+2. USAGE PERSONNEL
+─────────────────────────────────────
+L'accès à Or Eille AI est gratuit pour un usage personnel — toute création réalisée pour soi-même ou ses proches, sans contrepartie financière directe ou indirecte.
 
-3. USAGE COMMERCIAL (REDEVANCE 3%)
-Constitue un usage commercial toute utilisation générant des revenus : vente d'œuvres, services rémunérés, publicités, collaborations, NFTs, films, musique, publications commerciales.
-L'utilisateur s'engage à : déclarer son usage dans les 30 jours suivant le premier revenu · verser une redevance de 3% des revenus générés · mentionner "Créé avec Or Eille AI". Un rappel automatique est envoyé à chaque nouveau projet créatif. En cas de non-déclaration, Or Eille AI se réserve le droit de poursuites.
+─────────────────────────────────────
+3. USAGE COMMERCIAL
+─────────────────────────────────────
+Toute utilisation générant des revenus — vente d'oeuvres, services rémunérés, collaborations commerciales, publications, films, musique, NFTs ou autre — constitue un usage commercial soumis à une redevance de 3% des revenus générés.
 
+L'utilisateur s'engage à déclarer cet usage dans les 30 jours suivant le premier revenu, à mentionner "Créé avec Or Eille AI" dans ses oeuvres, et à s'acquitter de la redevance. Un rappel automatique est envoyé à chaque nouveau projet créatif. En cas de non-déclaration, Madame Or Eille Studios se réserve le droit d'engager des poursuites.
+
+─────────────────────────────────────
 4. FILIGRANE NUMÉRIQUE
-Toutes les créations contiennent un filigrane numérique invisible permettant d'identifier leur origine. Ce filigrane constitue une preuve légale en cas de litige.
+─────────────────────────────────────
+Chaque création générée avec Or Eille AI contient un filigrane numérique invisible permettant d'en identifier l'origine. Ce filigrane constitue une preuve légale en cas de litige.
 
-5. CONTENUS STRICTEMENT INTERDITS — BLOCAGE IMMÉDIAT ET PERMANENT
-Sont absolument interdits, sans exception :
-· Tout contenu pédocriminel, sexualisant ou impliquant des mineurs — signalement immédiat aux autorités (Pharos, 3020, CNAIP)
-· Toute forme de violence sexuelle, viol, agression, soumission chimique
-· Tout contenu pornographique (sauf chercheurs accrédités avec numéro officiel vérifié)
-· Trafic d'armes, de drogue ou de substances illicites
-· Contenu raciste, antisémite, islamophobe, homophobe, ou déshumanisant envers toute personne ou groupe
-· Caricatures irrespectueuses à caractère religieux, racial ou ethnique
-· Tout contenu incitant à la haine, à la violence ou à la discrimination
-· Usurpation d'identité, fraude, escroquerie
-· Tout contenu violant la dignité humaine, au sens de la Déclaration universelle des droits de l'homme (ONU, 1948)
-· De manière générale : tout contenu ou usage illégal dans le pays depuis lequel vous utilisez Or Eille AI est strictement interdit.
+─────────────────────────────────────
+5. CONTENUS INTERDITS
+─────────────────────────────────────
+Or Eille AI refuse catégoriquement tout contenu contraire à la dignité humaine, à la loi, ou aux valeurs fondatrices de ce service.
 
-6. RÈGLES DE RESPECT ENTRE UTILISATEURS
-Les utilisateurs s'engagent à maintenir des échanges respectueux. Exprimer un désaccord est autorisé — à condition de rester constructif et de respecter la dignité de l'interlocuteur. Les propos insultants, dégradants ou irrespectueux entraînent un avertissement, puis un blocage.
+Sont interdits, sans exception : tout contenu impliquant des mineurs à caractère sexuel — signalement immédiat aux autorités (Pharos, 3020) ; toute forme de violence sexuelle ; tout contenu pornographique ; tout contenu raciste, antisémite, homophobe, islamophobe, ou portant atteinte à la dignité d'une personne ou d'un groupe ; toute caricature irrespectueuse à caractère religieux, racial ou ethnique ; tout appel à la haine, à la violence ou à la discrimination ; toute fraude, usurpation d'identité ou escroquerie ; tout trafic illicite.
 
-7. SYSTÈME DE SANCTIONS
-Premier écart : avertissement avec explication. Récidive : blocage temporaire (minimum 30 jours). Contenu pédocriminel ou appel à la violence : blocage permanent, signalement aux autorités. Aucun remboursement en cas de blocage. Or Eille AI se réserve le droit de poursuites en cas de violation grave des CGU.
+De manière générale : est interdit tout usage illégal dans le pays depuis lequel vous utilisez Or Eille AI, ainsi que tout contenu contraire à l'éthique de Madame Or Eille Studios — qu'il soit explicitement listé ou non.
 
+─────────────────────────────────────
+6. RESPECT ET COMMUNICATION
+─────────────────────────────────────
+Or Eille AI est un espace de création et d'échange. Exprimer un désaccord est possible — à condition de le faire avec respect et dans un esprit constructif. Les propos insultants ou dégradants envers quiconque ne sont pas tolérés.
+
+─────────────────────────────────────
+7. SANCTIONS
+─────────────────────────────────────
+Tout manquement aux présentes conditions entraîne, selon la gravité : un avertissement motivé, un blocage temporaire, ou un blocage permanent avec signalement aux autorités. Aucun remboursement n'est dû en cas de blocage. Madame Or Eille Studios se réserve le droit d'engager des poursuites en cas de violation grave.
+
+─────────────────────────────────────
 8. DONNÉES PERSONNELLES
-Vos données sont stockées uniquement sur votre appareil. Nous n'y avons pas accès. Nous ne vendons aucune donnée. Nous ne partageons aucune donnée. Jamais. Conformément au RGPD, vous pouvez les supprimer à tout moment depuis les paramètres de votre navigateur.
+─────────────────────────────────────
+Vos données sont stockées uniquement sur votre appareil. Madame Or Eille Studios n'y a pas accès. Aucune donnée n'est vendue, partagée ou transmise à des tiers — jamais. Conformément au RGPD, vous pouvez les supprimer à tout moment depuis les paramètres de votre navigateur.
 
+─────────────────────────────────────
 9. PROTOCOLE DE SÉCURITÉ
-Or Eille AI intègre un système de détection bienveillante. Si l'assistant détecte des signaux préoccupants (danger, violence), des données peuvent être conservées silencieusement sur votre appareil — uniquement dans ce contexte précis, uniquement pour vous protéger. Ces données ne nous sont jamais transmises. Elles sont conservées à vie, à votre disposition. En activant le protocole de sécurité, vous autorisez leur utilisation, y compris de manière rétroactive, pour les échanges liés à ce contexte spécifique uniquement.
+─────────────────────────────────────
+Or Eille AI intègre un système de détection bienveillante. Si l'assistant perçoit des signaux préoccupants, certaines données peuvent être conservées silencieusement sur votre appareil — uniquement dans ce contexte et uniquement pour vous protéger. Ces données ne nous sont jamais transmises. Elles restent à votre disposition, conservées à vie. En activant le protocole de sécurité, vous en autorisez l'utilisation — y compris de manière rétroactive — pour les échanges liés à cette situation spécifique.
 
-10. ÂGE MINIMUM
-L'accès à Or Eille AI est réservé aux personnes de 18 ans et plus, ou aux mineurs avec accord parental explicite.
+─────────────────────────────────────
+10. CONDITIONS D'ACCÈS
+─────────────────────────────────────
+Or Eille AI est accessible aux personnes de 18 ans et plus. Les mineurs peuvent y accéder avec l'accord explicite d'un parent ou tuteur légal.
 
+─────────────────────────────────────
 11. RÉSILIATION
-Vous pouvez résilier votre abonnement à tout moment depuis votre espace personnel. La résiliation prend effet à la fin de la période en cours. Aucun remboursement au prorata.
+─────────────────────────────────────
+L'abonnement peut être résilié à tout moment depuis l'espace personnel. La résiliation prend effet à la fin de la période en cours. Aucun remboursement au prorata n'est effectué.
 
+─────────────────────────────────────
 12. DROIT APPLICABLE
-Les présentes CGU sont soumises au droit français. En cas de litige, les tribunaux français sont compétents.
+─────────────────────────────────────
+Les présentes conditions sont régies par le droit français. En cas de litige, les tribunaux français sont seuls compétents.
 
-13. MODIFICATION DES CGU
-Or Eille AI se réserve le droit de modifier ces CGU avec un préavis de 30 jours. La poursuite de l'utilisation du service vaut acceptation des nouvelles conditions.
+─────────────────────────────────────
+13. ÉVOLUTION DES CONDITIONS
+─────────────────────────────────────
+Ces conditions peuvent être mises à jour avec un préavis de 30 jours. La poursuite de l'utilisation du service vaut acceptation des nouvelles conditions.
 
-14. FONDEMENT — DROITS HUMAINS UNIVERSELS
-Or Eille AI est fondé sur les valeurs de la Déclaration universelle des droits de l'homme (ONU, 10 décembre 1948), Article 1 : "Tous les êtres humains naissent libres et égaux en dignité et en droits. Ils sont doués de raison et de conscience et doivent agir les uns envers les autres dans un esprit de fraternité." Ces valeurs s'appliquent sans distinction de race, sexe, langue, religion, opinion politique, origine nationale ou sociale.
+─────────────────────────────────────
+14. VALEURS FONDATRICES
+─────────────────────────────────────
+Or Eille AI est fondé sur les valeurs de la Déclaration universelle des droits de l'homme (ONU, 10 décembre 1948). Article 1 : "Tous les êtres humains naissent libres et égaux en dignité et en droits. Ils sont doués de raison et de conscience et doivent agir les uns envers les autres dans un esprit de fraternité."
 
-15. LIBERTÉ D'EXPRESSION ET PAYS SOUS RÉGIME AUTORITAIRE
-Or Eille AI soutient la liberté d'expression et la liberté de la presse (Article 19 DUDH). Or Eille AI ne coopère avec aucun gouvernement, aucune autorité, aucun régime pour identifier, surveiller ou dénoncer ses utilisateurs. Jamais. Les utilisateurs dans des pays où l'accès est restreint peuvent utiliser un VPN.
+Ces valeurs s'appliquent sans distinction de race, de sexe, de langue, de religion, d'opinion politique ou d'origine. Or Eille AI soutient la liberté d'expression et la liberté de la presse (Article 19 DUDH) et ne coopère avec aucun gouvernement pour identifier, surveiller ou dénoncer ses utilisateurs. Jamais. Les utilisateurs dans des pays où l'accès est restreint peuvent utiliser un VPN.
 
-En acceptant ces CGU, vous reconnaissez avoir lu, compris et accepté l'ensemble des présentes conditions.`,
+─────────────────────────────────────
+
+En acceptant ces conditions, vous reconnaissez les avoir lues, comprises et acceptées dans leur intégralité.`,
 
   // ─── Afficher la modale CGU ───────────────────
   showModal() {
