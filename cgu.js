@@ -80,6 +80,7 @@ Sont absolument interdits, sans exception :
 · Tout contenu incitant à la haine, à la violence ou à la discrimination
 · Usurpation d'identité, fraude, escroquerie
 · Tout contenu violant la dignité humaine, au sens de la Déclaration universelle des droits de l'homme (ONU, 1948)
+· De manière générale : tout contenu ou usage illégal dans le pays depuis lequel vous utilisez Or Eille AI est strictement interdit.
 
 6. RÈGLES DE RESPECT ENTRE UTILISATEURS
 Les utilisateurs s'engagent à maintenir des échanges respectueux. Exprimer un désaccord est autorisé — à condition de rester constructif et de respecter la dignité de l'interlocuteur. Les propos insultants, dégradants ou irrespectueux entraînent un avertissement, puis un blocage.
