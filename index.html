@@ -771,6 +771,14 @@
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
       <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">✍️ Créer du contenu</p>
       <textarea id="red-idee" placeholder="Décrivez votre idée..." style="width:100%;min-height:80px;border:1px solid rgba(224,176,32,.3);border-radius:8px;padding:10px;font-family:'Basteleur',serif;font-size:0.85rem;resize:none;box-sizing:border-box;margin-bottom:8px;"></textarea>
+      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Format</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+        <button class="red-btn red-btn-active" onclick="selectFormat(this,'post')">Post</button>
+        <button class="red-btn" onclick="selectFormat(this,'story')">Story</button>
+        <button class="red-btn" onclick="selectFormat(this,'reel')">Reel</button>
+        <button class="red-btn" onclick="selectFormat(this,'carrousel')">Carrousel</button>
+      </div>
+      <input type="hidden" id="red-format-val" value="post"/>
       <button onclick="showPage('accueil')" style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour</button>
     </div>
   </div>
