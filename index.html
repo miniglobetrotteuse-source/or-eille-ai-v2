@@ -351,7 +351,7 @@
       imgRecog.onresult = function(e) {
         var text = e.results[0][0].transcript;
         var ta = document.getElementById('img-description');
-        ta.value = ta.value ? ta.value + ' ' + text : text;
+        ta.value = text;
         btn.style.background = 'white';
       };
       imgRecog.onerror = function() { btn.style.background = 'white'; };
@@ -384,11 +384,11 @@
 
     <!-- Choix du mode -->
     <div style="display:flex;gap:12px;margin-bottom:24px;">
-      <button onclick="setImageMode('da')" id="img-mode-da" style="flex:1;padding:16px;border-radius:12px;border:2px solid #D4A520;background:#D4A520;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">
-        🎨 Mode DA<br><span style="font-size:0.7rem;font-weight:normal;">Respecter ma charte</span>
+      <button onclick="setImageMode('da')" id="img-mode-da" style="flex:1;padding:16px;border-radius:12px;border:2px solid #E0B020;background:#E0B020;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">
+        Mode DA<br><span style="font-size:0.7rem;font-weight:normal;">Respecter ma charte</span>
       </button>
-      <button onclick="setImageMode('libre')" id="img-mode-libre" style="flex:1;padding:16px;border-radius:12px;border:2px solid rgba(212,165,32,.4);background:white;color:#2a2a2a;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">
-        ✨ Mode Libre<br><span style="font-size:0.7rem;font-weight:normal;">Créer sans contrainte</span>
+      <button onclick="setImageMode('libre')" id="img-mode-libre" style="flex:1;padding:16px;border-radius:12px;border:2px solid #1A3A8F;background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">
+        Mode Libre<br><span style="font-size:0.7rem;font-weight:normal;">Créer sans contrainte</span>
       </button>
     </div>
 
