@@ -340,26 +340,45 @@
     // Micro pour la page Image
     var imgRecog = null;
     var imgMicActive = false;
+    var imgTranscript = '';
+
     function startImgMic() {
-      if (imgMicActive && imgRecog) { imgRecog.stop(); return; }
+      var btn = document.getElementById('img-mic-btn');
+      if (imgMicActive) {
+        // Arrêter
+        imgMicActive = false;
+        if (imgRecog) imgRecog.stop();
+        btn.textContent = '🎙️';
+        btn.style.background = 'white';
+        return;
+      }
       var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SR) { alert('Utilisez Chrome ou Safari.'); return; }
-      imgRecog = new SR();
-      imgRecog.lang = 'fr-FR';
-      imgRecog.continuous = false;
-      imgRecog.interimResults = false;
-      imgRecog.maxAlternatives = 1;
-      var btn = document.getElementById('img-mic-btn');
+      imgTranscript = document.getElementById('img-description').value || '';
+      imgMicActive = true;
       btn.textContent = '⏹️';
       btn.style.background = '#E0B020';
-      imgMicActive = true;
-      imgRecog.onresult = function(e) {
-        var text = e.results[e.results.length - 1][0].transcript;
-        document.getElementById('img-description').value = text;
-      };
-      imgRecog.onerror = function() { btn.textContent = '🎙️'; btn.style.background = 'white'; imgMicActive = false; };
-      imgRecog.onend = function() { btn.textContent = '🎙️'; btn.style.background = 'white'; imgMicActive = false; };
-      imgRecog.start();
+
+      function listen() {
+        if (!imgMicActive) return;
+        imgRecog = new SR();
+        imgRecog.lang = 'fr-FR';
+        imgRecog.continuous = false;
+        imgRecog.interimResults = false;
+        imgRecog.onresult = function(e) {
+          var newText = e.results[0][0].transcript;
+          imgTranscript = imgTranscript ? imgTranscript + ' ' + newText : newText;
+          document.getElementById('img-description').value = imgTranscript;
+        };
+        imgRecog.onend = function() {
+          if (imgMicActive) listen(); // relancer si toujours actif
+        };
+        imgRecog.onerror = function() {
+          if (imgMicActive) setTimeout(listen, 300);
+        };
+        imgRecog.start();
+      }
+      listen();
     }
 
     var neuroState = {};
