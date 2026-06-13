@@ -66,7 +66,6 @@ L'Atelier Visuel est une création originale de Or Eille AI (Judith).
 L'ensemble du code, du concept, de l'interface et des fonctionnalités est protégé
 par le droit d'auteur français et international.
 
-Preuve de création : email horodaté du 14 mai 2026 + dépôt en cours à l'INPI.
 
 ---
 
@@ -89,7 +88,6 @@ a) Déclarer son usage commercial dans les 30 jours suivant le premier revenu
 b) Verser une redevance de 3% des revenus générés grâce aux créations
 c) Mentionner "Créé avec Or Eille AI" dans ses œuvres
 
-Note : Le pourcentage exact sera défini par contrat avec un juriste spécialisé.
 
 ---
 
