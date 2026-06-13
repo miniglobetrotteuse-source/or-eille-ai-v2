@@ -430,7 +430,8 @@
       <textarea id="img-description" placeholder="Décrivez la scène... ex: un salon parisien avec lumière chaude, mes deux fauteuils au centre" style="width:100%;min-height:100px;border:1px solid rgba(212,165,32,.3);border-radius:8px;padding:12px;font-family:'Basteleur',serif;font-size:0.85rem;resize:none;box-sizing:border-box;"></textarea>
       <div style="display:flex;gap:8px;margin-top:8px;">
         <button onclick="startImgMic()" id="img-mic-btn" style="padding:10px 16px;border-radius:50px;border:1px solid rgba(196,153,58,.4);background:white;font-size:1.1rem;cursor:pointer;" title="Dicter">🎙️</button>
-        <button onclick="document.getElementById('img-description').value=''" style="padding:10px 16px;border-radius:50px;border:1px solid rgba(42,42,42,.2);background:white;font-size:0.75rem;font-family:'Basteleur',serif;cursor:pointer;">Effacer</button>
+        <button onclick="effacerDernierMot()" style="padding:10px 16px;border-radius:50px;border:1px solid rgba(42,42,42,.2);background:white;font-size:0.75rem;font-family:'Basteleur',serif;cursor:pointer;">← Mot</button>
+        <button onclick="document.getElementById('img-description').value=''" style="padding:10px 16px;border-radius:50px;border:1px solid rgba(196,58,58,.3);background:white;color:rgba(196,58,58,.7);font-size:0.75rem;font-family:'Basteleur',serif;cursor:pointer;">Tout effacer</button>
       </div>
     </div>
 
@@ -646,6 +647,14 @@
         window.speechSynthesis.cancel();
         window.speechSynthesis.speak(utt);
       }
+    }
+
+    function effacerDernierMot() {
+      var ta = document.getElementById('img-description');
+      var words = ta.value.trimEnd().split(' ');
+      words.pop();
+      ta.value = words.join(' ');
+      imgTranscript = ta.value;
     }
 
     function genererImage() {
