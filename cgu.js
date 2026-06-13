@@ -57,7 +57,7 @@ const CGU = {
   TEXT: `CONDITIONS GÉNÉRALES D'UTILISATION — Or Eille AI — Version 1.1 — Juin 2026
 
 1. PROPRIÉTÉ INTELLECTUELLE
-Or Eille AI est une création originale de Madame Or Eille Studios (Judith), protégée par le droit d'auteur français et international. Toute reproduction partielle ou totale est interdite sans autorisation écrite.
+Or Eille AI est une création originale de Madame Or Eille Studios , protégée par le droit d'auteur français et international. Toute reproduction partielle ou totale est interdite sans autorisation écrite.
 
 2. USAGE PERSONNEL (GRATUIT)
 L'utilisation à titre personnel est gratuite. Constitue un usage personnel : toute création pour soi-même ou ses proches, sans contrepartie financière directe ou indirecte.
