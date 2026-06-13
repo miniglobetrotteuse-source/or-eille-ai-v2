@@ -257,7 +257,22 @@
 
     document.getElementById('nav-accueil').addEventListener('click', function(e) { e.preventDefault(); showPage('accueil'); });
     document.getElementById('nav-assistant').addEventListener('click', function(e) { e.preventDefault(); showPage('assistant'); });
-    document.getElementById('btn-essayer').addEventListener('click', function() { showPage('assistant'); });
+    document.getElementById('btn-essayer').addEventListener('click', function() {
+      if (window.CGU && CGU.isAccepted()) {
+        showPage('profil');
+      } else {
+        // Afficher CGU, puis après acceptation → profil
+        if (window.CGU) {
+          CGU.showModal();
+          // Après acceptation, rediriger vers profil
+          const originalAccept = CGU.acceptFromModal.bind(CGU);
+          CGU.acceptFromModal = function() {
+            originalAccept();
+            showPage('profil');
+          };
+        }
+      }
+    });
     document.getElementById('btn-send').addEventListener('click', envoyer);
     document.getElementById('btn-mic').addEventListener('click', toggleMic);
     document.getElementById('btn-speaker').addEventListener('click', toggleSpeaker);
@@ -424,9 +439,5 @@
   <script src="cgu.js"></script>
   <script src="ethics.js"></script>
   <script>
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        if (window.CGU && !CGU.isAccepted()) CGU.showModal();
-      }, 1500);
-    });
+// CGU affichées uniquement au clic sur Essayer gratuitement
   </script>
