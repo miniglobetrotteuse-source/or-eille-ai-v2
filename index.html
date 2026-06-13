@@ -1102,6 +1102,14 @@
         <button data-group="agenda-plat" class="red-btn" onclick="selectAgendaPlat(this,'Podcast')">Podcast</button>
         <button data-group="agenda-plat" class="red-btn" onclick="selectAgendaPlat(this,'Newsletter')">Newsletter</button>
       </div>
+      <select id="agenda-duree" style="width:100%;padding:12px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;margin-bottom:8px;">
+        <option value="1 semaine">1 semaine</option>
+        <option value="2 semaines" selected>2 semaines</option>
+        <option value="1 mois">1 mois</option>
+        <option value="2 mois">2 mois</option>
+        <option value="3 mois">3 mois</option>
+        <option value="6 mois">6 mois</option>
+      </select>
       <input type="hidden" id="agenda-platform" value="Instagram"/>
       <button onclick="genererCalendrier()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">✨ Générer</button>
     </div>
@@ -1179,7 +1187,8 @@
       result.style.display = 'block';
       resultText.textContent = 'Génération en cours...';
       result.scrollIntoView({ behavior: 'smooth' });
-      await CALENDAR.generateIdeas(niche, platform, '2 semaines', true);
+      var duree = document.getElementById('agenda-duree').value;
+      await CALENDAR.generateIdeas(niche, platform, duree, true);
     }
 
     function planifierIdee() {
