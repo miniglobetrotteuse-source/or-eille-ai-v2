@@ -419,14 +419,14 @@
       showPage('assistant');
     }
   </script>
-  <script src="legal.js"></script>
+</body>
+</html>  <script src="legal.js"></script>
   <script src="cgu.js"></script>
   <script src="ethics.js"></script>
   <script>
-    // Initialisation CGU au chargement
     window.addEventListener('load', () => {
-      if (window.CGU && !CGU.isAccepted()) { setTimeout(() => CGU.showModal(), 1500); }
+      setTimeout(() => {
+        if (window.CGU && !CGU.isAccepted()) CGU.showModal();
+      }, 1500);
     });
   </script>
-</body>
-</html>
