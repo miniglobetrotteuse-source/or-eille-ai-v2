@@ -276,6 +276,29 @@
       </div>
     </div>
 
+    <!-- Profil neurodivergence -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:4px;">Profil neurologique</p>
+      <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:12px;">Ces informations restent sur votre appareil uniquement.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button onclick="toggleNeuro('tdah')" class="a11y-btn" id="a11y-tdah">TDAH</button>
+        <button onclick="toggleNeuro('tsa')" class="a11y-btn" id="a11y-tsa">TSA</button>
+        <button onclick="toggleNeuro('dys')" class="a11y-btn" id="a11y-dys">Dys</button>
+        <button onclick="toggleNeuro('malvoyant')" class="a11y-btn" id="a11y-malvoyant">Malvoyant(e)</button>
+        <button onclick="toggleNeuro('malentendant')" class="a11y-btn" id="a11y-malentendant">Malentendant(e)</button>
+        <button onclick="toggleNeuro('autre')" class="a11y-btn" id="a11y-autre">Autre</button>
+      </div>
+    </div>
+
+    <!-- Sensibilités sensorielles -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:24px;">
+      <p style="font-family:'Basteleur',serif;color:#C4993A;margin-bottom:12px;">Sensibilités sensorielles</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button onclick="setA11y('colorBlind',false)" class="a11y-btn a11y-active" id="a11y-cb-no">Pas de daltonisme</button>
+        <button onclick="setA11y('colorBlind',true)" class="a11y-btn" id="a11y-cb-yes">Daltonisme</button>
+      </div>
+    </div>
+
     <button onclick="saveA11y()" style="background:#C4993A;color:#1A3A8F;border:none;padding:12px 24px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;cursor:pointer;width:100%;margin-bottom:8px;">Enregistrer mes préférences</button>
     <button onclick="showPage('profil')" style="font-family:Basteleur,serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour au profil</button>
   </div>
@@ -292,6 +315,13 @@
       a11yState[key] = val;
     }
 
+    var neuroState = {};
+    function toggleNeuro(type) {
+      neuroState[type] = !neuroState[type];
+      var btn = document.getElementById('a11y-' + type);
+      if (btn) btn.classList.toggle('a11y-active', neuroState[type]);
+      a11yState['neuro_' + type] = neuroState[type];
+    }
     function saveA11y() {
       if (window.A11Y_CONFIG) {
         A11Y_CONFIG.save(a11yState);
