@@ -54,110 +54,58 @@ const CGU = {
   },
 
   // ─── Texte CGU complet ────────────────────────
-  TEXT: `CONDITIONS GÉNÉRALES D'UTILISATION
-Or Eille AI
-Version 1.0 — 15 mai 2026
-
----
+  TEXT: `CONDITIONS GÉNÉRALES D'UTILISATION — Or Eille AI — Version 1.1 — Juin 2026
 
 1. PROPRIÉTÉ INTELLECTUELLE
-
-L'Atelier Visuel est une création originale de Or Eille AI (Judith).
-L'ensemble du code, du concept, de l'interface et des fonctionnalités est protégé
-par le droit d'auteur français et international.
-
-
----
+Or Eille AI est une création originale de Madame Or Eille Studios (Judith), protégée par le droit d'auteur français et international. Toute reproduction partielle ou totale est interdite sans autorisation écrite.
 
 2. USAGE PERSONNEL (GRATUIT)
+L'utilisation à titre personnel est gratuite. Constitue un usage personnel : toute création pour soi-même ou ses proches, sans contrepartie financière directe ou indirecte.
 
-L'utilisation de cet outil à titre personnel est autorisée gratuitement.
-Constitue un usage personnel : créations pour soi-même, pour des proches,
-sans contrepartie financière directe ou indirecte.
-
----
-
-3. USAGE COMMERCIAL (SOUMIS À REDEVANCE)
-
-Constitue un usage commercial toute utilisation générant des revenus directs
-ou indirects : vente d'œuvres créées avec l'outil, services rémunérés,
-publicités, collaborations commerciales, NFTs, etc.
-
-En cas d'usage commercial, l'utilisateur s'engage à :
-a) Déclarer son usage commercial dans les 30 jours suivant le premier revenu
-b) Verser une redevance de 3% des revenus générés grâce aux créations
-c) Mentionner "Créé avec Or Eille AI" dans ses œuvres
-
-
----
+3. USAGE COMMERCIAL (REDEVANCE 3%)
+Constitue un usage commercial toute utilisation générant des revenus : vente d'œuvres, services rémunérés, publicités, collaborations, NFTs, films, musique, publications commerciales.
+L'utilisateur s'engage à : déclarer son usage dans les 30 jours suivant le premier revenu · verser une redevance de 3% des revenus générés · mentionner "Créé avec Or Eille AI". Un rappel automatique est envoyé à chaque nouveau projet créatif. En cas de non-déclaration, Or Eille AI se réserve le droit de poursuites.
 
 4. FILIGRANE NUMÉRIQUE
+Toutes les créations contiennent un filigrane numérique invisible permettant d'identifier leur origine. Ce filigrane constitue une preuve légale en cas de litige.
 
-Toutes les créations générées avec cet outil contiennent un filigrane numérique
-invisible permettant d'identifier l'origine de la création.
-Ce filigrane constitue une preuve légale en cas de litige sur les droits d'auteur.
+5. CONTENUS STRICTEMENT INTERDITS — BLOCAGE IMMÉDIAT ET PERMANENT
+Sont absolument interdits, sans exception :
+· Tout contenu pédocriminel, sexualisant ou impliquant des mineurs — signalement immédiat aux autorités (Pharos, 3020, CNAIP)
+· Toute forme de violence sexuelle, viol, agression, soumission chimique
+· Tout contenu pornographique (sauf chercheurs accrédités avec numéro officiel vérifié)
+· Trafic d'armes, de drogue ou de substances illicites
+· Contenu raciste, antisémite, islamophobe, homophobe, ou déshumanisant envers toute personne ou groupe
+· Caricatures irrespectueuses à caractère religieux, racial ou ethnique
+· Tout contenu incitant à la haine, à la violence ou à la discrimination
+· Usurpation d'identité, fraude, escroquerie
+· Tout contenu violant la dignité humaine, au sens de la Déclaration universelle des droits de l'homme (ONU, 1948)
 
----
+6. RÈGLES DE RESPECT ENTRE UTILISATEURS
+Les utilisateurs s'engagent à maintenir des échanges respectueux. Exprimer un désaccord est autorisé — à condition de rester constructif et de respecter la dignité de l'interlocuteur. Les propos insultants, dégradants ou irrespectueux entraînent un avertissement, puis un blocage.
 
-5. USAGE PROHIBÉ
+7. SYSTÈME DE SANCTIONS
+Premier écart : avertissement avec explication. Récidive : blocage temporaire (minimum 30 jours). Contenu pédocriminel ou appel à la violence : blocage permanent, signalement aux autorités. Aucun remboursement en cas de blocage. Or Eille AI se réserve le droit de poursuites en cas de violation grave des CGU.
 
-Sont strictement interdits :
-- Tout contenu pédocriminel (blocage permanent, signalement)
-- Trafic d'armes, de drogue, soumission chimique
-- Contenu raciste, antisémite, islamophobe ou déshumanisant
-- Usurpation d'identité, fraude, escroquerie
-- Tout contenu violant la dignité humaine
+8. DONNÉES PERSONNELLES
+Vos données sont stockées uniquement sur votre appareil. Nous n'y avons pas accès. Nous ne vendons aucune donnée. Nous ne partageons aucune donnée. Jamais. Conformément au RGPD, vous pouvez les supprimer à tout moment depuis les paramètres de votre navigateur.
 
----
+9. PROTOCOLE DE SÉCURITÉ
+Or Eille AI intègre un système de détection bienveillante. Si l'assistant détecte des signaux préoccupants (danger, violence), des données peuvent être conservées silencieusement sur votre appareil — uniquement dans ce contexte précis, uniquement pour vous protéger. Ces données ne nous sont jamais transmises. Elles sont conservées à vie, à votre disposition. En activant le protocole de sécurité, vous autorisez leur utilisation, y compris de manière rétroactive, pour les échanges liés à ce contexte spécifique uniquement.
 
-6. ÉVOLUTION D'USAGE
+10. ÂGE MINIMUM
+L'accès à Or Eille AI est réservé aux personnes de 18 ans et plus, ou aux mineurs avec accord parental explicite.
 
-Si votre usage évolue du personnel au commercial, vous êtes tenu de le déclarer
-dans les 30 jours. Un rappel vous sera envoyé tous les 6 mois.
+11. RÉSILIATION
+Vous pouvez résilier votre abonnement à tout moment depuis votre espace personnel. La résiliation prend effet à la fin de la période en cours. Aucun remboursement au prorata.
 
----
+12. DROIT APPLICABLE
+Les présentes CGU sont soumises au droit français. En cas de litige, les tribunaux français sont compétents.
 
-7. DONNÉES PERSONNELLES
+13. MODIFICATION DES CGU
+Or Eille AI se réserve le droit de modifier ces CGU avec un préavis de 30 jours. La poursuite de l'utilisation du service vaut acceptation des nouvelles conditions.
 
-Vos données sont stockées uniquement sur votre appareil (localStorage).
-Nous n'avons accès à aucune de vos données personnelles.
-Nous ne vendons aucune donnée. Nous ne partageons aucune donnée. Jamais.
-
----
-
-8. PROTOCOLE DE SÉCURITÉ
-
-Or Eille AI intègre un système de détection bienveillante.
-Si l'assistant détecte des signaux préoccupants (sons, mots, contextes
-suggérant une situation de danger), des données peuvent être conservées
-silencieusement sur votre appareil — uniquement dans ce contexte précis.
-
-Ces données restent sur votre appareil. Elles ne nous sont jamais transmises.
-Elles concernent exclusivement les échanges liés à la situation détectée.
-Elles sont conservées à vie, à votre disposition uniquement.
-
-En acceptant ces CGU, vous consentez à cette conservation silencieuse,
-dans le seul but de vous protéger.
-
-Lorsque vous activez le protocole de sécurité, vous accédez à ces données
-et autorisez leur utilisation — y compris de manière rétroactive —
-pour les échanges liés à ce contexte spécifique uniquement.
-
----
-
-9. USAGE COMMERCIAL ET REDEVANCE CRÉATEURS
-
-Toute utilisation générant des revenus est soumise à une redevance de 3%
-sur les revenus générés grâce aux créations réalisées avec Or Eille AI.
-
-Un rappel automatique vous sera envoyé à chaque nouveau projet créatif
-(film, musique, publication commerciale, etc.).
-
-En cas de non-déclaration : Or Eille AI se réserve le droit de poursuites.
-
----
-
-En acceptant ces CGU, vous reconnaissez avoir lu et compris les présentes conditions.`,
+En acceptant ces CGU, vous reconnaissez avoir lu, compris et accepté l'ensemble des présentes conditions.`,
 
   // ─── Afficher la modale CGU ───────────────────
   showModal() {
