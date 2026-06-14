@@ -627,14 +627,26 @@
         <button class="red-btn" onclick="selectFormat(this,'podcast')">🎙️ Podcast</button>
       </div>
       <input type="hidden" id="red-format-val" value="post"/>
-      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Plateformes</p>
+      <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:6px;">Plateformes</p>
+      <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+        <!-- Bouton Tout -->
+        <button id="plat-tout" onclick="toggleTout(this)" style="padding:5px 12px;border-radius:50px;border:2px solid #C9A227;opacity:0.5;background:white;color:#C9A227;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;font-weight:bold;">✦ Tout</button>
+        <!-- Réseaux sociaux -->
+        <button onclick="togglePlat(this,'instagram')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#E1306C;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">① Instagram</button>
+        <button onclick="togglePlat(this,'tiktok')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#010101;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">② TikTok</button>
+        <button onclick="togglePlat(this,'youtube')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#FF0000;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">③ YouTube</button>
+        <button onclick="togglePlat(this,'linkedin')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#0077B5;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">④ LinkedIn</button>
+        <button onclick="togglePlat(this,'pinterest')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#E60023;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">⑤ Pinterest</button>
+        <button onclick="togglePlat(this,'snapchat')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#FFFC00;color:#010101;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">⑥ Snapchat</button>
+        <button onclick="togglePlat(this,'discord')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#5865F2;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">⑦ Discord</button>
+        <button onclick="togglePlat(this,'threads')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#000000;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">⑧ Threads</button>
+      </div>
+      <p style="font-size:0.75rem;color:#2a2a2a;margin-bottom:6px;opacity:0.7;">Marketplace</p>
       <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;">
-        <button onclick="togglePlat(this,'instagram')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#E1306C;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">Instagram</button>
-        <button onclick="togglePlat(this,'tiktok')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#010101;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">TikTok</button>
-        <button onclick="togglePlat(this,'youtube')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#FF0000;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">YouTube</button>
-        <button onclick="togglePlat(this,'linkedin')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#0077B5;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">LinkedIn</button>
-        <button onclick="togglePlat(this,'pinterest')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#E60023;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">Pinterest</button>
-        <button onclick="togglePlat(this,'snapchat')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#FFFC00;color:#010101;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">Snapchat</button>
+        <button onclick="togglePlat(this,'etsy')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#F56400;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">Etsy</button>
+        <button onclick="togglePlat(this,'vinted')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#09B1BA;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">Vinted</button>
+        <button onclick="togglePlat(this,'leboncoin')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#F56B2A;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">Leboncoin</button>
+        <button onclick="togglePlat(this,'amazon')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#FF9900;color:#111;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">Amazon</button>
       </div>
       <button onclick="creerContenu()" style="width:100%;padding:12px;background:#C9A227;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">✨ Créer</button>
     </div>
@@ -859,6 +871,24 @@
       var active = btn.style.opacity === '1';
       btn.style.opacity = active ? '0.45' : '1';
       btn.style.transform = active ? '' : 'scale(1.05)';
+      // Désactiver le bouton Tout si on change manuellement
+      var toutBtn = document.getElementById('plat-tout');
+      if (toutBtn) { toutBtn.style.opacity = '0.5'; toutBtn.style.fontWeight = 'normal'; }
+    }
+
+    function toggleTout(btn) {
+      var actif = btn.style.opacity === '1';
+      var platBtns = document.querySelectorAll('[onclick^="togglePlat"]');
+      if (actif) {
+        // Désactiver tout
+        btn.style.opacity = '0.5';
+        platBtns.forEach(function(b) { b.style.opacity = '0.45'; b.style.transform = ''; });
+      } else {
+        // Activer tout
+        btn.style.opacity = '1';
+        btn.style.fontWeight = 'bold';
+        platBtns.forEach(function(b) { b.style.opacity = '1'; b.style.transform = 'scale(1.03)'; });
+      }
     }
 
     function setRedTone(tone) {
@@ -1185,7 +1215,7 @@
     };
 
     var PAGE_DETAIL = {
-      redaction: "Premier outil : Créer du contenu. Décrivez votre idée avec le micro ou en écrivant. Choisissez un format : Post, bouton un. Story, bouton deux. Reel, bouton trois. Carrousel, bouton quatre. Podcast, bouton cinq. Puis choisissez vos plateformes : Instagram, bouton rose. TikTok, bouton noir. YouTube, bouton rouge. LinkedIn, bouton bleu. Pinterest, bouton rouge foncé. Snapchat, bouton jaune. Appuyez sur Créer quand vous êtes prêt.",
+      redaction: "Quel type de contenu veux-tu créer ? Post, bouton un. Story, bouton deux. Reel, bouton trois. Carrousel, bouton quatre. Podcast, bouton cinq. Dis le numéro ou le nom. ... Ensuite, choisis tes plateformes. Instagram rose numéro un. TikTok noir numéro deux. YouTube rouge numéro trois. LinkedIn bleu numéro quatre. Pinterest rouge foncé numéro cinq. Snapchat jaune numéro six. Discord violet numéro sept. Threads noir numéro huit. Et pour les marketplaces : Etsy orange, Vinted turquoise, Leboncoin orange, Amazon jaune. Ou dis Tout pour tout sélectionner. Quand tu es prêt, appuie sur Créer.",
     };
 
     var _profilIntervals = [];
