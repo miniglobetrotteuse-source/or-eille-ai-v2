@@ -1230,7 +1230,36 @@
           elNom.style.outline = '2px solid #1A3A8F';
           var nom = elNom.value.trim();
           setTimeout(function() {
-            parler("Super, " + nom + " ! Ton assistant — tu préfères qu'il soit ton alter ego créatif, le pinceau de ta créativité ? Ou plutôt ton agent, un assistant pratique ? Appuie sur l'un des deux boutons.");
+            parler("Super, " + nom + " ! Ton assistant — tu préfères qu'il soit ton alter ego créatif, le pinceau de ta créativité ? Ou plutôt ton agent, un assistant pratique du quotidien ? Dis alter ego ou agent.");
+            // Écouter la réponse
+            setTimeout(function() {
+              var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+              if (!SR) return;
+              var r = new SR();
+              r.lang = 'fr-FR';
+              r.continuous = false;
+              r.onresult = function(e) {
+                var dit = e.results[0][0].transcript.toLowerCase();
+                if (dit.includes('agent')) {
+                  selectMode('agent');
+                  parler("Agent personnel, c'est noté. Et tu veux lui donner quel prénom ?");
+                } else {
+                  selectMode('alter_ego');
+                  parler("Alter ego créatif, j'adore. Et tu veux lui donner quel prénom ?");
+                }
+                // Q3 — Prénom assistant
+                var elAvatar = document.getElementById('profil-avatar');
+                if (elAvatar) {
+                  elAvatar.style.outline = '3px solid #E0B020';
+                  setTimeout(function() {
+                    _champActif = elAvatar;
+                    startGlobalMic();
+                  }, 4000);
+                }
+              };
+              r.onerror = function() {};
+              r.start();
+            }, 5000);
           }, 800);
         }
       }, 800);
