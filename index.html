@@ -1169,14 +1169,14 @@
     }
 
     var PAGE_WELCOME = {
-      accueil:     "Bienvenue sur Or Eille A I. Appuyez sur le logo de l'oreille pour configurer votre profil.",
-      assistant:   "Vous êtes dans l'Assistant. Appuyez sur le micro et dites ce que vous voulez créer. Ou appuyez sur le crayon pour écrire.",
-      abonnement:  "Voici les abonnements. Bouton bleu : mensuel, 18 euros. Bouton doré : annuel, 200 euros.",
-      profil:      "Configurez votre profil. Entrez votre prénom ou pseudonyme. Choisissez votre langue. En bas, vous pouvez désactiver le guide vocal si vous n'en avez plus besoin.",
-      agenda:      "Vous êtes dans l'Agenda. Trois sections : la phase de lune du jour, un générateur de calendrier éditorial, et la planification de vos idées.",
-      redaction:   "Vous êtes dans Contenu Texte. Sept outils disponibles : créer du contenu, générer une légende, des titres, un carrousel, recycler du contenu, créer un livre numérique, et préparer votre post.",
-      image:       "Vous êtes dans Composition d'image. Bouton doré Mode D.A. pour respecter votre charte. Bouton bleu Mode Libre pour créer librement. Décrivez ce que vous voulez avec le micro. Choisissez le format et la forme. Puis appuyez sur Générer.",
-      accessibilite: "Paramètres d'accessibilité. Choisissez la taille du texte, l'interligne, la police pour dyslexie, le contraste, et votre profil neurologique.",
+      accueil:     "Bienvenue sur Or Eille A I. Appuie sur le logo de l'oreille pour qu'on fasse connaissance.",
+      assistant:   "Te voilà dans l'Assistant. Dis-moi ce que tu veux créer aujourd'hui — avec le micro ou en écrivant.",
+      abonnement:  "Voici les formules. Mensuel à 18 euros, ou annuel à 200 euros pour ceux qui veulent s'engager sur la durée.",
+      profil:      "Voilà, on y est. Je vais te poser quelques questions pour qu'on se comprenne bien. Tu peux tout remplir à la voix.",
+      agenda:      "Tu es dans l'Agenda. Phase de lune, calendrier éditorial, planification de tes idées — tout est là.",
+      redaction:   "Tu es dans Contenu Texte. Légendes, titres, carrousel, recyclage, livre numérique — choisis ton outil.",
+      image:       "Tu es dans Composition d'image. Mode D.A. pour respecter ta charte, Mode Libre pour créer sans contrainte. Décris ce que tu veux avec le micro, puis appuie sur Générer.",
+      accessibilite: "Paramètres d'accessibilité. Taille du texte, police, contraste, profil neurologique — configure selon tes besoins.",
     };
 
     var PAGE_DETAIL = {
@@ -1244,20 +1244,21 @@
         wrapper.appendChild(btn);
       });
 
-      // Message de bienvenue — déclenché sur le premier clic sur le logo
-      // (les navigateurs bloquent la voix sans interaction utilisateur)
-      var dejaVenu = localStorage.getItem('moe_visite');
+      // Message de bienvenue — déclenché sur le clic logo
+      // (les navigateurs bloquent la voix avant toute interaction)
       if (logo) {
         logo.addEventListener('click', function() {
+          var dejaVenu = localStorage.getItem('moe_visite');
           if (!dejaVenu) {
             localStorage.setItem('moe_visite', '1');
-            dejaVenu = '1';
-            parler("Bienvenue sur Or Eille A I. Je vais vous aider à configurer votre profil.");
-            setTimeout(function() { showPage('profil'); }, 2000);
+            // Voix d'abord, AVANT de changer de page
+            parler("Bonjour et bienvenue sur Or Eille A I. On va essayer de s'entendre. Dans quelques secondes, je vais te poser quelques questions pour qu'on fasse connaissance. Prends ton temps.");
+            // Puis on va sur profil après que la voix a fini (~6 secondes)
+            setTimeout(function() { showPage('profil'); }, 6000);
           } else {
             showPage('profil');
           }
-        }, { once: false });
+        });
       }
     });
 
