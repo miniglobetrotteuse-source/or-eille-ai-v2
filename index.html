@@ -1208,39 +1208,58 @@
     function guideProfil() {
       if (!guideVocal) return;
 
-      // Q1 — Nom — on la pose ici car le PAGE_WELCOME s'arrête à "Première question :"
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      // Parler et appeler callback quand la voix a FINI
+      function dire(texte, callback) {
+        window.speechSynthesis.cancel();
+        var utt = new SpeechSynthesisUtterance(texte);
+        utt.lang = 'fr-FR';
+        utt.rate = 0.85;
+        var voix = window.speechSynthesis.getVoices().find(function(v) {
+          return v.lang.startsWith('fr');
+        });
+        if (voix) utt.voice = voix;
+        utt.onend = function() {
+          if (callback) setTimeout(callback, 800);
+        };
+        window.speechSynthesis.speak(utt);
+      }
+
+      // Écouter une seule réponse vocale
+      function ecouter(callback) {
+        if (!SR) return;
+        var r = new SR();
+        r.lang = 'fr-FR';
+        r.continuous = false;
+        r.onresult = function(e) {
+          callback(e.results[0][0].transcript.toLowerCase().trim());
+        };
+        r.onerror = function() { callback(''); };
+        r.start();
+      }
+
+      // Q1 — Prénom
       var elNom = document.getElementById('profil-nom');
       if (!elNom) return;
       elNom.style.outline = '3px solid #E0B020';
       elNom.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-      parler("Comment tu veux qu'on t'appelle ici ? Ton prénom, un surnom, peu importe. Parle dans le micro quand tu es prêt.");
-
-      // Ouvrir le micro 5 secondes après la question
-      setTimeout(function() {
+      dire("Comment tu veux qu'on t'appelle ici ? Ton prénom, un surnom, peu importe.", function() {
         _champActif = elNom;
         startGlobalMic();
-      }, 5000);
 
-      // Attendre que le champ soit rempli
-      var check1 = setInterval(function() {
-        if (elNom.value && elNom.value.trim().length > 1) {
-          clearInterval(check1);
-          stopGlobalMic();
-          elNom.style.outline = '2px solid #1A3A8F';
-          var nom = elNom.value.trim();
-          setTimeout(function() {
-            parler("Super, " + nom + " ! Ton assistant — tu préfères qu'il soit ton alter ego créatif, le pinceau de ta créativité ? Ou plutôt ton agent, un assistant pratique du quotidien ? Prends le temps d'y réfléchir, puis dis alter ego ou agent.");
-            // Écouter la réponse — délai allongé pour laisser la voix finir
-            setTimeout(function() {
-              var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-              if (!SR) return;
-              var r = new SR();
-              r.lang = 'fr-FR';
-              r.continuous = false;
-              r.onresult = function(e) {
-                var dit = e.results[0][0].transcript.toLowerCase();
-                var modeChoisi, confirmation;
+        var check1 = setInterval(function() {
+          if (elNom.value && elNom.value.trim().length > 1) {
+            clearInterval(check1);
+            stopGlobalMic();
+            elNom.style.outline = '2px solid #1A3A8F';
+            var nom = elNom.value.trim();
+
+            // Q2 — Alter ego ou agent
+            dire("Super, " + nom + " ! Ton assistant — alter ego créatif, ou agent pratique ? Dis alter ego ou agent.", function() {
+              ecouter(function(dit) {
+                var confirmation;
                 if (dit.includes('agent')) {
                   selectMode('agent');
                   confirmation = "Agent personnel, parfait.";
@@ -1250,67 +1269,49 @@
                 }
 
                 // Q3 — Prénom assistant
-                setTimeout(function() {
-                  parler(confirmation + " Et tu veux lui donner quel prénom ? Un nom qui te ressemble.");
-                  var elAvatar = document.getElementById('profil-avatar');
-                  if (elAvatar) {
-                    elAvatar.style.outline = '3px solid #E0B020';
-                    setTimeout(function() {
-                      _champActif = elAvatar;
-                      startGlobalMic();
-                    }, 5000);
+                var elAvatar = document.getElementById('profil-avatar');
+                dire(confirmation + " Tu veux lui donner quel prénom ?", function() {
+                  if (!elAvatar) return;
+                  elAvatar.style.outline = '3px solid #E0B020';
+                  _champActif = elAvatar;
+                  startGlobalMic();
 
-                    // Attendre que le prénom soit rempli → Q4 langue
-                    var check3 = setInterval(function() {
-                      if (elAvatar.value && elAvatar.value.trim().length > 1) {
-                        clearInterval(check3);
-                        stopGlobalMic();
-                        elAvatar.style.outline = '2px solid #1A3A8F';
-                        setTimeout(function() {
-                          // Q4 — Langue
-                          parler("Dernière question. Tu veux qu'on te parle en quelle langue ? Dis français, anglais, lingala, espagnol, portugais, wolof, bambara ou swahili.");
-                          setTimeout(function() {
-                            var rLang = new SR();
-                            rLang.lang = 'fr-FR';
-                            rLang.continuous = false;
-                            rLang.onresult = function(e) {
-                              var dit = e.results[0][0].transcript.toLowerCase();
-                              var langues = {
-                                'français': 'fr', 'francais': 'fr',
-                                'anglais': 'en', 'english': 'en',
-                                'lingala': 'ln',
-                                'espagnol': 'es', 'español': 'es',
-                                'portugais': 'pt',
-                                'wolof': 'wo',
-                                'bambara': 'bm',
-                                'swahili': 'sw'
-                              };
-                              var code = 'fr';
-                              for (var mot in langues) {
-                                if (dit.includes(mot)) { code = langues[mot]; break; }
-                              }
-                              var sel = document.getElementById('profil-langue');
-                              if (sel) sel.value = code;
-                              setTimeout(function() {
-                                parler("Parfait ! Tout est prêt. Je sauvegarde ton profil.");
-                                setTimeout(function() { sauvegarderProfil(); }, 3000);
-                              }, 500);
-                            };
-                            rLang.onerror = function() {};
-                            rLang.start();
-                          }, 6000);
-                        }, 1000);
-                      }
-                    }, 800);
-                  }
-                }, 1500);
-              };
-              r.onerror = function() {};
-              r.start();
-            }, 7000);
-          }, 800);
-        }
-      }, 800);
+                  var check3 = setInterval(function() {
+                    if (elAvatar.value && elAvatar.value.trim().length > 1) {
+                      clearInterval(check3);
+                      stopGlobalMic();
+                      elAvatar.style.outline = '2px solid #1A3A8F';
+
+                      // Q4 — Langue
+                      dire("Dernière question. Tu veux qu'on te parle en quelle langue ? Dis français, anglais, lingala, espagnol, portugais, wolof ou swahili.", function() {
+                        ecouter(function(dit) {
+                          var langues = {
+                            'français': 'fr', 'francais': 'fr',
+                            'anglais': 'en', 'english': 'en',
+                            'lingala': 'ln', 'espagnol': 'es',
+                            'portugais': 'pt', 'wolof': 'wo',
+                            'bambara': 'bm', 'swahili': 'sw'
+                          };
+                          var code = 'fr';
+                          for (var mot in langues) {
+                            if (dit.includes(mot)) { code = langues[mot]; break; }
+                          }
+                          var sel = document.getElementById('profil-langue');
+                          if (sel) sel.value = code;
+
+                          dire("Parfait, tout est prêt. Je sauvegarde.", function() {
+                            sauvegarderProfil();
+                          });
+                        });
+                      });
+                    }
+                  }, 800);
+                });
+              });
+            });
+          }
+        }, 800);
+      });
     }
 
     // Premier lancement : message de bienvenue + logo cliquable vers profil
