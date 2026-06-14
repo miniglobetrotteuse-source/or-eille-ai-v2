@@ -1174,7 +1174,7 @@
       accueil:     "Bienvenue sur Or Eille A I. Appuie sur le logo de l'oreille pour qu'on fasse connaissance.",
       assistant:   "Te voilà dans l'Assistant. Dis-moi ce que tu veux créer aujourd'hui — avec le micro ou en écrivant.",
       abonnement:  "Voici les formules. Mensuel à 18 euros, ou annuel à 200 euros pour ceux qui veulent s'engager sur la durée.",
-      profil:      "Bonjour et bienvenue sur Or Eille A I ! On va faire connaissance. Je vais te poser quelques questions toutes simples. Ça prend deux minutes, promis. Première question :",
+      profil:      "Voilà, on y est. Je vais te poser quelques questions pour qu'on se comprenne bien. Tu peux tout remplir à la voix.",
       agenda:      "Tu es dans l'Agenda. Phase de lune, calendrier éditorial, planification de tes idées — tout est là.",
       redaction:   "Tu es dans Contenu Texte. Légendes, titres, carrousel, recyclage, livre numérique — choisis ton outil.",
       image:       "Tu es dans Composition d'image. Mode D.A. pour respecter ta charte, Mode Libre pour créer sans contrainte. Décris ce que tu veux avec le micro, puis appuie sur Générer.",
@@ -1185,17 +1185,7 @@
       redaction: "Premier outil : Créer du contenu. Décrivez votre idée avec le micro ou en écrivant. Choisissez un format : Post, bouton un. Story, bouton deux. Reel, bouton trois. Carrousel, bouton quatre. Podcast, bouton cinq. Puis choisissez vos plateformes : Instagram, bouton rose. TikTok, bouton noir. YouTube, bouton rouge. LinkedIn, bouton bleu. Pinterest, bouton rouge foncé. Snapchat, bouton jaune. Appuyez sur Créer quand vous êtes prêt.",
     };
 
-    var _profilIntervals = [];
-
-    function stopGuideProfil() {
-      _profilIntervals.forEach(function(id) { clearInterval(id); });
-      _profilIntervals = [];
-      stopGlobalMic();
-      window.speechSynthesis.cancel();
-    }
-
     function showPage(p) {
-      stopGuideProfil(); // arrêter tout guide en cours
       document.querySelectorAll('.page').forEach(function(x) { x.classList.remove('active'); });
       document.getElementById('page-' + p).classList.add('active');
       var footer = document.getElementById('main-footer');
@@ -1204,118 +1194,9 @@
       if (guideVocal) {
         var texte = PAGE_WELCOME[p] || '';
         if (PAGE_DETAIL[p]) texte += ' ' + PAGE_DETAIL[p];
-        if (texte) {
-          parler(texte);
-          // Lancer le guide profil après le message d'accueil
-          if (p === 'profil') {
-            var duree = Math.round(texte.split(' ').length / 2.5) * 1000 + 2500;
-            setTimeout(guideProfil, duree);
-          }
-        }
+        if (texte) parler(texte);
+
       }
-    }
-
-    function guideProfil() {
-      if (!guideVocal) return;
-
-      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-      function dire(texte, callback) {
-        window.speechSynthesis.cancel();
-        var utt = new SpeechSynthesisUtterance(texte);
-        utt.lang = 'fr-FR';
-        utt.rate = 0.85;
-        var voix = window.speechSynthesis.getVoices().find(function(v) { return v.lang.startsWith('fr'); });
-        if (voix) utt.voice = voix;
-        utt.onend = function() { if (callback) setTimeout(callback, 800); };
-        window.speechSynthesis.speak(utt);
-      }
-
-      function ecouter(callback) {
-        if (!SR) return;
-        var r = new SR();
-        r.lang = 'fr-FR';
-        r.continuous = false;
-        r.onresult = function(e) { callback(e.results[0][0].transcript.toLowerCase().trim()); };
-        r.onerror = function() { callback(''); };
-        r.start();
-      }
-
-      // Q1 — LANGUE EN PREMIER
-      dire("Première question, et c'est la plus importante. En quelle langue tu veux qu'on se parle ? Dis français, anglais, lingala, espagnol, portugais, wolof, bambara ou swahili.", function() {
-        ecouter(function(dit) {
-          var langues = {
-            'français': 'fr', 'francais': 'fr',
-            'anglais': 'en', 'english': 'en',
-            'lingala': 'ln', 'espagnol': 'es',
-            'portugais': 'pt', 'wolof': 'wo',
-            'bambara': 'bm', 'swahili': 'sw'
-          };
-          var code = 'fr';
-          for (var mot in langues) {
-            if (dit.includes(mot)) { code = langues[mot]; break; }
-          }
-          var sel = document.getElementById('profil-langue');
-          if (sel) sel.value = code;
-
-          // Q2 — Prénom
-          var elNom = document.getElementById('profil-nom');
-          dire("Noté. Comment tu veux qu'on t'appelle ici ? Ton prénom, un surnom, peu importe.", function() {
-            if (!elNom) return;
-            elNom.style.outline = '3px solid #E0B020';
-            elNom.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            _champActif = elNom;
-            startGlobalMic();
-
-            var check2 = setInterval(function() {
-            _profilIntervals.push(check2);
-              if (elNom.value && elNom.value.trim().length > 1) {
-                clearInterval(check2);
-                _profilIntervals = _profilIntervals.filter(function(x){return x!==check2;});
-                stopGlobalMic();
-                elNom.style.outline = '2px solid #1A3A8F';
-                var nom = elNom.value.trim();
-
-                // Q3 — Alter ego ou agent
-                dire("Super, " + nom + " ! Ton assistant — alter ego créatif, ou agent pratique ? Dis alter ego ou agent.", function() {
-                  ecouter(function(dit) {
-                    var confirmation;
-                    if (dit.includes('agent')) {
-                      selectMode('agent');
-                      confirmation = "Agent personnel, parfait.";
-                    } else {
-                      selectMode('alter_ego');
-                      confirmation = "Alter ego créatif, j'adore.";
-                    }
-
-                    // Q4 — Prénom assistant
-                    var elAvatar = document.getElementById('profil-avatar');
-                    dire(confirmation + " Tu veux lui donner quel prénom ?", function() {
-                      if (!elAvatar) { sauvegarderProfil(); return; }
-                      elAvatar.style.outline = '3px solid #E0B020';
-                      _champActif = elAvatar;
-                      startGlobalMic();
-
-                      var check4 = setInterval(function() {
-                      _profilIntervals.push(check4);
-                        if (elAvatar.value && elAvatar.value.trim().length > 1) {
-                          clearInterval(check4);
-                          _profilIntervals = _profilIntervals.filter(function(x){return x!==check4;});
-                          stopGlobalMic();
-                          elAvatar.style.outline = '2px solid #1A3A8F';
-                          dire("Parfait, tout est prêt. Je sauvegarde.", function() {
-                            sauvegarderProfil();
-                          });
-                        }
-                      }, 800);
-                    });
-                  });
-                });
-              }
-            }, 800);
-          });
-        });
-      });
     }
 
     // Premier lancement : message de bienvenue + logo cliquable vers profil
