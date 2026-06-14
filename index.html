@@ -1185,7 +1185,17 @@
       redaction: "Premier outil : Créer du contenu. Décrivez votre idée avec le micro ou en écrivant. Choisissez un format : Post, bouton un. Story, bouton deux. Reel, bouton trois. Carrousel, bouton quatre. Podcast, bouton cinq. Puis choisissez vos plateformes : Instagram, bouton rose. TikTok, bouton noir. YouTube, bouton rouge. LinkedIn, bouton bleu. Pinterest, bouton rouge foncé. Snapchat, bouton jaune. Appuyez sur Créer quand vous êtes prêt.",
     };
 
+    var _profilIntervals = [];
+
+    function stopGuideProfil() {
+      _profilIntervals.forEach(function(id) { clearInterval(id); });
+      _profilIntervals = [];
+      stopGlobalMic();
+      window.speechSynthesis.cancel();
+    }
+
     function showPage(p) {
+      stopGuideProfil(); // arrêter tout guide en cours
       document.querySelectorAll('.page').forEach(function(x) { x.classList.remove('active'); });
       document.getElementById('page-' + p).classList.add('active');
       var footer = document.getElementById('main-footer');
@@ -1258,8 +1268,10 @@
             startGlobalMic();
 
             var check2 = setInterval(function() {
+            _profilIntervals.push(check2);
               if (elNom.value && elNom.value.trim().length > 1) {
                 clearInterval(check2);
+                _profilIntervals = _profilIntervals.filter(function(x){return x!==check2;});
                 stopGlobalMic();
                 elNom.style.outline = '2px solid #1A3A8F';
                 var nom = elNom.value.trim();
@@ -1285,8 +1297,10 @@
                       startGlobalMic();
 
                       var check4 = setInterval(function() {
+                      _profilIntervals.push(check4);
                         if (elAvatar.value && elAvatar.value.trim().length > 1) {
                           clearInterval(check4);
+                          _profilIntervals = _profilIntervals.filter(function(x){return x!==check4;});
                           stopGlobalMic();
                           elAvatar.style.outline = '2px solid #1A3A8F';
                           dire("Parfait, tout est prêt. Je sauvegarde.", function() {
