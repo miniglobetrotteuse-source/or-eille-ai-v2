@@ -1194,9 +1194,47 @@
       if (guideVocal) {
         var texte = PAGE_WELCOME[p] || '';
         if (PAGE_DETAIL[p]) texte += ' ' + PAGE_DETAIL[p];
-        if (texte) parler(texte);
-
+        if (texte) {
+          parler(texte);
+          // Lancer le guide profil après le message d'accueil
+          if (p === 'profil') {
+            var duree = Math.round(texte.split(' ').length / 2.5) * 1000 + 1500;
+            setTimeout(guideProfil, duree);
+          }
+        }
       }
+    }
+
+    function guideProfil() {
+      if (!guideVocal) return;
+
+      // Q1 — Nom
+      var elNom = document.getElementById('profil-nom');
+      if (!elNom) return;
+      elNom.style.outline = '3px solid #E0B020';
+      elNom.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      parler("Comment tu veux qu'on t'appelle ici ? Ton prénom, un surnom, peu importe. Parle dans le micro quand tu es prêt.");
+
+      // Ouvrir le micro global sur ce champ
+      setTimeout(function() {
+        _champActif = elNom;
+        startGlobalMic();
+      }, 4000);
+
+      // Attendre que le champ soit rempli
+      var check1 = setInterval(function() {
+        if (elNom.value && elNom.value.trim().length > 1) {
+          clearInterval(check1);
+          stopGlobalMic();
+          elNom.style.outline = '2px solid #1A3A8F';
+          var nom = elNom.value.trim();
+          setTimeout(function() {
+            // Q2 — Alter ego ou agent
+            parler("Super, " + nom + " ! Maintenant, ton assistant — tu préfères qu'il soit ton alter ego créatif, le pinceau de ta créativité ? Ou plutôt ton agent, un assistant pratique ? Appuie sur l'un des deux boutons.");
+          }, 500);
+        }
+      }, 800);
     }
 
     // Premier lancement : message de bienvenue + logo cliquable vers profil
