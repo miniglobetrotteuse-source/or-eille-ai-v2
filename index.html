@@ -1193,7 +1193,74 @@
         var texte = PAGE_WELCOME[p] || '';
         if (PAGE_DETAIL[p]) texte += ' ' + PAGE_DETAIL[p];
         if (texte) parler(texte);
+        // Lancer le guide champ par champ si page profil
+        if (p === 'profil' && guideVocal) {
+          setTimeout(guideProfil, 1500);
+        }
       }
+    }
+
+    // Guide vocal champ par champ pour la page Profil
+    function guideProfil() {
+      if (!guideVocal) return;
+
+      var etapes = [
+        {
+          id: 'profil-nom',
+          texte: "Comment vous appelez-vous ? Entrez votre prénom ou votre pseudonyme. Vous pouvez dicter en appuyant sur le micro, ou taper directement."
+        },
+        {
+          id: 'profil-avatar',
+          texte: "Quel nom voulez-vous donner à votre assistant ? Par exemple : Sofia, Ernesto, Black Mamba. C'est le nom qu'il utilisera pour vous parler."
+        },
+        {
+          id: 'profil-mission',
+          texte: "Décrivez en quelques mots ce que vous faites ou votre mission. Par exemple : je crée du contenu sur la cuisine africaine. Ce n'est pas obligatoire."
+        }
+      ];
+
+      var i = 0;
+
+      function etapeSuivante() {
+        if (i >= etapes.length) {
+          setTimeout(function() {
+            parler("Parfait. Maintenant choisissez votre langue, puis appuyez sur Sauvegarder pour enregistrer votre profil.");
+          }, 500);
+          return;
+        }
+
+        var etape = etapes[i];
+        var el = document.getElementById(etape.id);
+        if (!el) { i++; etapeSuivante(); return; }
+
+        // Mettre en surbrillance le champ actif
+        el.style.outline = '2px solid #E0B020';
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        parler(etape.texte);
+
+        // Démarrer le micro automatiquement après la consigne
+        setTimeout(function() {
+          if (guideVocal) startRedMic(etape.id);
+        }, 2500);
+
+        // Surveiller quand le champ est rempli
+        var intervalle = setInterval(function() {
+          if (el.value && el.value.trim().length > 1) {
+            clearInterval(intervalle);
+            el.style.outline = '2px solid #1A3A8F'; // validé en bleu
+            // Arrêter le micro si actif
+            if (_redMicActive && _redMicActive.targetId === etape.id) {
+              _redMicActive.recognition.stop();
+              _redMicActive = null;
+            }
+            i++;
+            setTimeout(etapeSuivante, 1200);
+          }
+        }, 600);
+      }
+
+      etapeSuivante();
     }
 
     // Premier lancement : message de bienvenue + logo cliquable vers profil
