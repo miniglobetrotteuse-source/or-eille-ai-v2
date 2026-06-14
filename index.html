@@ -683,6 +683,8 @@
         <input type="checkbox" id="red-hashtags" checked /> Inclure des hashtags
       </label>
       <button onclick="genererLegende()" style="width:100%;padding:12px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">Générer la légende</button>
+      <div id="red-result-legende" style="display:none;background:#F7F4EF;border:1px solid rgba(224,176,32,.3);border-radius:12px;padding:14px;margin-top:12px;font-family:'Basteleur',serif;font-size:0.9rem;white-space:pre-wrap;line-height:1.6;"></div>
+
     </div>
 
     <!-- 3. Générateur de titres -->
@@ -693,6 +695,8 @@
         <button onclick="startRedMic('red-titre-sujet')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
       </div>
       <button onclick="genererTitres()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">Générer 10 titres</button>
+      <div id="red-result-titres" style="display:none;background:#F7F4EF;border:1px solid rgba(224,176,32,.3);border-radius:12px;padding:14px;margin-top:12px;font-family:'Basteleur',serif;font-size:0.9rem;white-space:pre-wrap;line-height:1.6;"></div>
+
     </div>
 
     <!-- 4. Créer un carrousel -->
@@ -710,6 +714,8 @@
       </div>
       <input type="hidden" id="red-slides-count" value="5"/>
       <button onclick="genererCarrousel()" style="width:100%;padding:12px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">🎠 Générer</button>
+      <div id="red-result-carrousel" style="display:none;background:#F7F4EF;border:1px solid rgba(224,176,32,.3);border-radius:12px;padding:14px;margin-top:12px;font-family:'Basteleur',serif;font-size:0.9rem;white-space:pre-wrap;line-height:1.6;"></div>
+
     </div>
 
     <!-- 5. Recycler du contenu -->
@@ -741,6 +747,8 @@
         </select>
       </div>
       <button onclick="recyclerContenu()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">♻️ Recycler</button>
+      <div id="red-result-recycle" style="display:none;background:#F7F4EF;border:1px solid rgba(224,176,32,.3);border-radius:12px;padding:14px;margin-top:12px;font-family:'Basteleur',serif;font-size:0.9rem;white-space:pre-wrap;line-height:1.6;"></div>
+
     </div>
 
     <!-- 6. Créer un ebook -->
@@ -752,6 +760,8 @@
         <button onclick="startRedMic('red-ebook-titre')" style="padding:10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
       </div>
       <button onclick="genererEbook()" style="width:100%;padding:12px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">📚 Générer</button>
+      <div id="red-result-ebook" style="display:none;background:#F7F4EF;border:1px solid rgba(224,176,32,.3);border-radius:12px;padding:14px;margin-top:12px;font-family:'Basteleur',serif;font-size:0.9rem;white-space:pre-wrap;line-height:1.6;"></div>
+
     </div>
 
     <!-- 7. Préparer mon post -->
@@ -889,6 +899,61 @@
         btn.style.fontWeight = 'bold';
         platBtns.forEach(function(b) { b.style.opacity = '1'; b.style.transform = 'scale(1.03)'; });
       }
+    }
+
+
+    // ===== FONCTIONS DE GÉNÉRATION CONTENU =====
+    async function appelClaude(prompt, cibleId) {
+      var zone = document.getElementById(cibleId);
+      if (zone) { zone.style.display = 'block'; zone.textContent = 'En cours...'; }
+      try {
+        var r = await fetch('/api/claude', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ messages: [{role: 'user', content: prompt}] })
+        });
+        var d = await r.json();
+        var texte = (d.content && d.content[0] && d.content[0].text) ? d.content[0].text : 'Erreur de réponse.';
+        if (zone) zone.textContent = texte;
+        return texte;
+      } catch(e) {
+        if (zone) zone.textContent = 'La connexion est momentanément indisponible.';
+        return '';
+      }
+    }
+
+    async function genererLegende() {
+      var sujet = document.getElementById('red-legende-sujet');
+      var plat = document.getElementById('red-legende-plat');
+      if (!sujet || !sujet.value.trim()) { alert('Décris le sujet de ta légende.'); return; }
+      var prompt = 'Génère une légende ' + (plat ? 'pour ' + plat.value : '') + ' sur : "' + sujet.value + '". Inclus des hashtags. Maximum 300 caractères hors hashtags.';
+      await appelClaude(prompt, 'red-result-legende');
+    }
+
+    async function genererTitres() {
+      var sujet = document.getElementById('red-titres-sujet');
+      if (!sujet || !sujet.value.trim()) { alert('Dis-moi le sujet.'); return; }
+      await appelClaude('Génère 10 titres accrocheurs pour un contenu sur : "' + sujet.value + '". Liste numérotée.', 'red-result-titres');
+    }
+
+    async function genererCarrousel() {
+      var sujet = document.getElementById('red-carrousel-sujet');
+      var slides = document.getElementById('red-slides-count');
+      var n = slides ? slides.value : '5';
+      if (!sujet || !sujet.value.trim()) { alert('Décris le sujet du carrousel.'); return; }
+      await appelClaude('Crée un carrousel de ' + n + ' slides sur : "' + sujet.value + '". Format : SLIDE 1 : [titre] / [texte court].', 'red-result-carrousel');
+    }
+
+    async function genererEbook() {
+      var idee = document.getElementById('red-ebook-idee');
+      if (!idee || !idee.value.trim()) { alert('Décris ton idée de livre.'); return; }
+      await appelClaude('Propose un plan complet pour un ebook sur : "' + idee.value + '". Titre, sous-titre, intro, 5 à 7 chapitres avec résumé.', 'red-result-ebook');
+    }
+
+    async function recyclerContenu() {
+      var original = document.getElementById('red-original');
+      if (!original || !original.value.trim()) { alert('Colle ton contenu original.'); return; }
+      await appelClaude('Transforme ce contenu en 3 versions : Instagram, LinkedIn, TikTok. Contenu : "' + original.value + '"', 'red-result-recycle');
     }
 
     function setRedTone(tone) {
