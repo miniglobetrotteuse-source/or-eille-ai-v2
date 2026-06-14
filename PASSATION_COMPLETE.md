@@ -28,11 +28,26 @@ Elle maintient une identité publique anonyme : Madame Or Eille.
 
 ## COMPTES ET ACCÈS
 
-- **GitHub** : miniglobetrotteuse-source — Token : [TOKEN_GITHUB — voir gestionnaire de mots de passe] (expire 12 juillet 2026)
-- **Netlify** : madameoreille.studio@gmail.com
-- **Render** : madameoreille.studio@gmail.com
-- **Stripe** : compte existant
-- **Vercel** : or-eille-ai-v2.vercel.app
+- **GitHub** : miniglobetrotteuse-source — Token expire 12 juillet 2026 (à renouveler sur github.com → Settings → Developer settings → Personal access tokens)
+- **GitHub repo Or Eille AI v2** : github.com/miniglobetrotteuse-source/or-eille-ai-v2 (branche main)
+- **Vercel** : or-eille-ai-v2.vercel.app — déploiement automatique depuis GitHub
+- **Netlify** : madameoreille.studio@gmail.com — héberge 7 Boules de Cristal et tableau de bord
+- **Render** : madameoreille.studio@gmail.com — héberge le backend Flask des 7 Boules
+- **Stripe** : compte existant — liens intégrés dans les pages
+- **Gumroad** : madameoreille.gumroad.com — Le Jardin Intérieur à 27€
+- **Anthropic** : platform.anthropic.com — clé API à activer (billing) → variable d'env ANTHROPIC_API_KEY sur Vercel
+- **OpenAI Whisper** : clé API à configurer → variable d'env OPENAI_API_KEY sur Vercel
+- **Replicate** : replicate.com — clé API à configurer → stocker dans localStorage 'moe_replicate_key'
+
+### Variables d'environnement Vercel à configurer
+Aller sur vercel.com → projet or-eille-ai-v2 → Settings → Environment Variables :
+- ANTHROPIC_API_KEY = [clé Anthropic]
+- OPENAI_API_KEY = [clé OpenAI pour Whisper]
+
+### Stack technique
+- Frontend : HTML/CSS/JS vanilla, une seule page index.html
+- Backend : Vercel serverless functions (dossier /api)
+- Fichiers JS chargés dans index.html dans cet ordre : image_editor.js, colorize.js, watermark.js, content_templates.js, publish.js, editorial_memory.js, accessibility_config.js, memory.js, calendar.js, voice_commands.js, lsf_elix.js, legal.js, cgu.js
 
 ---
 
