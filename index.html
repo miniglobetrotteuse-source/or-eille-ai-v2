@@ -893,7 +893,7 @@
             '<div style="font-family:Basteleur,serif;font-size:0.85rem;color:#2a2a2a;">' + i.title + '</div>' +
             (i.scheduledDate ? '<div style="font-size:0.7rem;color:rgba(42,42,42,.5);">📅 ' + i.scheduledDate + '</div>' : '') +
           '</div>' +
-          '<button onclick="supprimerIdee('' + i.id + '')" style="background:none;border:none;color:rgba(200,50,50,.6);font-size:1rem;cursor:pointer;">×</button>' +
+          '<button onclick="supprimerIdee(\'' + i.id + '\')" style="background:none;border:none;color:rgba(200,50,50,.6);font-size:1rem;cursor:pointer;">×</button>' +
         '</div>';
       }).join('');
     }
@@ -988,7 +988,7 @@
       profil:      "Configurez votre profil. Dites-moi comment vous appeler.",
       agenda:      "Vous êtes dans l'Agenda. Planifiez votre contenu, générez un calendrier éditorial et suivez vos idées.",
       redaction:   "Vous êtes dans le module Contenu Texte. Légendes, titres, recyclage, ebook.",
-      image:       "Vous êtes dans Composition d'image. Deux boutons en haut : le bouton doré, Mode D.A., pour respecter votre charte graphique. Le bouton bleu, Mode Libre, pour créer sans contrainte. En dessous, un champ pour décrire ce que vous voulez — appuyez sur le micro pour dicter. Ensuite, choisissez le format : carré, portrait, paysage, story, bannière, ou tous les formats. Puis la forme de votre image : rectangle, rond, ovale, cœur, étoile, et d'autres. Enfin, choisissez si c'est une image unique ou une série. Quand vous êtes prêt, appuyez sur Générer.","
+      image:       "Vous êtes dans Composition d'image. Deux boutons en haut : le bouton doré, Mode D.A., pour respecter votre charte graphique. Le bouton bleu, Mode Libre, pour créer sans contrainte. En dessous, un champ pour décrire ce que vous voulez — appuyez sur le micro pour dicter. Ensuite, choisissez le format : carré, portrait, paysage, story, bannière, ou tous les formats. Puis la forme de votre image : rectangle, rond, ovale, cœur, étoile, et d'autres. Enfin, choisissez si c'est une image unique ou une série. Quand vous êtes prêt, appuyez sur Générer.",
 
 
       accessibilite: "Paramètres d'accessibilité. Configurez l'interface selon vos besoins.",
