@@ -1206,6 +1206,31 @@
         logo.addEventListener('click', function() { showPage('profil'); });
       }
 
+      // Ajouter un micro sur TOUS les champs texte et textareas de l'appli
+      document.querySelectorAll('input[type="text"], input:not([type]), textarea').forEach(function(el) {
+        if (!el.id) return; // ignorer les champs sans id
+        // Ne pas doubler si déjà un micro à côté
+        if (el.parentNode.querySelector('.auto-mic-btn')) return;
+
+        var btn = document.createElement('button');
+        btn.className = 'auto-mic-btn';
+        btn.type = 'button';
+        btn.title = 'Dicter';
+        btn.textContent = '🎙️';
+        btn.style.cssText = 'padding:6px 10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:0.9rem;vertical-align:middle;flex-shrink:0;';
+        btn.addEventListener('click', function() { startRedMic(el.id); });
+
+        // Envelopper dans un div flex si pas déjà dans un wrapper flex
+        var parent = el.parentNode;
+        var wrapper = document.createElement('div');
+        wrapper.style.cssText = 'display:flex;align-items:center;gap:6px;margin-bottom:' + (el.style.marginBottom || '8px') + ';';
+        el.style.marginBottom = '0';
+        el.style.flex = '1';
+        parent.insertBefore(wrapper, el);
+        wrapper.appendChild(el);
+        wrapper.appendChild(btn);
+      });
+
       // Message de bienvenue au tout premier lancement
       var dejaVenu = localStorage.getItem('moe_visite');
       if (!dejaVenu) {
