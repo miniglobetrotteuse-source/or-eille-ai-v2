@@ -1210,107 +1210,97 @@
 
       var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-      // Parler et appeler callback quand la voix a FINI
       function dire(texte, callback) {
         window.speechSynthesis.cancel();
         var utt = new SpeechSynthesisUtterance(texte);
         utt.lang = 'fr-FR';
         utt.rate = 0.85;
-        var voix = window.speechSynthesis.getVoices().find(function(v) {
-          return v.lang.startsWith('fr');
-        });
+        var voix = window.speechSynthesis.getVoices().find(function(v) { return v.lang.startsWith('fr'); });
         if (voix) utt.voice = voix;
-        utt.onend = function() {
-          if (callback) setTimeout(callback, 800);
-        };
+        utt.onend = function() { if (callback) setTimeout(callback, 800); };
         window.speechSynthesis.speak(utt);
       }
 
-      // Écouter une seule réponse vocale
       function ecouter(callback) {
         if (!SR) return;
         var r = new SR();
         r.lang = 'fr-FR';
         r.continuous = false;
-        r.onresult = function(e) {
-          callback(e.results[0][0].transcript.toLowerCase().trim());
-        };
+        r.onresult = function(e) { callback(e.results[0][0].transcript.toLowerCase().trim()); };
         r.onerror = function() { callback(''); };
         r.start();
       }
 
-      // Q1 — Prénom
-      var elNom = document.getElementById('profil-nom');
-      if (!elNom) return;
-      elNom.style.outline = '3px solid #E0B020';
-      elNom.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Q1 — LANGUE EN PREMIER
+      dire("Première question, et c'est la plus importante. En quelle langue tu veux qu'on se parle ? Dis français, anglais, lingala, espagnol, portugais, wolof, bambara ou swahili.", function() {
+        ecouter(function(dit) {
+          var langues = {
+            'français': 'fr', 'francais': 'fr',
+            'anglais': 'en', 'english': 'en',
+            'lingala': 'ln', 'espagnol': 'es',
+            'portugais': 'pt', 'wolof': 'wo',
+            'bambara': 'bm', 'swahili': 'sw'
+          };
+          var code = 'fr';
+          for (var mot in langues) {
+            if (dit.includes(mot)) { code = langues[mot]; break; }
+          }
+          var sel = document.getElementById('profil-langue');
+          if (sel) sel.value = code;
 
-      dire("Comment tu veux qu'on t'appelle ici ? Ton prénom, un surnom, peu importe.", function() {
-        _champActif = elNom;
-        startGlobalMic();
+          // Q2 — Prénom
+          var elNom = document.getElementById('profil-nom');
+          dire("Noté. Comment tu veux qu'on t'appelle ici ? Ton prénom, un surnom, peu importe.", function() {
+            if (!elNom) return;
+            elNom.style.outline = '3px solid #E0B020';
+            elNom.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            _champActif = elNom;
+            startGlobalMic();
 
-        var check1 = setInterval(function() {
-          if (elNom.value && elNom.value.trim().length > 1) {
-            clearInterval(check1);
-            stopGlobalMic();
-            elNom.style.outline = '2px solid #1A3A8F';
-            var nom = elNom.value.trim();
+            var check2 = setInterval(function() {
+              if (elNom.value && elNom.value.trim().length > 1) {
+                clearInterval(check2);
+                stopGlobalMic();
+                elNom.style.outline = '2px solid #1A3A8F';
+                var nom = elNom.value.trim();
 
-            // Q2 — Alter ego ou agent
-            dire("Super, " + nom + " ! Ton assistant — alter ego créatif, ou agent pratique ? Dis alter ego ou agent.", function() {
-              ecouter(function(dit) {
-                var confirmation;
-                if (dit.includes('agent')) {
-                  selectMode('agent');
-                  confirmation = "Agent personnel, parfait.";
-                } else {
-                  selectMode('alter_ego');
-                  confirmation = "Alter ego créatif, j'adore.";
-                }
+                // Q3 — Alter ego ou agent
+                dire("Super, " + nom + " ! Ton assistant — alter ego créatif, ou agent pratique ? Dis alter ego ou agent.", function() {
+                  ecouter(function(dit) {
+                    var confirmation;
+                    if (dit.includes('agent')) {
+                      selectMode('agent');
+                      confirmation = "Agent personnel, parfait.";
+                    } else {
+                      selectMode('alter_ego');
+                      confirmation = "Alter ego créatif, j'adore.";
+                    }
 
-                // Q3 — Prénom assistant
-                var elAvatar = document.getElementById('profil-avatar');
-                dire(confirmation + " Tu veux lui donner quel prénom ?", function() {
-                  if (!elAvatar) return;
-                  elAvatar.style.outline = '3px solid #E0B020';
-                  _champActif = elAvatar;
-                  startGlobalMic();
+                    // Q4 — Prénom assistant
+                    var elAvatar = document.getElementById('profil-avatar');
+                    dire(confirmation + " Tu veux lui donner quel prénom ?", function() {
+                      if (!elAvatar) { sauvegarderProfil(); return; }
+                      elAvatar.style.outline = '3px solid #E0B020';
+                      _champActif = elAvatar;
+                      startGlobalMic();
 
-                  var check3 = setInterval(function() {
-                    if (elAvatar.value && elAvatar.value.trim().length > 1) {
-                      clearInterval(check3);
-                      stopGlobalMic();
-                      elAvatar.style.outline = '2px solid #1A3A8F';
-
-                      // Q4 — Langue
-                      dire("Dernière question. Tu veux qu'on te parle en quelle langue ? Dis français, anglais, lingala, espagnol, portugais, wolof ou swahili.", function() {
-                        ecouter(function(dit) {
-                          var langues = {
-                            'français': 'fr', 'francais': 'fr',
-                            'anglais': 'en', 'english': 'en',
-                            'lingala': 'ln', 'espagnol': 'es',
-                            'portugais': 'pt', 'wolof': 'wo',
-                            'bambara': 'bm', 'swahili': 'sw'
-                          };
-                          var code = 'fr';
-                          for (var mot in langues) {
-                            if (dit.includes(mot)) { code = langues[mot]; break; }
-                          }
-                          var sel = document.getElementById('profil-langue');
-                          if (sel) sel.value = code;
-
+                      var check4 = setInterval(function() {
+                        if (elAvatar.value && elAvatar.value.trim().length > 1) {
+                          clearInterval(check4);
+                          stopGlobalMic();
+                          elAvatar.style.outline = '2px solid #1A3A8F';
                           dire("Parfait, tout est prêt. Je sauvegarde.", function() {
                             sauvegarderProfil();
                           });
-                        });
-                      });
-                    }
-                  }, 800);
+                        }
+                      }, 800);
+                    });
+                  });
                 });
-              });
-            });
-          }
-        }, 800);
+              }
+            }, 800);
+          });
+        });
       });
     }
 
