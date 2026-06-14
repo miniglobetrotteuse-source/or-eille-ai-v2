@@ -1273,17 +1273,30 @@
     var guideVocal = localStorage.getItem('moe_guide_vocal') !== 'off';
 
     function parler(texte) {
-      if (!window.speechSynthesis) return;
-      window.speechSynthesis.cancel();
-      var utt = new SpeechSynthesisUtterance(texte);
-      utt.lang = 'fr-FR';
-      utt.rate = 0.88;
-      // Forcer une voix française si disponible
-      var voix = window.speechSynthesis.getVoices().find(function(v) {
-        return v.lang.startsWith('fr') && !v.name.includes('Compact');
+      if (!texte) return;
+      var langue = (localStorage.getItem('moe_profil') ? JSON.parse(localStorage.getItem('moe_profil')).langue : null) || 'fr';
+      fetch('/api/tts', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ text: texte, lang: langue })
+      }).then(function(r) {
+        if (!r.ok) throw new Error('TTS error');
+        return r.blob();
+      }).then(function(blob) {
+        var url = URL.createObjectURL(blob);
+        var audio = new Audio(url);
+        audio.play().catch(function() {
+          // Fallback navigateur si autoplay bloqué
+          window.speechSynthesis && window.speechSynthesis.speak(new SpeechSynthesisUtterance(texte));
+        });
+      }).catch(function() {
+        // Fallback navigateur
+        if (window.speechSynthesis) {
+          var utt = new SpeechSynthesisUtterance(texte);
+          utt.lang = langue + '-' + langue.toUpperCase();
+          window.speechSynthesis.speak(utt);
+        }
       });
-      if (voix) utt.voice = voix;
-      window.speechSynthesis.speak(utt);
     }
 
     var PAGE_WELCOME = {
@@ -1619,12 +1632,8 @@
     }
 
     function speak(text) {
-      if (!speakerOn) return;
-      window.speechSynthesis.cancel();
-      var utt = new SpeechSynthesisUtterance(text);
-      utt.lang = 'fr-FR';
-      utt.rate = 0.95;
-      window.speechSynthesis.speak(utt);
+      if (!speakerOn || !text) return;
+      parler(text);
     }
 
     function toggleMic() {
