@@ -1252,7 +1252,16 @@
       }
     });
     document.getElementById('btn-send').addEventListener('click', envoyer);
-    document.getElementById('btn-mic').addEventListener('click', toggleMic);
+    // Micro style WhatsApp : appui pour parler, relâche pour envoyer
+    var micBtn = document.getElementById('btn-mic');
+    function micStart(e) { e.preventDefault(); if (!isRecording) startMic(); }
+    function micStop(e) { e.preventDefault(); if (isRecording) stopMic(); }
+    micBtn.addEventListener('mousedown', micStart);
+    micBtn.addEventListener('mouseup', micStop);
+    micBtn.addEventListener('touchstart', micStart, {passive: false});
+    micBtn.addEventListener('touchend', micStop, {passive: false});
+    // Clic simple pour mobile qui ne supporte pas bien mousedown
+    micBtn.addEventListener('click', function() { if (!isRecording) startMic(); });
     document.getElementById('btn-speaker').addEventListener('click', toggleSpeaker);
     document.getElementById('input').addEventListener('keydown', function(e) {
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); envoyer(); }
@@ -1619,7 +1628,8 @@
     }
 
     function toggleMic() {
-      if (isRecording) { stopMic(); } else { startMic(); }
+      // Système WhatsApp : appui = début enregistrement, relâche = envoi
+      // géré par mousedown/touchstart sur le bouton
     }
 
     function startMic() {
@@ -1627,39 +1637,31 @@
       if (!SR) { alert('Reconnaissance vocale non disponible sur ce navigateur.'); return; }
       recognition = new SR();
       recognition.lang = 'fr-FR';
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      var finalTranscript = '';
-      var silenceTimer = null;
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      var transcript = '';
       recognition.onresult = function(e) {
-        var interim = '';
-        for (var i = e.resultIndex; i < e.results.length; i++) {
-          if (e.results[i].isFinal) {
-            finalTranscript += e.results[i][0].transcript + ' ';
-          } else {
-            interim += e.results[i][0].transcript;
-          }
-        }
-        document.getElementById('input').value = finalTranscript + interim;
-        clearTimeout(silenceTimer);
-        silenceTimer = setTimeout(function() {
-          if (finalTranscript.trim()) {
-            stopMic();
-            envoyer();
-          }
-        }, 1500);
+        transcript = e.results[0][0].transcript.trim();
+        document.getElementById('input').value = transcript;
       };
       recognition.onerror = function() { stopMic(); };
-      recognition.onend = function() { stopMic(); };
+      recognition.onend = function() {
+        stopMic();
+        if (transcript) envoyer();
+      };
       recognition.start();
       isRecording = true;
-      document.getElementById('btn-mic').classList.add('recording');
+      var btn = document.getElementById('btn-mic');
+      btn.classList.add('recording');
+      btn.textContent = '⏹';
     }
 
     function stopMic() {
-      if (recognition) recognition.stop();
+      if (recognition) { try { recognition.stop(); } catch(e) {} }
       isRecording = false;
-      document.getElementById('btn-mic').classList.remove('recording');
+      var btn = document.getElementById('btn-mic');
+      btn.classList.remove('recording');
+      btn.textContent = '🎙️';
     }
 
     async function envoyer() {
@@ -1668,6 +1670,10 @@
       var btn = document.getElementById('btn-send');
       var texte = input.value.trim();
       if (!texte) return;
+
+      // Stopper le micro global si actif
+      if (_globalMicOn) stopGlobalMic();
+
       var msgUser = document.createElement('div');
       msgUser.className = 'message user';
       msgUser.textContent = texte;
@@ -1676,7 +1682,7 @@
       btn.disabled = true;
       var thinking = document.createElement('div');
       thinking.className = 'message thinking';
-      thinking.textContent = 'Or Eille reflechit...';
+      thinking.textContent = 'Or Eille réfléchit...';
       messages.appendChild(thinking);
       messages.scrollTop = messages.scrollHeight;
       var hist = [];
@@ -1687,17 +1693,22 @@
         var r = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({system: getSystem(), messages: hist})});
         var d = await r.json();
         thinking.remove();
-        var reponse = (d.content && d.content[0] && d.content[0].text) ? d.content[0].text : 'Je ne parviens pas a repondre pour l instant.';
+        var reponse = (d.content && d.content[0] && d.content[0].text) ? d.content[0].text : 'Je ne parviens pas à répondre pour l\'instant.';
+        // Convertir markdown basique en HTML
+        var html = reponse
+          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*(.+?)\*/g, '<em>$1</em>')
+          .replace(/\n/g, '<br>');
         var msg = document.createElement('div');
         msg.className = 'message assistant';
-        msg.textContent = reponse;
+        msg.innerHTML = html;
         messages.appendChild(msg);
-        speak(reponse);
+        speak(reponse.replace(/\*\*/g, '').replace(/\*/g, ''));
       } catch(e) {
         thinking.remove();
         var err = document.createElement('div');
         err.className = 'message assistant';
-        err.textContent = 'La connexion est momentanement indisponible.';
+        err.textContent = 'La connexion est momentanément indisponible.';
         messages.appendChild(err);
       }
       btn.disabled = false;
