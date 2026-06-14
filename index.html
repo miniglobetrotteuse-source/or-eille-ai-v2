@@ -1638,16 +1638,25 @@
       recognition = new SR();
       recognition.lang = 'fr-FR';
       recognition.continuous = false;
-      recognition.interimResults = false;
-      var transcript = '';
+      recognition.interimResults = true;
+      var finalTranscript = '';
       recognition.onresult = function(e) {
-        transcript = e.results[0][0].transcript.trim();
-        document.getElementById('input').value = transcript;
+        var interim = '';
+        for (var i = e.resultIndex; i < e.results.length; i++) {
+          if (e.results[i].isFinal) {
+            finalTranscript += e.results[i][0].transcript;
+          } else {
+            interim += e.results[i][0].transcript;
+          }
+        }
+        document.getElementById('input').value = finalTranscript + interim;
       };
       recognition.onerror = function() { stopMic(); };
       recognition.onend = function() {
         stopMic();
-        if (transcript) envoyer();
+        // Prendre ce qui est dans le champ même si finalTranscript est vide
+        var texte = document.getElementById('input').value.trim();
+        if (texte) envoyer();
       };
       recognition.start();
       isRecording = true;
