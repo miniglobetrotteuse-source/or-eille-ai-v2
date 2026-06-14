@@ -23,7 +23,6 @@ Fondatrice de **Madame Or Eille Studio** (Brazzaville/Serbie).
 Elle n'est PAS développeuse. Elle a un **œil artistique fort** et sait exactement ce qu'elle veut visuellement.
 Elle maintient une identité publique anonyme : Madame Or Eille.
 
-**Thème natal** : 21 janvier 1980, Brazzaville, 7h30 — Ascendant Verseau 21°17', MC Scorpion 24°55', Placidus.
 
 ---
 
