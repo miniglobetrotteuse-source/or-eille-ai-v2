@@ -173,13 +173,13 @@
           <label style="font-family:'Basteleur',serif;font-size:0.85rem;color:#C9A227;display:block;margin-bottom:6px;">Mon assistant est...</label>
           <input type="hidden" id="mode-assistant" value="alter_ego">
           <div style="display:flex;gap:8px;">
-            <div id="btn-alter" onclick="selectMode('alter_ego')" style="flex:1;border:3px solid #C9A227;border-radius:10px;padding:10px;cursor:pointer;text-align:center;background:#fff8ee;">
-              <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#C9A227;font-weight:bold;">Mon alter ego</div>
-              <div style="font-family:'Basteleur',serif;font-size:0.75rem;color:#C9A227;margin-top:2px;font-style:italic;">le pinceau de ta créativité</div>
+            <div id="btn-alter" onclick="selectMode('alter_ego')" style="flex:1;border:3px solid #C9A227;border-radius:10px;padding:10px;cursor:pointer;text-align:center;background:#C9A227;">
+              <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;font-weight:bold;">Mon alter ego</div>
+              <div style="font-family:'Basteleur',serif;font-size:0.75rem;color:#1A3A8F;margin-top:2px;font-style:italic;">le pinceau de ta créativité</div>
             </div>
-            <div id="btn-agent" onclick="selectMode('agent')" style="flex:1;border:2px solid #1A3A8F;border-radius:10px;padding:10px;cursor:pointer;text-align:center;background:white;opacity:0.6;">
-              <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;font-weight:bold;">Mon agent</div>
-              <div style="font-family:'Basteleur',serif;font-size:0.75rem;color:#1A3A8F;margin-top:2px;font-style:italic;">ton assistant personnel</div>
+            <div id="btn-agent" onclick="selectMode('agent')" style="flex:1;border:2px solid #1A3A8F;border-radius:10px;padding:10px;cursor:pointer;text-align:center;background:#1A3A8F;opacity:0.5;">
+              <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#C9A227;font-weight:bold;">Mon agent</div>
+              <div style="font-family:'Basteleur',serif;font-size:0.75rem;color:#C9A227;margin-top:2px;font-style:italic;">ton assistant personnel</div>
             </div>
           </div>
         </div>
@@ -1096,21 +1096,21 @@
       if (mode === 'alter_ego') {
         document.getElementById('btn-alter').style.border = '3px solid #C9A227';
         document.getElementById('btn-alter').style.opacity = '1';
-        document.getElementById('btn-alter').style.background = '#fff8ee';
+        document.getElementById('btn-alter').style.background = '#C9A227';
         document.getElementById('btn-agent').style.border = '2px solid #1A3A8F';
         document.getElementById('btn-agent').style.opacity = '0.6';
-        document.getElementById('btn-agent').style.background = 'white';
-        avatarInput.style.color = '#C9A227';
+        document.getElementById('btn-agent').style.opacity = '0.4';
+        document.getElementById('btn-agent').style.background = '#1A3A8F';
         avatarInput.style.borderColor = '#C9A227';
         avatarInput.placeholder = 'Son nom en doré (ex: Ernesto, Sofia...)';
       } else {
         document.getElementById('btn-agent').style.border = '3px solid #1A3A8F';
         document.getElementById('btn-agent').style.opacity = '1';
-        document.getElementById('btn-agent').style.background = '#f0f3ff';
+        document.getElementById('btn-agent').style.background = '#1A3A8F';
         document.getElementById('btn-alter').style.border = '2px solid #C9A227';
-        document.getElementById('btn-alter').style.opacity = '0.6';
-        document.getElementById('btn-alter').style.background = 'white';
-        avatarInput.style.color = '#1A3A8F';
+        document.getElementById('btn-alter').style.border = '2px solid #C9A227';
+        document.getElementById('btn-alter').style.opacity = '0.4';
+        document.getElementById('btn-alter').style.background = '#C9A227';
         avatarInput.style.borderColor = '#1A3A8F';
         avatarInput.placeholder = 'Son nom en bleu (ex: Max, Luna...)';
       }
