@@ -218,6 +218,16 @@
       </div>
 
       <button onclick="sauvegarderProfil()" style="background:#E0B020;color:#1A3A8F;border:none;padding:12px 24px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;cursor:pointer;width:100%;margin-bottom:8px;">Sauvegarder</button>
+
+      <!-- Guide vocal -->
+      <div style="background:#F7F4EF;border-radius:12px;padding:14px;margin-bottom:8px;border:1px solid rgba(224,176,32,.2);">
+        <p style="font-family:'Basteleur',serif;font-size:0.85rem;color:#1A3A8F;margin-bottom:10px;">🔊 Guide vocal</p>
+        <p style="font-size:0.75rem;color:rgba(42,42,42,.6);margin-bottom:10px;">Le guide vocal décrit chaque page à voix haute pour vous guider.</p>
+        <div style="display:flex;gap:8px;">
+          <button id="btn-guide-on" onclick="setGuideVocal(true)" style="flex:1;padding:8px;border-radius:50px;border:2px solid #E0B020;background:#E0B020;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">✅ Activé</button>
+          <button id="btn-guide-off" onclick="setGuideVocal(false)" style="flex:1;padding:8px;border-radius:50px;border:1px solid rgba(42,42,42,.2);background:white;color:#2a2a2a;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">Désactiver</button>
+        </div>
+      </div>
       <button onclick="showPage('accessibilite')" style="background:none;border:1px solid rgba(196,153,58,.4);color:#E0B020;padding:12px 24px;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;width:100%;margin-bottom:8px;">⚙️ Paramètres d'accessibilité</button>
       <button onclick="showPage('accueil')" style="font-family:Basteleur,serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour</button>
     </div>
@@ -1139,17 +1149,38 @@
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); envoyer(); }
     });
 
+    // --- GUIDE VOCAL ---
+    // guideVocal = true → décrit tout (par défaut au premier lancement)
+    // guideVocal = false → mode normal (désactivé dans le Profil)
+    var guideVocal = localStorage.getItem('moe_guide_vocal') !== 'off';
+
+    function parler(texte) {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      var utt = new SpeechSynthesisUtterance(texte);
+      utt.lang = 'fr-FR';
+      utt.rate = 0.88;
+      // Forcer une voix française si disponible
+      var voix = window.speechSynthesis.getVoices().find(function(v) {
+        return v.lang.startsWith('fr') && !v.name.includes('Compact');
+      });
+      if (voix) utt.voice = voix;
+      window.speechSynthesis.speak(utt);
+    }
+
     var PAGE_WELCOME = {
-      accueil:     "Bienvenue sur Or Eille AI. L'IA qui s'exécute au doigt et à l'œil.",
-      assistant:   "Vous êtes dans l'Assistant. Dites-moi ce que vous souhaitez créer aujourd'hui.",
-      abonnement:  "Voici nos formules d'abonnement. Mensuel à 18 euros ou annuel à 200 euros.",
-      profil:      "Configurez votre profil. Dites-moi comment vous appeler.",
-      agenda:      "Vous êtes dans l'Agenda. Planifiez votre contenu, générez un calendrier éditorial et suivez vos idées.",
-      redaction:   "Vous êtes dans le module Contenu Texte. Légendes, titres, recyclage, ebook.",
-      image:       "Vous êtes dans Composition d'image. Deux boutons en haut : le bouton doré, Mode D.A., pour respecter votre charte graphique. Le bouton bleu, Mode Libre, pour créer sans contrainte. En dessous, un champ pour décrire ce que vous voulez — appuyez sur le micro pour dicter. Ensuite, choisissez le format : carré, portrait, paysage, story, bannière, ou tous les formats. Puis la forme de votre image : rectangle, rond, ovale, cœur, étoile, et d'autres. Enfin, choisissez si c'est une image unique ou une série. Quand vous êtes prêt, appuyez sur Générer.",
+      accueil:     "Bienvenue sur Or Eille A I. Appuyez sur le logo de l'oreille pour configurer votre profil.",
+      assistant:   "Vous êtes dans l'Assistant. Appuyez sur le micro et dites ce que vous voulez créer. Ou appuyez sur le crayon pour écrire.",
+      abonnement:  "Voici les abonnements. Bouton bleu : mensuel, 18 euros. Bouton doré : annuel, 200 euros.",
+      profil:      "Configurez votre profil. Entrez votre prénom ou pseudonyme. Choisissez votre langue. En bas, vous pouvez désactiver le guide vocal si vous n'en avez plus besoin.",
+      agenda:      "Vous êtes dans l'Agenda. Trois sections : la phase de lune du jour, un générateur de calendrier éditorial, et la planification de vos idées.",
+      redaction:   "Vous êtes dans Contenu Texte. Sept outils disponibles : créer du contenu, générer une légende, des titres, un carrousel, recycler du contenu, créer un livre numérique, et préparer votre post.",
+      image:       "Vous êtes dans Composition d'image. Bouton doré Mode D.A. pour respecter votre charte. Bouton bleu Mode Libre pour créer librement. Décrivez ce que vous voulez avec le micro. Choisissez le format et la forme. Puis appuyez sur Générer.",
+      accessibilite: "Paramètres d'accessibilité. Choisissez la taille du texte, l'interligne, la police pour dyslexie, le contraste, et votre profil neurologique.",
+    };
 
-
-      accessibilite: "Paramètres d'accessibilité. Configurez l'interface selon vos besoins.",
+    var PAGE_DETAIL = {
+      redaction: "Premier outil : Créer du contenu. Décrivez votre idée avec le micro ou en écrivant. Choisissez un format : Post, bouton un. Story, bouton deux. Reel, bouton trois. Carrousel, bouton quatre. Podcast, bouton cinq. Puis choisissez vos plateformes : Instagram, bouton rose. TikTok, bouton noir. YouTube, bouton rouge. LinkedIn, bouton bleu. Pinterest, bouton rouge foncé. Snapchat, bouton jaune. Appuyez sur Créer quand vous êtes prêt.",
     };
 
     function showPage(p) {
@@ -1157,14 +1188,39 @@
       document.getElementById('page-' + p).classList.add('active');
       var footer = document.getElementById('main-footer');
       if (footer) footer.style.display = (p === 'accueil') ? 'block' : 'none';
-      // Accueil vocal
-      if (PAGE_WELCOME[p] && window.speechSynthesis) {
-        var utt = new SpeechSynthesisUtterance(PAGE_WELCOME[p]);
-        utt.lang = 'fr-FR';
-        utt.rate = 0.9;
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(utt);
+
+      if (guideVocal) {
+        var texte = PAGE_WELCOME[p] || '';
+        if (PAGE_DETAIL[p]) texte += ' ' + PAGE_DETAIL[p];
+        if (texte) parler(texte);
       }
+    }
+
+    // Premier lancement : message de bienvenue + logo cliquable vers profil
+    window.addEventListener('load', function() {
+      // Rendre le logo cliquable
+      var logo = document.querySelector('.hero-logo');
+      if (logo) {
+        logo.style.cursor = 'pointer';
+        logo.title = 'Configurer mon profil';
+        logo.addEventListener('click', function() { showPage('profil'); });
+      }
+
+      // Message de bienvenue au tout premier lancement
+      var dejaVenu = localStorage.getItem('moe_visite');
+      if (!dejaVenu) {
+        localStorage.setItem('moe_visite', '1');
+        setTimeout(function() {
+          parler("Bienvenue sur Or Eille A I. L'intelligence artificielle qui s'exécute au doigt et à l'œil. Appuyez sur le logo de l'oreille pour configurer votre profil.");
+        }, 800);
+      }
+    });
+
+    // Recharger les voix dès qu'elles sont disponibles (nécessaire sur certains navigateurs)
+    if (window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = function() {
+        window.speechSynthesis.getVoices(); // forcer le chargement
+      };
     }
 
 
@@ -1386,9 +1442,35 @@
 
       showPage('assistant');
     }
+
+    function setGuideVocal(actif) {
+      guideVocal = actif;
+      localStorage.setItem('moe_guide_vocal', actif ? 'on' : 'off');
+      var btnOn  = document.getElementById('btn-guide-on');
+      var btnOff = document.getElementById('btn-guide-off');
+      if (actif) {
+        if (btnOn)  { btnOn.style.background  = '#E0B020'; btnOn.style.border  = '2px solid #E0B020'; btnOn.style.color  = '#1A3A8F'; }
+        if (btnOff) { btnOff.style.background = 'white';   btnOff.style.border = '1px solid rgba(42,42,42,.2)'; btnOff.style.color = '#2a2a2a'; }
+        parler("Guide vocal activé. Je décrirai chaque page pour vous guider.");
+      } else {
+        if (btnOn)  { btnOn.style.background  = 'white'; btnOn.style.border  = '1px solid rgba(42,42,42,.2)'; btnOn.style.color  = '#2a2a2a'; }
+        if (btnOff) { btnOff.style.background = '#1A3A8F'; btnOff.style.border = '2px solid #1A3A8F'; btnOff.style.color = '#E0B020'; }
+        parler("Guide vocal désactivé.");
+      }
+    }
+
+    // Initialiser l'état des boutons guide vocal quand la page profil est affichée
+    document.addEventListener('DOMContentLoaded', function() {
+      var btnOn  = document.getElementById('btn-guide-on');
+      var btnOff = document.getElementById('btn-guide-off');
+      if (!guideVocal && btnOff) {
+        btnOn.style.background  = 'white'; btnOn.style.border  = '1px solid rgba(42,42,42,.2)'; btnOn.style.color  = '#2a2a2a';
+        btnOff.style.background = '#1A3A8F'; btnOff.style.border = '2px solid #1A3A8F'; btnOff.style.color = '#E0B020';
+      }
+    });
   </script>
-</body>
-</html>  <script src="accessibility_config.js"></script>
+
+  <script src="accessibility_config.js"></script>
   <script src="image_editor.js"></script>
   <script src="colorize.js"></script>
   <script src="watermark.js"></script>
@@ -1399,10 +1481,10 @@
   <script src="cgu.js"></script>
   <script src="ethics.js"></script>
   <script>
-// Accessibilité — appliquer les préférences sauvegardées
-    window.addEventListener('load', () => {
+    window.addEventListener('load', function() {
       if (window.A11Y_CONFIG) A11Y_CONFIG.apply();
     });
-    // CGU affichées uniquement au clic sur Essayer gratuitement
   </script>
+</body>
+</html>
 
