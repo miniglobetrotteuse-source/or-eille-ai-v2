@@ -586,6 +586,12 @@
 
 
 
+  <style>
+    .red-btn { padding:7px 14px;border-radius:50px;border:1px solid rgba(224,176,32,.4);background:white;color:#2a2a2a;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;transition:all .15s; }
+    .red-btn-active { background:#E0B020;color:#1A3A8F;border-color:#E0B020;font-weight:bold; }
+    .red-btn:hover { border-color:#E0B020; }
+  </style>
+
   <!-- PAGE RÉDACTION -->
   <div class="page" id="page-redaction" style="padding:20px;max-width:640px;margin:0 auto;">
     <h2 style="font-family:'Basteleur',serif;color:#E0B020;text-align:center;font-size:1.8rem;margin-bottom:24px;">Contenu : Texte</h2>
@@ -599,20 +605,21 @@
       </div>
       <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Format</p>
       <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
-        <button class="red-btn red-btn-active" onclick="selectFormat(this,'post')">🗒 Post</button>
-        <button class="red-btn" onclick="selectFormat(this,'story')">⏱ Story</button>
+        <button class="red-btn red-btn-active" onclick="selectFormat(this,'post')">📝 Post</button>
+        <button class="red-btn" onclick="selectFormat(this,'story')">Story</button>
         <button class="red-btn" onclick="selectFormat(this,'reel')">🎬 Reel</button>
-        <button class="red-btn" onclick="selectFormat(this,'carrousel')">🎠 Carrousel</button>
+        <button class="red-btn" onclick="selectFormat(this,'carrousel')">Carrousel</button>
+        <button class="red-btn" onclick="selectFormat(this,'podcast')">🎙️ Podcast</button>
       </div>
       <input type="hidden" id="red-format-val" value="post"/>
       <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Plateformes</p>
-      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
-        <button onclick="togglePlat(this,'instagram')" style="padding:8px 14px;border-radius:50px;border:none;opacity:0.45;background:#E1306C;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">Instagram</button>
-        <button onclick="togglePlat(this,'tiktok')" style="padding:8px 14px;border-radius:50px;border:none;opacity:0.45;background:#010101;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">TikTok</button>
-        <button onclick="togglePlat(this,'youtube')" style="padding:8px 14px;border-radius:50px;border:none;opacity:0.45;background:#FF0000;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">YouTube</button>
-        <button onclick="togglePlat(this,'linkedin')" style="padding:8px 14px;border-radius:50px;border:none;opacity:0.45;background:#0077B5;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">LinkedIn</button>
-        <button onclick="togglePlat(this,'pinterest')" style="padding:8px 14px;border-radius:50px;border:none;opacity:0.45;background:#E60023;color:white;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">Pinterest</button>
-        <button onclick="togglePlat(this,'snapchat')" style="padding:8px 14px;border-radius:50px;border:none;opacity:0.45;background:#FFFC00;color:#010101;font-family:'Basteleur',serif;font-size:0.8rem;cursor:pointer;">Snapchat</button>
+      <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;">
+        <button onclick="togglePlat(this,'instagram')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#E1306C;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">Instagram</button>
+        <button onclick="togglePlat(this,'tiktok')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#010101;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">TikTok</button>
+        <button onclick="togglePlat(this,'youtube')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#FF0000;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">YouTube</button>
+        <button onclick="togglePlat(this,'linkedin')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#0077B5;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">LinkedIn</button>
+        <button onclick="togglePlat(this,'pinterest')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#E60023;color:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">Pinterest</button>
+        <button onclick="togglePlat(this,'snapchat')" style="padding:5px 12px;border-radius:50px;border:none;opacity:0.45;background:#FFFC00;color:#010101;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;">Snapchat</button>
       </div>
       <button onclick="creerContenu()" style="width:100%;padding:12px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.9rem;cursor:pointer;">✨ Créer</button>
     </div>
@@ -748,6 +755,133 @@
     <button onclick="showPage('accueil')" style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;background:none;border:none;cursor:pointer;width:100%;text-align:center;">← Retour</button>
   </div>
 
+  <script>
+    // Dictée vocale universelle pour la page Contenu
+    var _redMicActive = null;
+
+    function startRedMic(targetId) {
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) {
+        alert("La dictée vocale n'est pas disponible sur ce navigateur. Essayez Chrome.");
+        return;
+      }
+      // Si déjà actif sur ce champ, on arrête
+      if (_redMicActive && _redMicActive.targetId === targetId) {
+        _redMicActive.recognition.stop();
+        _redMicActive = null;
+        return;
+      }
+      // Arrêter l'ancien si besoin
+      if (_redMicActive) {
+        _redMicActive.recognition.stop();
+        _redMicActive = null;
+      }
+      var recognition = new SR();
+      recognition.lang = 'fr-FR';
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      _redMicActive = { recognition: recognition, targetId: targetId };
+
+      // Indiquer visuellement que le micro est actif
+      var el = document.getElementById(targetId);
+      var prevBorder = el ? el.style.border : '';
+      if (el) el.style.border = '2px solid #E0B020';
+
+      recognition.onresult = function(e) {
+        var transcript = e.results[0][0].transcript;
+        if (el) {
+          if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
+            el.value += (el.value ? ' ' : '') + transcript;
+          }
+        }
+      };
+      recognition.onerror = function(e) {
+        console.warn('Mic error:', e.error);
+        if (el) el.style.border = prevBorder;
+        _redMicActive = null;
+      };
+      recognition.onend = function() {
+        if (el) el.style.border = prevBorder;
+        _redMicActive = null;
+      };
+      recognition.start();
+    }
+
+    function selectFormat(btn, format) {
+      document.querySelectorAll('[onclick*="selectFormat"]').forEach(function(b) {
+        b.classList.remove('red-btn-active');
+      });
+      btn.classList.add('red-btn-active');
+      var hidden = document.getElementById('red-format-val');
+      if (hidden) hidden.value = format;
+    }
+
+    function togglePlat(btn, plat) {
+      var active = btn.style.opacity === '1';
+      btn.style.opacity = active ? '0.45' : '1';
+      btn.style.transform = active ? '' : 'scale(1.05)';
+    }
+
+    function setRedTone(tone) {
+      document.querySelectorAll('[data-group="tone"]').forEach(function(b) {
+        b.classList.remove('red-btn-active');
+      });
+      var btn = document.querySelector('[onclick*="setRedTone(\'' + tone + '\')"]');
+      if (btn) btn.classList.add('red-btn-active');
+      var libreSection = document.getElementById('red-ton-libre-section');
+      if (libreSection) libreSection.style.display = tone === 'libre' ? 'block' : 'none';
+    }
+
+    function selectSlides(btn, count) {
+      document.querySelectorAll('[data-group="slides"]').forEach(function(b) {
+        b.classList.remove('red-btn-active');
+      });
+      btn.classList.add('red-btn-active');
+      var hidden = document.getElementById('red-slides-count');
+      if (hidden) hidden.value = count;
+    }
+
+    function afficherResultatRed(texte) {
+      var zone = document.getElementById('red-result');
+      var textEl = document.getElementById('red-result-text');
+      if (zone && textEl) {
+        textEl.textContent = texte;
+        zone.style.display = 'block';
+        zone.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function copierResultat() {
+      var el = document.getElementById('red-result-text');
+      if (el) navigator.clipboard.writeText(el.textContent).then(function() {
+        alert('Copié !');
+      });
+    }
+
+    function importerFichier(input) {
+      var file = input.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var el = document.getElementById('red-original');
+        if (el) el.value = e.target.result;
+      };
+      reader.readAsText(file);
+    }
+
+    function lancerValidation() {
+      var checks = ['chk-hashtags','chk-lien','chk-localisation','chk-tags','chk-sous-titres','chk-son','chk-batterie'];
+      var tous = checks.every(function(id) {
+        var el = document.getElementById(id);
+        return el && el.checked;
+      });
+      if (tous) {
+        alert('✅ Tout est prêt ! Allez publier.');
+      } else {
+        alert('Il reste des cases à cocher avant de publier.');
+      }
+    }
+  </script>
 
   <!-- PAGE AGENDA -->
   <div class="page" id="page-agenda" style="padding:20px;max-width:640px;margin:0 auto;">
