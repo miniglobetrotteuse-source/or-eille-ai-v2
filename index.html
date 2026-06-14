@@ -1220,6 +1220,18 @@
         btn.style.cssText = 'padding:6px 10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:0.9rem;vertical-align:middle;flex-shrink:0;';
         btn.addEventListener('click', function() { startRedMic(el.id); });
 
+        // Désactiver le micro si on commence à taper
+        el.addEventListener('keydown', function() {
+          if (_redMicActive && _redMicActive.targetId === el.id) {
+            _redMicActive.recognition.stop();
+            _redMicActive = null;
+            btn.textContent = '🎙️';
+            btn.style.background = 'white';
+            btn.style.border = '1px solid rgba(224,176,32,.3)';
+            btn.style.color = '';
+          }
+        });
+
         // Envelopper dans un div flex si pas déjà dans un wrapper flex
         var parent = el.parentNode;
         var wrapper = document.createElement('div');
