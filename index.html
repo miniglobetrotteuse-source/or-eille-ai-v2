@@ -88,6 +88,8 @@
         <div class="header-logo-slogan">L'IA qui s'exécute au doigt et à l'œil.</div>
       </div>
     </div>
+    <!-- MICRO PERMANENT -->
+    <button id="global-mic-btn" onclick="toggleGlobalMic()" title="Micro — parle pour remplir le champ actif" style="background:#E0B020;border:none;border-radius:50%;width:42px;height:42px;font-size:1.2rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(224,176,32,.4);">🎙️</button>
     <nav>
       <a href="#" id="nav-accueil">Accueil</a>
       <a href="#" id="nav-assistant">Assistant</a>
@@ -1207,42 +1209,6 @@
         logo.addEventListener('click', function() { showPage('profil'); });
       }
 
-      // Ajouter un micro sur TOUS les champs texte et textareas de l'appli
-      document.querySelectorAll('input[type="text"], input:not([type]), textarea').forEach(function(el) {
-        if (!el.id) return; // ignorer les champs sans id
-        // Ne pas doubler si déjà un micro à côté
-        if (el.parentNode.querySelector('.auto-mic-btn')) return;
-
-        var btn = document.createElement('button');
-        btn.className = 'auto-mic-btn';
-        btn.type = 'button';
-        btn.title = 'Dicter';
-        btn.textContent = '🎙️';
-        btn.style.cssText = 'padding:6px 10px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:0.9rem;vertical-align:middle;flex-shrink:0;';
-        btn.addEventListener('click', function() { startRedMic(el.id); });
-
-        // Désactiver le micro si on commence à taper
-        el.addEventListener('keydown', function() {
-          if (_redMicActive && _redMicActive.targetId === el.id) {
-            _redMicActive.recognition.stop();
-            _redMicActive = null;
-            btn.textContent = '🎙️';
-            btn.style.background = 'white';
-            btn.style.border = '1px solid rgba(224,176,32,.3)';
-            btn.style.color = '';
-          }
-        });
-
-        // Envelopper dans un div flex si pas déjà dans un wrapper flex
-        var parent = el.parentNode;
-        var wrapper = document.createElement('div');
-        wrapper.style.cssText = 'display:flex;align-items:center;gap:6px;margin-bottom:' + (el.style.marginBottom || '8px') + ';';
-        el.style.marginBottom = '0';
-        el.style.flex = '1';
-        parent.insertBefore(wrapper, el);
-        wrapper.appendChild(el);
-        wrapper.appendChild(btn);
-      });
 
       // Message de bienvenue — déclenché sur le clic logo
       // (les navigateurs bloquent la voix avant toute interaction)
@@ -1266,9 +1232,77 @@
     // Recharger les voix dès qu'elles sont disponibles (nécessaire sur certains navigateurs)
     if (window.speechSynthesis) {
       window.speechSynthesis.onvoiceschanged = function() {
-        window.speechSynthesis.getVoices(); // forcer le chargement
+        window.speechSynthesis.getVoices();
       };
     }
+
+    // ===== MICRO GLOBAL PERMANENT =====
+    var _globalMicOn = false;
+    var _globalMicRec = null;
+    var _champActif = null;
+
+    // Suivre quel champ est actif
+    document.addEventListener('focusin', function(e) {
+      var el = e.target;
+      if (el && (el.tagName === 'TEXTAREA' || (el.tagName === 'INPUT' && el.type !== 'hidden' && el.type !== 'range' && el.type !== 'checkbox' && el.type !== 'file'))) {
+        _champActif = el;
+      }
+    });
+
+    function toggleGlobalMic() {
+      if (_globalMicOn) {
+        stopGlobalMic();
+      } else {
+        startGlobalMic();
+      }
+    }
+
+    function startGlobalMic() {
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) { alert("La dictée vocale n'est pas disponible sur ce navigateur."); return; }
+
+      _globalMicOn = true;
+      var btn = document.getElementById('global-mic-btn');
+      if (btn) { btn.textContent = '⏹'; btn.style.background = '#E1306C'; }
+
+      function cycle() {
+        if (!_globalMicOn) return;
+        var r = new SR();
+        r.lang = 'fr-FR';
+        r.continuous = false;
+        r.interimResults = false;
+        _globalMicRec = r;
+
+        r.onresult = function(e) {
+          var texte = e.results[0][0].transcript.trim();
+          if (_champActif && texte) {
+            _champActif.value += (_champActif.value ? ' ' : '') + texte;
+          }
+          if (_globalMicOn) cycle();
+        };
+        r.onerror = function(e) {
+          if (e.error === 'no-speech' && _globalMicOn) { cycle(); return; }
+          if (e.error !== 'aborted') stopGlobalMic();
+        };
+        r.onend = function() {
+          if (_globalMicOn) cycle();
+        };
+        try { r.start(); } catch(e) {}
+      }
+      cycle();
+    }
+
+    function stopGlobalMic() {
+      _globalMicOn = false;
+      if (_globalMicRec) { try { _globalMicRec.stop(); } catch(e) {} _globalMicRec = null; }
+      var btn = document.getElementById('global-mic-btn');
+      if (btn) { btn.textContent = '🎙️'; btn.style.background = '#E0B020'; }
+    }
+
+    // Désactiver le micro global si on tape
+    document.addEventListener('keydown', function() {
+      if (_globalMicOn) stopGlobalMic();
+    });
 
 
 
