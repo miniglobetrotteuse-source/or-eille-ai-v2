@@ -1246,15 +1246,16 @@
 
       // Message de bienvenue — déclenché sur le clic logo
       // (les navigateurs bloquent la voix avant toute interaction)
+      var dejaVenu = localStorage.getItem('moe_visite');
       if (logo) {
         logo.addEventListener('click', function() {
-          var dejaVenu = localStorage.getItem('moe_visite');
           if (!dejaVenu) {
             localStorage.setItem('moe_visite', '1');
+            dejaVenu = '1';
             // Voix d'abord, AVANT de changer de page
-            parler("Bonjour et bienvenue sur Or Eille A I. On va essayer de s'entendre. Dans quelques secondes, je vais te poser quelques questions pour qu'on fasse connaissance. Prends ton temps.");
-            // Puis on va sur profil après que la voix a fini (~6 secondes)
-            setTimeout(function() { showPage('profil'); }, 6000);
+            parler("Bonjour ! Bienvenue sur Or Eille A I. On va essayer de s'entendre — au sens propre comme au sens figuré. Dans quelques secondes, je vais te poser quelques questions pour qu'on fasse connaissance. Prends ton temps, il n'y a aucune urgence.");
+            // Puis on va sur profil quand la voix a fini
+            setTimeout(function() { showPage('profil'); }, 7500);
           } else {
             showPage('profil');
           }
