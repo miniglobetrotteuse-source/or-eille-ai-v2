@@ -1207,15 +1207,15 @@
       var etapes = [
         {
           id: 'profil-nom',
-          texte: "Comment vous appelez-vous ? Entrez votre prénom ou votre pseudonyme. Vous pouvez dicter en appuyant sur le micro, ou taper directement."
+          texte: "Première question. Comment vous appelez-vous ? Dites votre prénom ou le nom que vous voulez utiliser. Par exemple : Marie, ou Madame Soleil, ou n'importe quel surnom. Le micro va s'ouvrir dans quelques secondes. Parlez quand vous êtes prêt."
         },
         {
           id: 'profil-avatar',
-          texte: "Quel nom voulez-vous donner à votre assistant ? Par exemple : Sofia, Ernesto, Black Mamba. C'est le nom qu'il utilisera pour vous parler."
+          texte: "Deuxième question. Quel prénom voulez-vous donner à votre assistant ? C'est le nom de la voix qui va vous accompagner. Par exemple : Sofia, Ernesto, ou Black Mamba. Parlez quand vous êtes prêt."
         },
         {
           id: 'profil-mission',
-          texte: "Décrivez en quelques mots ce que vous faites ou votre mission. Par exemple : je crée du contenu sur la cuisine africaine. Ce n'est pas obligatoire."
+          texte: "Troisième question, et c'est la dernière. Qu'est-ce que vous faites ? Décrivez votre activité en quelques mots. Par exemple : je fais des vidéos sur la cuisine, ou je vends des bijoux faits main. Si vous ne voulez pas répondre, dites : passer. Parlez quand vous êtes prêt."
         }
       ];
 
@@ -1224,8 +1224,8 @@
       function etapeSuivante() {
         if (i >= etapes.length) {
           setTimeout(function() {
-            parler("Parfait. Maintenant choisissez votre langue, puis appuyez sur Sauvegarder pour enregistrer votre profil.");
-          }, 500);
+            parler("C'est parfait. Maintenant, choisissez votre langue dans la liste. Puis appuyez sur le bouton doré Sauvegarder pour enregistrer votre profil.");
+          }, 800);
           return;
         }
 
@@ -1233,31 +1233,38 @@
         var el = document.getElementById(etape.id);
         if (!el) { i++; etapeSuivante(); return; }
 
-        // Mettre en surbrillance le champ actif
-        el.style.outline = '2px solid #E0B020';
+        // Surbrillance du champ actif
+        el.style.outline = '3px solid #E0B020';
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         parler(etape.texte);
 
-        // Démarrer le micro automatiquement après la consigne
+        // Ouvrir le micro automatiquement — délai calé sur la durée de la consigne
+        // ~5 mots/seconde en lecture, on estime la durée et on ajoute 1 sec de marge
+        var dureeConsigne = Math.round(etape.texte.split(' ').length / 2.5) * 1000 + 1000;
         setTimeout(function() {
           if (guideVocal) startRedMic(etape.id);
-        }, 2500);
+        }, dureeConsigne);
 
         // Surveiller quand le champ est rempli
         var intervalle = setInterval(function() {
-          if (el.value && el.value.trim().length > 1) {
+          var valeur = el.value ? el.value.trim() : '';
+          // Accepter "passer" comme réponse valide pour mission
+          var passerDit = valeur.toLowerCase() === 'passer';
+          if (passerDit) { el.value = ''; }
+
+          if (valeur.length > 1 || passerDit) {
             clearInterval(intervalle);
-            el.style.outline = '2px solid #1A3A8F'; // validé en bleu
-            // Arrêter le micro si actif
+            el.style.outline = '2px solid #1A3A8F';
+            // Stopper le micro
             if (_redMicActive && _redMicActive.targetId === etape.id) {
               _redMicActive.recognition.stop();
               _redMicActive = null;
             }
             i++;
-            setTimeout(etapeSuivante, 1200);
+            setTimeout(etapeSuivante, 1500);
           }
-        }, 600);
+        }, 700);
       }
 
       etapeSuivante();
