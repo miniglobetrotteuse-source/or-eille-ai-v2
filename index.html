@@ -765,44 +765,68 @@
         alert("La dictée vocale n'est pas disponible sur ce navigateur. Essayez Chrome.");
         return;
       }
-      // Si déjà actif sur ce champ, on arrête
+
+      // Trouver le bouton micro associé à ce champ
+      var micBtn = document.querySelector('[onclick="startRedMic(\'' + targetId + '\')"]');
+
+      // Si déjà actif → STOP
       if (_redMicActive && _redMicActive.targetId === targetId) {
         _redMicActive.recognition.stop();
         _redMicActive = null;
+        if (micBtn) { micBtn.textContent = '🎙️'; micBtn.style.background = 'white'; micBtn.style.border = '1px solid rgba(224,176,32,.3)'; }
         return;
       }
       // Arrêter l'ancien si besoin
       if (_redMicActive) {
         _redMicActive.recognition.stop();
+        var oldBtn = document.querySelector('[onclick="startRedMic(\'' + _redMicActive.targetId + '\')"]');
+        if (oldBtn) { oldBtn.textContent = '🎙️'; oldBtn.style.background = 'white'; oldBtn.style.border = '1px solid rgba(224,176,32,.3)'; }
         _redMicActive = null;
       }
+
       var recognition = new SR();
       recognition.lang = 'fr-FR';
-      recognition.continuous = false;
+      recognition.continuous = true;       // reste ouvert jusqu'au stop
       recognition.interimResults = false;
       _redMicActive = { recognition: recognition, targetId: targetId };
 
-      // Indiquer visuellement que le micro est actif
       var el = document.getElementById(targetId);
-      var prevBorder = el ? el.style.border : '';
-      if (el) el.style.border = '2px solid #E0B020';
+
+      // Bouton devient rouge "Stop"
+      if (micBtn) {
+        micBtn.textContent = '⏹';
+        micBtn.style.background = '#E1306C';
+        micBtn.style.border = 'none';
+        micBtn.style.color = 'white';
+      }
+      if (el) el.style.outline = '2px solid #E0B020';
 
       recognition.onresult = function(e) {
-        var transcript = e.results[0][0].transcript;
-        if (el) {
-          if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
-            el.value += (el.value ? ' ' : '') + transcript;
+        // Ajouter seulement les nouveaux résultats finals
+        for (var i = e.resultIndex; i < e.results.length; i++) {
+          if (e.results[i].isFinal) {
+            var transcript = e.results[i][0].transcript.trim();
+            if (el && transcript) {
+              el.value += (el.value ? ' ' : '') + transcript;
+            }
           }
         }
       };
       recognition.onerror = function(e) {
+        if (e.error === 'no-speech') return; // ignorer silence
         console.warn('Mic error:', e.error);
-        if (el) el.style.border = prevBorder;
+        if (micBtn) { micBtn.textContent = '🎙️'; micBtn.style.background = 'white'; micBtn.style.border = '1px solid rgba(224,176,32,.3)'; micBtn.style.color = ''; }
+        if (el) el.style.outline = '';
         _redMicActive = null;
       };
       recognition.onend = function() {
-        if (el) el.style.border = prevBorder;
-        _redMicActive = null;
+        // Si toujours actif (pas stoppé manuellement), redémarrer
+        if (_redMicActive && _redMicActive.targetId === targetId) {
+          try { recognition.start(); } catch(e) {}
+        } else {
+          if (micBtn) { micBtn.textContent = '🎙️'; micBtn.style.background = 'white'; micBtn.style.border = '1px solid rgba(224,176,32,.3)'; micBtn.style.color = ''; }
+          if (el) el.style.outline = '';
+        }
       };
       recognition.start();
     }
