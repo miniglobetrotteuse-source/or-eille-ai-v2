@@ -1079,29 +1079,29 @@
     <!-- Choix du calendrier -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
       <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:8px;">🗓️ Mon calendrier</p>
-      <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:10px;">Choisis le calendrier qui correspond à ta culture et ta communauté</p>
-      <select id="agenda-calendrier" onchange="toggleAutreCalendrier(this)" style="width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;">
-        <option value="gregorien">📅 Grégorien (standard international)</option>
-        <option value="lunaire">🌙 Lunaire (nouvelles lunes, pleines lunes)</option>
-        <option value="liturgique-catholique">✝️ Liturgique catholique (saints, fêtes)</option>
-        <option value="liturgique-orthodoxe">☦️ Liturgique orthodoxe</option>
-        <option value="hebraique">✡️ Hébraïque (Shabbat, Rosh Hashana...)</option>
-        <option value="islamique">☪️ Islamique (Ramadan, Aïd...)</option>
-        <option value="bouddhiste">☸️ Bouddhiste</option>
-        <option value="chinois">🐉 Chinois (Nouvel An lunaire...)</option>
-        <option value="ethiopien">🇪🇹 Éthiopien</option>
-        <option value="hindou">🕉️ Hindou (Diwali, Holi...)</option>
-        <option value="africain-traditionnel">🌍 Traditionnel africain (saisons, ancêtres)</option>
-        <option value="solaire">☀️ Solaire (solstices, équinoxes)</option>
-        <option value="celtique">🍀 Celtique (Samhain, Imbolc, Beltane, Lughnasadh)</option>
-        <option value="paganisme">🌿 Paganisme / Wicca (sabbats, ésbats)</option>
-        <option value="maya">🌺 Maya (Tzolkin, Haab)</option>
-        <option value="japonais">⛩️ Japonais (Hanami, Tanabata, Obon...)</option>
-        <option value="coreen">🎋 Coréen (Chuseok, Seollal...)</option>
-        <option value="persan">🌸 Persan / Nowruz</option>
-        <option value="vodou">🥁 Vodou / Traditions diaspora africaine</option>
-        <option value="autre">✨ Autre — je décris mon calendrier</option>
-      </select>
+      <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:10px;">Tu peux en choisir plusieurs</p>
+      <div style="display:flex;flex-direction:column;gap:6px;max-height:250px;overflow-y:auto;padding:4px;">
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="gregorien" checked> 📅 Grégorien</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="lunaire"> 🌙 Lunaire</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="liturgique-catholique"> ✝️ Liturgique catholique</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="liturgique-orthodoxe"> ☦️ Liturgique orthodoxe</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="hebraique"> ✡️ Hébraïque</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="islamique"> ☪️ Islamique</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="bouddhiste"> ☸️ Bouddhiste</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="chinois"> 🐉 Chinois</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="ethiopien"> 🇪🇹 Éthiopien</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="hindou"> 🕉️ Hindou</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="africain-traditionnel"> 🌍 Traditionnel africain</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="solaire"> ☀️ Solaire</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="celtique"> 🍀 Celtique</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="paganisme"> 🌿 Paganisme / Wicca</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="maya"> 🌺 Maya</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="japonais"> ⛩️ Japonais</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="coreen"> 🎋 Coréen</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="persan"> 🌸 Persan / Nowruz</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="vodou"> 🥁 Vodou / Diaspora africaine</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="autre" onchange="toggleAutreCalendrier(this)"> ✨ Autre</label>
+      </div>
       <input type="text" id="agenda-calendrier-autre" placeholder="Décris ton calendrier ou ta tradition..." style="display:none;width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;margin-top:8px;box-sizing:border-box;">
     </div>
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;border-left:3px solid #E0B020;">
@@ -1206,52 +1206,40 @@
       document.getElementById('agenda-platform').value = plat;
     }
 
-    function toggleAutreCalendrier(sel) {
+    function toggleAutreCalendrier(checkbox) {
       var autre = document.getElementById('agenda-calendrier-autre');
-      if (autre) autre.style.display = sel.value === 'autre' ? 'block' : 'none';
+      if (autre) {
+        var autreChecked = document.querySelector('#page-agenda input[value="autre"]');
+        autre.style.display = (autreChecked && autreChecked.checked) ? 'block' : 'none';
+      }
     }
 
     async function genererCalendrier() {
       var niche = document.getElementById('agenda-niche').value.trim();
       var platform = document.getElementById('agenda-platform').value;
-      var calendrier = document.getElementById('agenda-calendrier');
-      var typeCalendrier = calendrier ? calendrier.value : 'gregorien';
-      if (typeCalendrier === 'autre') {
-        var autreChamp = document.getElementById('agenda-calendrier-autre');
-        typeCalendrier = autreChamp && autreChamp.value.trim() ? autreChamp.value.trim() : 'personnalisé';
-      }
-      if (!niche) { alert('Décrivez votre niche.'); return; }
-      var result = document.getElementById('agenda-result');
-      var resultText = document.getElementById('agenda-result-text');
-      result.style.display = 'block';
-      resultText.textContent = 'Génération en cours...';
-      result.scrollIntoView({ behavior: 'smooth' });
-      var duree = document.getElementById('agenda-duree').value;
+      // Récupérer tous les calendriers cochés
+      var cases = document.querySelectorAll('#page-agenda input[type="checkbox"]:checked');
+      var calendriersChoisis = [];
+      cases.forEach(function(c) { calendriersChoisis.push(c.value); });
+      if (calendriersChoisis.length === 0) calendriersChoisis = ['gregorien'];
 
-      // Construire le prompt avec le calendrier culturel
-      var promptCalendrier = '';
       var labelsCalendriers = {
         'gregorien': 'grégorien standard',
-        'lunaire': 'lunaire — inclure les phases de lune (nouvelle lune, pleine lune)',
-        'liturgique-catholique': 'liturgique catholique — inclure les fêtes, saints et temps liturgiques',
+        'lunaire': 'lunaire (phases de lune)',
+        'liturgique-catholique': 'liturgique catholique (saints, fêtes)',
         'liturgique-orthodoxe': 'liturgique orthodoxe',
-        'hebraique': 'hébraïque — inclure Shabbat, fêtes juives (Rosh Hashana, Yom Kippour, Hanoukka...)',
-        'islamique': 'islamique — inclure Ramadan, Aïd el-Fitr, Aïd el-Adha, Mouharram...',
-        'bouddhiste': 'bouddhiste — inclure Vesak, Asalha Puja...',
-        'chinois': 'chinois — inclure Nouvel An lunaire chinois, fête des Lanternes...',
-        'ethiopien': 'éthiopien — inclure Timkat, Meskel, Enkutatash...',
-        'hindou': 'hindou — inclure Diwali, Holi, Navaratri...',
-        'africain-traditionnel': 'traditionnel africain — inclure les saisons, fêtes des ancêtres, cycles agricoles',
-        'solaire': 'solaire — inclure solstices d\'été et d\'hiver, équinoxes de printemps et d\'automne',
-        'celtique': 'celtique — inclure Samhain, Imbolc, Beltane, Lughnasadh et les fêtes des 8 sabbats',
-        'paganisme': 'paganisme et Wicca — inclure les 8 sabbats (roue de l\'année) et les ésbats lunaires',
-        'maya': 'maya — inclure les cycles du Tzolkin et du Haab, les jours sacrés',
-        'japonais': 'japonais — inclure Hanami (cerisiers), Tanabata, Obon, Shichi-Go-San, Setsubun...',
-        'coreen': 'coréen — inclure Chuseok, Seollal, Dano, Jeongwol Daeboreum...',
-        'persan': 'persan — inclure Nowruz (Nouvel An persan), Yalda, Chaharshanbe Suri...',
-        'vodou': 'vodou et traditions de la diaspora africaine — inclure les fêtes des loas, jours des ancêtres'
+        'hebraique': 'hébraïque (Shabbat, Rosh Hashana, Yom Kippour...)',
+        'islamique': 'islamique (Ramadan, Aïd el-Fitr, Aïd el-Adha...)',
+        'bouddhiste': 'bouddhiste', 'chinois': 'chinois (Nouvel An lunaire...)',
+        'ethiopien': 'éthiopien (Timkat, Meskel...)', 'hindou': 'hindou (Diwali, Holi...)',
+        'africain-traditionnel': 'traditionnel africain (saisons, ancêtres)',
+        'solaire': 'solaire (solstices, équinoxes)', 'celtique': 'celtique (Samhain, Imbolc, Beltane, Lughnasadh)',
+        'paganisme': 'paganisme/Wicca (8 sabbats)', 'maya': 'maya (Tzolkin, Haab)',
+        'japonais': 'japonais (Hanami, Tanabata, Obon...)', 'coreen': 'coréen (Chuseok, Seollal...)',
+        'persan': 'persan (Nowruz...)', 'vodou': 'vodou et diaspora africaine',
+        'autre': (document.getElementById('agenda-calendrier-autre') && document.getElementById('agenda-calendrier-autre').value) || 'personnalisé'
       };
-      promptCalendrier = labelsCalendriers[typeCalendrier] || 'grégorien';
+      var promptCalendrier = calendriersChoisis.map(function(c) { return labelsCalendriers[c] || c; }).join(' + ');
 
       var prompt = 'Génère un calendrier éditorial de ' + duree + ' pour une personne dont la niche est : "' + niche + '", sur ' + platform + '. Calendrier culturel utilisé : ' + promptCalendrier + '. Propose 7 à 10 idées de contenu en tenant compte des dates importantes de ce calendrier. Pour chaque idée : date suggérée, titre accrocheur, format recommandé (post/reel/story...), et une phrase d\'accroche. Sois créatif et précis.';
 
