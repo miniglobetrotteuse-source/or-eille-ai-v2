@@ -1399,8 +1399,15 @@
         if (!SR) return;
         var r = new SR();
         r.lang = 'fr-FR';
-        r.continuous = false;
-        r.onresult = function(e) { callback(e.results[0][0].transcript.toLowerCase().trim()); };
+        r.continuous = true;
+        r.interimResults = false;
+        r.onresult = function(e) {
+          var dit = e.results[e.results.length - 1][0].transcript.toLowerCase().trim();
+          if (dit) {
+            r.stop();
+            callback(dit);
+          }
+        };
         r.onerror = function() { callback(''); };
         r.start();
       }
@@ -1502,8 +1509,8 @@
           if (!dejaVenu) {
             localStorage.setItem('moe_visite', '1');
             dejaVenu = '1';
-            parler("Bienvenue sur Or Eille A I. Je vais vous aider à configurer votre profil.");
-            setTimeout(function() { showPage('profil'); }, 4000);
+            // bienvenue dit via PAGE_WELCOME profil
+            showPage('profil');
           } else {
             showPage('profil');
           }
