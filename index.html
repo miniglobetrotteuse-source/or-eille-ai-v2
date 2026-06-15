@@ -1271,8 +1271,20 @@
           case 'hebraique':
             lines.push('✡️ Hébraïque : ' + getSituationHebraique(aujourd));
             break;
+          case 'ethiopien':
+            lines.push('🇪🇹 ' + getSituationEthiopien(aujourd));
+            break;
+          case 'chinois':
+            lines.push('🐉 ' + getSituationChinois(aujourd));
+            break;
+          case 'hindou':
+            lines.push('🕉️ Hindou — Diwali 2026 : ~19 oct. Holi 2026 : ~3 mars. Navaratri : ~14 oct.');
+            break;
+          case 'africain-traditionnel':
+            lines.push('🌍 Traditionnel africain — saisons, cycles lunaires et agricoles selon ta région');
+            break;
           case 'solaire':
-            lines.push('☀️ Solaire : ' + getSituationSolaire(aujourd));
+            lines.push('☀️ ' + getSituationSolaire(aujourd));
             break;
           case 'celtique':
             lines.push('🍀 Celtique : ' + getSituationCeltique(aujourd));
@@ -1288,43 +1300,82 @@
 
     function getSituationCatholique(d) {
       var mois = d.getMonth() + 1, jour = d.getDate();
-      if (mois === 12 && jour >= 1 && jour <= 24) return 'Temps de l\'Avent — préparation à Noël';
-      if (mois === 12 && jour >= 25) return '🎄 Temps de Noël';
-      if (mois === 1 && jour <= 6) return '🎄 Temps de Noël';
-      if (mois === 2 && jour >= 14 && jour <= 20) return 'Semaine du Carême (début ~Mi-février)';
-      if (mois === 4 && jour <= 20) return '✝️ Semaine Sainte / Pâques';
-      return 'Temps ordinaire';
+      // Temps ordinaire semaine (approximatif)
+      var debutAnnee = new Date(d.getFullYear(), 0, 6); // Épiphanie
+      var semaines = Math.floor((d - debutAnnee) / (7 * 24 * 3600 * 1000));
+      if (mois === 11 && jour >= 27 || mois === 12 && jour <= 24) return 'Temps de l\'Avent — préparation à Noël (4 semaines)';
+      if (mois === 12 && jour >= 25 || mois === 1 && jour <= 6) return '🎄 Temps de Noël';
+      if (mois === 3 && jour >= 1 && jour <= 14) return '✝️ Carême en cours — préparation à Pâques';
+      if (mois === 3 && jour >= 15 && jour <= 30 || mois === 4 && jour <= 5) return '✝️ Semaine Sainte approche — Pâques le 5 avril 2026';
+      if (mois === 4 && jour >= 5 && jour <= 19) return '🌅 Temps Pascal — 50 jours après Pâques';
+      return 'Temps ordinaire — semaine ' + Math.max(1, semaines - 5);
     }
 
     function getSituationIslamique(d) {
-      // Approximatif — le calendrier islamique est lunaire et se décale chaque année
-      return 'Consulte le calendrier islamique de l\'année en cours pour les dates exactes du Ramadan et de l\'Aïd';
+      // Ramadan 2026 : environ 18 février au 19 mars 2026
+      // Aïd el-Fitr : ~20 mars 2026
+      // Aïd el-Adha : ~27 mai 2026
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      if (mois === 2 && jour >= 18 || mois === 3 && jour <= 19) return '🌙 Ramadan 2026 (18 fév - 19 mars) — mois de jeûne et de spiritualité';
+      if (mois === 3 && jour >= 20 && jour <= 25) return '🎉 Aïd el-Fitr 2026 (~20 mars) — fin du Ramadan, fête';
+      if (mois === 5 && jour >= 25 || mois === 6 && jour <= 2) return '🐑 Aïd el-Adha 2026 (~27 mai) — fête du sacrifice';
+      if (mois === 7 && jour >= 18) return '🗓️ Mouharram approche (Nouvel An islamique ~18 juillet 2026)';
+      return 'Calendrier islamique 2026 — 1447/1448 Hijri';
     }
 
     function getSituationHebraique(d) {
       var mois = d.getMonth() + 1, jour = d.getDate();
-      if (mois === 9 && jour >= 15 && jour <= 24) return '🍎 Rosh Hashana / Yom Kippour';
-      if (mois === 12 && jour >= 1 && jour <= 31) return '🕎 Hanoukka approche';
-      if (mois === 3 || mois === 4) return '🪬 Pessah (Pâque juive) — période';
-      return 'Consulte le calendrier hébraïque pour les fêtes exactes';
+      // Année hébraïque 5786-5787
+      if (mois === 4 && jour >= 1 && jour <= 9 || mois === 3 && jour >= 25) return '🪬 Pessah 2026 (Pâque juive) — 1er au 9 avril';
+      if (mois === 9 && jour >= 12 && jour <= 14) return '🍎 Rosh Hashana 2026 (Nouvel An juif) — 12 sept 5787';
+      if (mois === 9 && jour >= 21 && jour <= 22) return '🤍 Yom Kippour 2026 — 21 sept';
+      if (mois === 9 && jour >= 26 || mois === 10 && jour <= 3) return '🌿 Souccot 2026 — 26 sept au 3 oct';
+      if (mois === 12 && jour >= 14 || mois === 1 && jour <= 14) return '🕎 Hanoukka 2026 — 14 déc au 22 déc';
+      return 'Calendrier hébraïque — année 5786';
     }
 
     function getSituationSolaire(d) {
       var mois = d.getMonth() + 1, jour = d.getDate();
-      if (mois === 6 && jour >= 18 && jour <= 24) return '☀️ Solstice d\'été le 21 juin — pic d\'énergie solaire';
-      if (mois === 12 && jour >= 18 && jour <= 24) return '❄️ Solstice d\'hiver le 21 décembre — nuit la plus longue';
-      if (mois === 3 && jour >= 18 && jour <= 24) return '🌸 Équinoxe de printemps le 20 mars';
-      if (mois === 9 && jour >= 20 && jour <= 26) return '🍂 Équinoxe d\'automne le 22 septembre';
-      return 'Prochain solstice ou équinoxe — consulte le calendrier solaire';
+      if (mois === 6 && jour >= 15 && jour <= 22) return '☀️ Solstice d\'été le 21 juin 2026 — dans ' + (21 - jour) + ' jours. Pic d\'énergie solaire, nuit la plus courte.';
+      if (mois === 6 && jour > 22) return '☀️ Solstice d\'été passé le 21 juin. Jours qui raccourcissent.';
+      if (mois === 12 && jour >= 15 && jour <= 22) return '❄️ Solstice d\'hiver le 21 déc — dans ' + (21 - jour) + ' jours. Nuit la plus longue.';
+      if (mois === 3 && jour >= 15 && jour <= 22) return '🌸 Équinoxe de printemps le 20 mars 2026 — dans ' + (20 - jour) + ' jours.';
+      if (mois === 9 && jour >= 18 && jour <= 25) return '🍂 Équinoxe d\'automne le 22 sept 2026 — dans ' + (22 - jour) + ' jours.';
+      return '☀️ Solaire — prochain : Solstice d\'été le 21 juin 2026';
     }
 
     function getSituationCeltique(d) {
       var mois = d.getMonth() + 1, jour = d.getDate();
-      if (mois === 10 && jour >= 25 || mois === 11 && jour <= 2) return '🎃 Samhain (31 oct) — passage entre les mondes';
-      if (mois === 1 && jour >= 30 || mois === 2 && jour <= 4) return '🌱 Imbolc (1er fév) — début du printemps celtique';
-      if (mois === 4 && jour >= 28 || mois === 5 && jour <= 3) return '🔥 Beltane (1er mai) — fête du feu et de la fertilité';
-      if (mois === 7 && jour >= 29 || mois === 8 && jour <= 4) return '🌾 Lughnasadh (1er août) — récoltes';
-      return 'Période entre deux sabbats celtiques';
+      if (mois === 10 && jour >= 28 || mois === 11 && jour <= 2) return '🎃 Samhain 31 oct — passage entre les mondes, ancêtres honorés';
+      if (mois === 1 && jour >= 29 || mois === 2 && jour <= 4) return '🌱 Imbolc 1er fév — retour de la lumière, Brigid, début du printemps celtique';
+      if (mois === 4 && jour >= 28 || mois === 5 && jour <= 3) return '🔥 Beltane 1er mai — fête du feu, fertilité, union';
+      if (mois === 7 && jour >= 29 || mois === 8 && jour <= 4) return '🌾 Lughnasadh 1er août — premières récoltes, assemblées';
+      if (mois === 6) return '🍀 Celtique — Solstice d\'été Litha le 21 juin approche (fête solaire)';
+      return '🍀 Celtique — entre deux sabbats. Prochain : Lughnasadh 1er août';
+    }
+
+    function getSituationEthiopien(d) {
+      // Calendrier éthiopien : 7-8 ans de retard, Nouvel An le 11 sept
+      var annee = d.getFullYear() - 8;
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      // Conversion approximative du mois éthiopien
+      var moisEth = ['Meskerem','Tekemet','Hedar','Tahsas','Ter','Yekatit','Megabit','Miyazya','Ginbot','Sene','Hamle','Nehase','Pagume'];
+      var idxMois = ((mois - 9) + 13) % 13;
+      var nomMois = moisEth[idxMois];
+      if (mois === 1 && jour >= 7 && jour <= 20) return '✨ Timkat (Épiphanie éthiopienne) — 19 janv. Grande fête orthodoxe';
+      if (mois === 9 && jour >= 26 && jour <= 28) return '✨ Meskel — 27 sept. Fête de la Vraie Croix';
+      if (mois === 9 && jour >= 11 && jour <= 12) return '🎉 Enkutatash — Nouvel An éthiopien ! An ' + annee;
+      return '🇪🇹 Éthiopien — ' + jour + ' ' + nomMois + ' ' + annee + ' (an ' + annee + ' EC)';
+    }
+
+    function getSituationChinois(d) {
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      // Signe zodiaque chinois 2026 = Cheval de Feu (mais 2026 est Cheval selon cycle 12 ans — 2014+12)
+      // Nouvel An chinois 2026 : 17 février 2026
+      if (mois === 2 && jour >= 14 && jour <= 20) return '🐉 🎉 Nouvel An chinois 2026 le 17 fév — Année du Cheval';
+      if (mois === 6) return '🏮 Dragon Boat Festival — 5ème jour du 5ème mois lunaire (environ 20 juin 2026)';
+      if (mois === 9 || mois === 10 && jour <= 6) return '🥮 Fête de la Lune (Mid-Autumn) — 2026 : environ 25 sept';
+      return '🐉 Calendrier lunaire chinois — Année du Cheval 4724';
     }
 
     async function genererCalendrier() {
