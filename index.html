@@ -1350,7 +1350,6 @@
       }
     }
 
-    var _guideProfilEnCours = false;
 
     function guideProfil() {
       if (!guideVocal) return;
@@ -1440,7 +1439,7 @@
                 var nom = elNom.value.trim();
 
                 // Q3 — Alter ego ou agent
-                dire("Pour toi, ton assistant est ton alter ego — le pinceau de ta créativité — ou ton agent, ton assistant personnel ? Dis alter ego ou agent.", function() {
+                dire("Pour toi, ton assistant est ton alter ego créatif — le pinceau de ta créativité. Ou il est ton agent, ton assistant personnel. Dis alter ego ou agent.", function() {
                   ecouter(function(dit) {
                     var confirmation;
                     if (dit.includes('agent')) {
@@ -1818,14 +1817,12 @@
                 if (dit2.includes('malvoy') && theme) theme.value = 'contraste';
                 if (dit2.includes('neurodiv') && theme) theme.value = 'neurodivergent';
                 dire("Parfait. Je sauvegarde tout ça.", function() {
-                  _guideProfilEnCours = false;
                   sauvegarderProfil();
                 });
               });
             });
           } else {
             dire("Très bien. Je sauvegarde ton profil.", function() {
-              _guideProfilEnCours = false;
               sauvegarderProfil();
             });
           }
