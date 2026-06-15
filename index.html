@@ -1107,6 +1107,8 @@
         <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="berbere" onclick="afficherSituation()"> 🌵 Berbère / Amazigh (Yennayer)</label>
         <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="julien" onclick="afficherSituation()"> ✝️ Julien (orthodoxes slaves)</label>
         <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="azteque" onclick="afficherSituation()"> 🦅 Aztèque / Mexica</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="maori" onclick="afficherSituation()"> 🌿 Maori / Aotearoa (Matariki)</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="aborigene" onclick="afficherSituation()"> 🪃 Aborigène australien (6 saisons)</label>
       </div>
       <div id="agenda-situation" style="display:none;background:#F7F4EF;border-radius:10px;padding:12px;margin-top:10px;font-family:'Basteleur',serif;font-size:0.82rem;color:#1A3A8F;line-height:1.6;"></div>
       <input type="text" id="agenda-calendrier-autre" placeholder="Décris ton calendrier ou ta tradition..." style="display:none;width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;margin-top:8px;box-sizing:border-box;">
@@ -1126,6 +1128,12 @@
           <option value="5.5">🇮🇳 Inde (UTC+5:30)</option>
           <option value="8">🇨🇳 Chine / Singapour (UTC+8)</option>
           <option value="9">🇯🇵 Japon / Corée (UTC+9)</option>
+          <option value="10">🇦🇺 Sydney / Melbourne (UTC+10/+11)</option>
+          <option value="10">🇦🇺 Brisbane / Queensland (UTC+10, pas d'heure d'été)</option>
+          <option value="9.5">🇦🇺 Adélaïde / Darwin (UTC+9:30/+10:30)</option>
+          <option value="12">🇳🇿 Auckland / Wellington (UTC+12/+13)</option>
+          <option value="13">🌺 Samoa / Tonga / Fidji (UTC+13)</option>
+          <option value="-10">🌺 Hawaï (UTC-10)</option>
         </select>
         <div id="agenda-heure-audience" style="margin-top:6px;font-family:'Basteleur',serif;font-size:0.8rem;color:#E0B020;font-style:italic;"></div>
       </div>
@@ -1360,8 +1368,23 @@
           case 'hindou':
             lines.push('🕉️ Hindou — Diwali 2026 : ~19 oct. Holi 2026 : ~3 mars. Navaratri : ~14 oct.');
             break;
+          case 'japonais':
+            lines.push('⛩️ ' + getSituationJaponais(aujourd));
+            break;
+          case 'coreen':
+            lines.push('🎋 ' + getSituationCoreen(aujourd));
+            break;
+          case 'persan':
+            lines.push('🌸 ' + getSituationPersan(aujourd));
+            break;
+          case 'vodou':
+            lines.push('🥁 ' + getSituationVodou(aujourd));
+            break;
+          case 'maya':
+            lines.push('🌺 ' + getSituationMaya(aujourd));
+            break;
           case 'africain-traditionnel':
-            lines.push('🌍 Traditionnel africain — saisons, cycles lunaires et agricoles selon ta région');
+            lines.push('🌍 ' + getSituationAfricainTrad(aujourd));
             break;
           case 'copte':
             lines.push('☩ ' + getSituationCopte(aujourd));
@@ -1377,6 +1400,12 @@
             break;
           case 'tibetain':
             lines.push('🏔️ Tibétain — Losar (Nouvel An tibétain) 2026 : ~28 février. An 2153 du calendrier tibétain.');
+            break;
+          case 'maori':
+            lines.push('🌿 ' + getSituationMaori(aujourd));
+            break;
+          case 'aborigene':
+            lines.push('🪃 ' + getSituationAborigene(aujourd));
             break;
           case 'azteque':
             lines.push('🦅 Aztèque/Mexica — Tonalpohualli : cycle de 260 jours. Xiuhpohualli : 365 jours. Consulte un calculateur pour le jour exact.');
@@ -1394,6 +1423,121 @@
 
       zone.innerHTML = '<strong>Où on en est aujourd\'hui :</strong><br>' + lines.join('<br>');
       zone.style.display = 'block';
+    }
+
+    function getSituationJaponais(d) {
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      // 2026 = Reiwa 8 (令和8年), Année du Cheval
+      if (mois === 1 && jour === 1) return '⛩️ Shōgatsu — Nouvel An japonais. Reiwa 8, Année du Cheval';
+      if (mois === 2 && jour === 3) return '⛩️ Setsubun — fête de la purification, chasse aux démons';
+      if (mois >= 3 && mois <= 4) return '🌸 Hanami — saison des cerisiers en fleurs (mars-avril). Contenu idéal : beauté éphémère, printemps';
+      if (mois === 5 && jour >= 3 && jour <= 5) return '🎏 Golden Week japonaise (3-5 mai) — semaine de congés nationaux';
+      if (mois === 6) return '🌧️ Tsuyu — saison des pluies au Japon (juin-mi juillet). Tanabata fête des étoiles le 7 juillet approche';
+      if (mois === 7 && jour === 7) return '🎋 Tanabata — fête des étoiles. Souhaits écrits sur des papiers colorés';
+      if (mois === 8 && jour >= 13 && jour <= 16) return '👻 Obon — fête des ancêtres, retour des esprits. Danses Bon Odori';
+      if (mois === 11 && jour === 15) return '🎎 Shichi-Go-San — fête des enfants de 3, 5 et 7 ans';
+      return '⛩️ Japonais — Reiwa 8 (令和8年), Année du Cheval. Aujourd\'hui : ' + jour + '/' + mois + '/Reiwa 8';
+    }
+
+    function getSituationCoreen(d) {
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      // 2026 = 4359 selon calendrier dangun
+      if (mois === 1 && jour >= 28 && jour <= 30 || mois === 2 && jour <= 1) return '🎊 Seollal — Nouvel An lunaire coréen (28 jan 2026). Repas de tteokguk, hanboks';
+      if (mois === 3 && jour === 1) return '🇰🇷 Samil jeol — fête nationale du Mouvement d\'Indépendance (1er mars)';
+      if (mois === 5 && jour === 5) return '👶 Eorininal — fête des enfants (5 mai, férié)';
+      if (mois === 10 && jour >= 2 && jour <= 4) return '🌾 Chuseok — fête des récoltes et des ancêtres. Équivalent coréen de Thanksgiving';
+      if (mois === 10 && jour === 3) return '🇰🇷 Gaecheonjeol — fête nationale de la fondation du royaume Gojoseon (2333 av. J.-C.)';
+      return '🎋 Coréen — an 4359 (calendrier Dangun). Prochain : Chuseok (récoltes) en octobre';
+    }
+
+    function getSituationPersan(d) {
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      // 5 juin 2026 = 15 Khordad 1405 SH (source Wikipedia)
+      // 15 juin = 25 Khordad 1405
+      var jourPersan = jour + 10; // approximation pour juin
+      if (mois === 3 && jour >= 20 && jour <= 23) return '🌸 Nowruz — Nouvel An persan (20-21 mars). 13 jours de célébration. An 1405 SH';
+      if (mois === 4 && jour === 1) return '🌿 Sizdah Bedar — 13e jour du Nowruz, pique-nique dans la nature';
+      if (mois === 6) return '🌸 Persan — 25 Khordad 1405 SH. Mois de Khordad (beauté, perfection)';
+      if (mois === 12 && jour >= 19 && jour <= 22) return '🕯️ Yalda — nuit la plus longue (solstice d\'hiver). Poèmes de Hafez, grenades, pastèques';
+      if (mois === 3 && jour >= 17 && jour <= 20) return '🔥 Chaharshanbe Suri — fête du feu, veille du Nowruz';
+      return '🌸 Persan / Iranien — an 1405 SH (Shamsi Hijri). Nowruz : 20 mars. Yalda : 21 déc';
+    }
+
+    function getSituationVodou(d) {
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      // Calendrier vodou haïtien — fêtes des loas liées au calendrier catholique
+      if (mois === 1 && jour === 1) return '🥁 1er jan — Indépendance haïtienne + Cérémonie Legba et Ayizan. Ouverture de l\'année spirituelle';
+      if (mois === 1 && jour === 6) return '🥁 6 jan (Épiphanie) — Fête de Legba, gardien des chemins et carrefours';
+      if (mois === 3 && jour === 19) return '🥁 19 mars (St Joseph) — Cérémonie Legba sur 2 jours';
+      if (mois === 3 && jour === 20) return '🥁 20 mars — Legba Zaou';
+      if (mois === 3 && jour === 25) return '🥁 25 mars (Annonciation) — Loko, loa de la médecine et des feuilles';
+      if (mois === 4 && jour === 29) return '🥁 29 avr — Kase Kannari, cérémonie pour les âmes du purgatoire';
+      if (mois === 4 && jour === 30) return '🥁 30 avr — Manger-les-morts, offrandes aux défunts';
+      if (mois === 6 && jour === 24) return '🥁 24 juin (St Jean) — Pèlerinage dans les paroisses dédiées';
+      if (mois === 6 && jour === 28) return '🥁 28 juin — Hommage à Erzulie, table de victuailles en son honneur';
+      if (mois === 7 && jour === 16) return '🥁 16 juillet — Pèlerinage à Saut d\'Eau, Notre-Dame du Mont Carmel';
+      if (mois === 7 && jour === 25) return '🥁 25 juillet (St Jacques) — Papa Ogou, loa guerrier. Pèlerinage à la Grande Rivière du Nord';
+      if (mois === 7 && jour === 26) return '🥁 26 juillet (Ste Anne) — Gran\'Délai et Gran\'Aloumandia. Pèlerinage à Limonade';
+      if (mois === 8 && jour === 15) return '🥁 15 août (Assomption) — Erzulie Dantor, protectrice des enfants. Grand pèlerinage à Saut d\'Eau';
+      if (mois === 10 && jour >= 30 || mois === 11 && jour <= 2) return '🥁 1-2 nov — Fête des Guédé, esprits des morts. Barón Samdi, Maman Brigitte. Cimetières en fête';
+      return '🥁 Vodou — calendrier lié aux saints catholiques et aux loas. Prochain : ' + (mois < 7 ? 'Pèlerinage Saut d\'Eau 16 juillet' : 'Fête des Guédé 1er novembre');
+    }
+
+    function getSituationMaori(d) {
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      // Matariki 2026 : 10 juillet (jour férié NZ)
+      if (mois === 6 && jour >= 20 || mois === 7 && jour <= 9) return '🌟 Matariki approche — Nouvel An maori le 10 juillet 2026. Période de souvenir, de célébration et d\'aspiration. Observer les Pléiades à l\'aube';
+      if (mois === 7 && jour >= 10 && jour <= 15) return '🌟 Matariki 2026 — Nouvel An maori (10 juil). Honorer les disparus, célébrer le présent, planifier l\'avenir. Jour férié en Nouvelle-Zélande';
+      if (mois === 2 && jour === 6) return '🌿 Waitangi Day — Fête nationale NZ avec célébrations maories à Waitangi';
+      if (mois >= 6 && mois <= 8) return '🌟 Hiver maori — Maramataka (calendrier lunaire maori). Matariki le 10 juillet 2026';
+      return '🌿 Maori / Aotearoa — Maramataka (calendrier lunaire et stellaire). Matariki (Nouvel An) : 10 juillet 2026';
+    }
+
+    function getSituationAborigene(d) {
+      var mois = d.getMonth() + 1;
+      // Calendrier Nyoongar (6 saisons, Australie Occidentale — hémisphère sud)
+      // Birak: déc-jan, Bunuru: fév-mars, Djeran: avr-mai, Makuru: juin-juil, Djilba: août-sept, Kambarang: oct-nov
+      var saisons = {
+        12: { nom: 'Birak', desc: 'été sec, vent du nord, récolte de baies et reptiles' },
+        1:  { nom: 'Birak', desc: 'été sec, vent du nord, récolte de baies et reptiles' },
+        2:  { nom: 'Bunuru', desc: 'période la plus chaude, récolte des fruits de mer' },
+        3:  { nom: 'Bunuru', desc: 'période la plus chaude, récolte des fruits de mer' },
+        4:  { nom: 'Djeran', desc: 'automne, fourmis ailées, poissons et kangourous' },
+        5:  { nom: 'Djeran', desc: 'automne, fourmis ailées, poissons et kangourous' },
+        6:  { nom: 'Makuru', desc: 'hiver, pluies, reptiles hibernent, temps des cérémonies' },
+        7:  { nom: 'Makuru', desc: 'hiver, pluies, reptiles hibernent, temps des cérémonies' },
+        8:  { nom: 'Djilba', desc: 'fin d\'hiver, fleurs sauvages, orques en mer' },
+        9:  { nom: 'Djilba', desc: 'fin d\'hiver, fleurs sauvages, orques en mer' },
+        10: { nom: 'Kambarang', desc: 'printemps, fleurs, serpents actifs, récoltes abondantes' },
+        11: { nom: 'Kambarang', desc: 'printemps, fleurs, serpents actifs, récoltes abondantes' },
+      };
+      var s = saisons[mois];
+      return '🪃 Nyoongar (Australie) — Saison ' + s.nom + ' : ' + s.desc + '. Calendrier à 6 saisons. NAIDOC Week (fête nationale autochtone) : 1ère sem juillet 2026';
+    }
+
+    function getSituationMaya(d) {
+      // Calendrier Tzolkin : cycle de 260 jours
+      // Calendrier Haab : 365 jours, 18 mois de 20 jours + 5 jours Wayeb
+      // Référence : corrélation GMT (584283)
+      var refJulien = new Date(584283 - 2440588 + 2440588); // simplification
+      var today = d;
+      var diff = Math.floor((today - new Date(2026, 0, 1)) / 86400000);
+      var tzolkinJour = (diff % 260 + 260) % 260;
+      var nombresJour = (tzolkinJour % 13) + 1;
+      var joursNoms = ['Imix','Ik','Akbal','Kan','Chicchan','Cimi','Manik','Lamat','Muluc','Oc','Chuen','Eb','Ben','Ix','Men','Cib','Caban','Etznab','Cauac','Ahau'];
+      var nomJour = joursNoms[tzolkinJour % 20];
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      if (mois === 12 && jour === 21) return '🌺 Maya — Solstice d\'hiver : jour sacré majeur dans le calendrier maya';
+      return '🌺 Maya — Tzolkin : ' + nombresJour + ' ' + nomJour + '. Cycle Haab : mois ' + Math.floor(((diff + 196) % 365) / 20 + 1) + ' sur 18';
+    }
+
+    function getSituationAfricainTrad(d) {
+      var mois = d.getMonth() + 1;
+      // Saisons en Afrique subsaharienne (hémisphère nord)
+      if (mois >= 6 && mois <= 9) return '🌍 Saison des pluies (Afrique de l\'Ouest et Centrale). Période de fertilité et de travaux agricoles. Fêtes des premières pluies selon les traditions';
+      if (mois >= 11 || mois <= 2) return '🌍 Saison sèche / Harmattan. Période de rassemblements, mariages, cérémonies d\'initiation dans de nombreuses cultures';
+      if (mois >= 3 && mois <= 5) return '🌍 Fin de saison sèche. Préparation des champs. Fêtes des semailles selon les régions';
+      return '🌍 Traditionnel africain — cycles agricoles et lunaires. Fêtes varient selon ta région et ton ethnie. Indique ta culture pour plus de précision';
     }
 
     function getSituationCatholique(d) {
