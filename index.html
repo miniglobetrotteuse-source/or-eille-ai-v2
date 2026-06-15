@@ -1081,40 +1081,30 @@
       <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:8px;">🗓️ Mon calendrier</p>
       <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:10px;">Tu peux en choisir plusieurs</p>
       <div style="display:flex;flex-direction:column;gap:6px;max-height:250px;overflow-y:auto;padding:4px;">
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="gregorien" checked> 📅 Grégorien</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="lunaire"> 🌙 Lunaire</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="liturgique-catholique"> ✝️ Liturgique catholique</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="liturgique-orthodoxe"> ☦️ Liturgique orthodoxe</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="hebraique"> ✡️ Hébraïque</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="islamique"> ☪️ Islamique</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="bouddhiste"> ☸️ Bouddhiste</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="chinois"> 🐉 Chinois</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="ethiopien"> 🇪🇹 Éthiopien</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="hindou"> 🕉️ Hindou</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="africain-traditionnel"> 🌍 Traditionnel africain</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="solaire"> ☀️ Solaire</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="celtique"> 🍀 Celtique</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="paganisme"> 🌿 Paganisme / Wicca</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="maya"> 🌺 Maya</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="japonais"> ⛩️ Japonais</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="coreen"> 🎋 Coréen</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="persan"> 🌸 Persan / Nowruz</label>
-        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="vodou"> 🥁 Vodou / Diaspora africaine</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="gregorien" onchange="afficherSituation()" checked> 📅 Grégorien</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="lunaire" onchange="afficherSituation()"> 🌙 Lunaire</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="liturgique-catholique" onchange="afficherSituation()"> ✝️ Liturgique catholique</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="liturgique-orthodoxe" onchange="afficherSituation()"> ☦️ Liturgique orthodoxe</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="hebraique" onchange="afficherSituation()"> ✡️ Hébraïque</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="islamique" onchange="afficherSituation()"> ☪️ Islamique</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="bouddhiste" onchange="afficherSituation()"> ☸️ Bouddhiste</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="chinois" onchange="afficherSituation()"> 🐉 Chinois</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="ethiopien" onchange="afficherSituation()"> 🇪🇹 Éthiopien</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="hindou" onchange="afficherSituation()"> 🕉️ Hindou</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="africain-traditionnel" onchange="afficherSituation()"> 🌍 Traditionnel africain</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="solaire" onchange="afficherSituation()"> ☀️ Solaire</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="celtique" onchange="afficherSituation()"> 🍀 Celtique</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="paganisme" onchange="afficherSituation()"> 🌿 Paganisme / Wicca</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="maya" onchange="afficherSituation()"> 🌺 Maya</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="japonais" onchange="afficherSituation()"> ⛩️ Japonais</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="coreen" onchange="afficherSituation()"> 🎋 Coréen</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="persan" onchange="afficherSituation()"> 🌸 Persan / Nowruz</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="vodou" onchange="afficherSituation()"> 🥁 Vodou / Diaspora africaine</label>
         <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="autre" onchange="toggleAutreCalendrier(this)"> ✨ Autre</label>
       </div>
+      <div id="agenda-situation" style="display:none;background:#F7F4EF;border-radius:10px;padding:12px;margin-top:10px;font-family:'Basteleur',serif;font-size:0.82rem;color:#1A3A8F;line-height:1.6;"></div>
       <input type="text" id="agenda-calendrier-autre" placeholder="Décris ton calendrier ou ta tradition..." style="display:none;width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;margin-top:8px;box-sizing:border-box;">
     </div>
-    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;border-left:3px solid #E0B020;">
-      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:4px;">🌙 Phase lunaire actuelle</p>
-      <p id="agenda-moon" style="font-family:'Basteleur',serif;font-size:0.85rem;color:#2a2a2a;font-style:italic;"></p>
-    </div>
-
-    <!-- Événements proches -->
-    <div id="agenda-events-section" style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;display:none;">
-      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">📌 Événements dans les 30 prochains jours</p>
-      <div id="agenda-events"></div>
-    </div>
-
     <!-- Générer calendrier éditorial -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
       <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:4px;">✨ Générer mon calendrier éditorial</p>
@@ -1234,6 +1224,87 @@
         var autreChecked = document.querySelector('#page-agenda input[value="autre"]');
         autre.style.display = (autreChecked && autreChecked.checked) ? 'block' : 'none';
       }
+      afficherSituation();
+    }
+
+    function afficherSituation() {
+      var cases = document.querySelectorAll('#page-agenda input[type="checkbox"]:checked');
+      var zone = document.getElementById('agenda-situation');
+      if (!zone) return;
+      if (cases.length === 0) { zone.style.display = 'none'; return; }
+
+      var phase = calculerPhaseLunaire();
+      var aujourd = new Date();
+      var lines = [];
+
+      cases.forEach(function(c) {
+        switch(c.value) {
+          case 'lunaire':
+            lines.push('🌙 Lune : ' + phase.emoji + ' ' + phase.nom + ' en ' + phase.signe + ' — ' + phase.message);
+            break;
+          case 'liturgique-catholique':
+            lines.push('✝️ Catholique : ' + getSituationCatholique(aujourd));
+            break;
+          case 'islamique':
+            lines.push('☪️ Islamique : ' + getSituationIslamique(aujourd));
+            break;
+          case 'hebraique':
+            lines.push('✡️ Hébraïque : ' + getSituationHebraique(aujourd));
+            break;
+          case 'solaire':
+            lines.push('☀️ Solaire : ' + getSituationSolaire(aujourd));
+            break;
+          case 'celtique':
+            lines.push('🍀 Celtique : ' + getSituationCeltique(aujourd));
+            break;
+          default:
+            lines.push('📅 ' + c.value + ' sélectionné');
+        }
+      });
+
+      zone.innerHTML = '<strong>Où on en est aujourd\'hui :</strong><br>' + lines.join('<br>');
+      zone.style.display = 'block';
+    }
+
+    function getSituationCatholique(d) {
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      if (mois === 12 && jour >= 1 && jour <= 24) return 'Temps de l\'Avent — préparation à Noël';
+      if (mois === 12 && jour >= 25) return '🎄 Temps de Noël';
+      if (mois === 1 && jour <= 6) return '🎄 Temps de Noël';
+      if (mois === 2 && jour >= 14 && jour <= 20) return 'Semaine du Carême (début ~Mi-février)';
+      if (mois === 4 && jour <= 20) return '✝️ Semaine Sainte / Pâques';
+      return 'Temps ordinaire';
+    }
+
+    function getSituationIslamique(d) {
+      // Approximatif — le calendrier islamique est lunaire et se décale chaque année
+      return 'Consulte le calendrier islamique de l\'année en cours pour les dates exactes du Ramadan et de l\'Aïd';
+    }
+
+    function getSituationHebraique(d) {
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      if (mois === 9 && jour >= 15 && jour <= 24) return '🍎 Rosh Hashana / Yom Kippour';
+      if (mois === 12 && jour >= 1 && jour <= 31) return '🕎 Hanoukka approche';
+      if (mois === 3 || mois === 4) return '🪬 Pessah (Pâque juive) — période';
+      return 'Consulte le calendrier hébraïque pour les fêtes exactes';
+    }
+
+    function getSituationSolaire(d) {
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      if (mois === 6 && jour >= 18 && jour <= 24) return '☀️ Solstice d\'été le 21 juin — pic d\'énergie solaire';
+      if (mois === 12 && jour >= 18 && jour <= 24) return '❄️ Solstice d\'hiver le 21 décembre — nuit la plus longue';
+      if (mois === 3 && jour >= 18 && jour <= 24) return '🌸 Équinoxe de printemps le 20 mars';
+      if (mois === 9 && jour >= 20 && jour <= 26) return '🍂 Équinoxe d\'automne le 22 septembre';
+      return 'Prochain solstice ou équinoxe — consulte le calendrier solaire';
+    }
+
+    function getSituationCeltique(d) {
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      if (mois === 10 && jour >= 25 || mois === 11 && jour <= 2) return '🎃 Samhain (31 oct) — passage entre les mondes';
+      if (mois === 1 && jour >= 30 || mois === 2 && jour <= 4) return '🌱 Imbolc (1er fév) — début du printemps celtique';
+      if (mois === 4 && jour >= 28 || mois === 5 && jour <= 3) return '🔥 Beltane (1er mai) — fête du feu et de la fertilité';
+      if (mois === 7 && jour >= 29 || mois === 8 && jour <= 4) return '🌾 Lughnasadh (1er août) — récoltes';
+      return 'Période entre deux sabbats celtiques';
     }
 
     async function genererCalendrier() {
