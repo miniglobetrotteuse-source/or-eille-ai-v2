@@ -1080,7 +1080,7 @@
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
       <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:8px;">🗓️ Mon calendrier</p>
       <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:10px;">Choisis le calendrier qui correspond à ta culture et ta communauté</p>
-      <select id="agenda-calendrier" style="width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;">
+      <select id="agenda-calendrier" onchange="toggleAutreCalendrier(this)" style="width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;">
         <option value="gregorien">📅 Grégorien (standard international)</option>
         <option value="lunaire">🌙 Lunaire (nouvelles lunes, pleines lunes)</option>
         <option value="liturgique-catholique">✝️ Liturgique catholique (saints, fêtes)</option>
@@ -1100,7 +1100,9 @@
         <option value="coreen">🎋 Coréen (Chuseok, Seollal...)</option>
         <option value="persan">🌸 Persan / Nowruz</option>
         <option value="vodou">🥁 Vodou / Traditions diaspora africaine</option>
+        <option value="autre">✨ Autre — je décris mon calendrier</option>
       </select>
+      <input type="text" id="agenda-calendrier-autre" placeholder="Décris ton calendrier ou ta tradition..." style="display:none;width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;margin-top:8px;box-sizing:border-box;">
     </div>
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;border-left:3px solid #E0B020;">
       <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:4px;">🌙 Phase lunaire actuelle</p>
@@ -1204,11 +1206,20 @@
       document.getElementById('agenda-platform').value = plat;
     }
 
+    function toggleAutreCalendrier(sel) {
+      var autre = document.getElementById('agenda-calendrier-autre');
+      if (autre) autre.style.display = sel.value === 'autre' ? 'block' : 'none';
+    }
+
     async function genererCalendrier() {
       var niche = document.getElementById('agenda-niche').value.trim();
       var platform = document.getElementById('agenda-platform').value;
       var calendrier = document.getElementById('agenda-calendrier');
       var typeCalendrier = calendrier ? calendrier.value : 'gregorien';
+      if (typeCalendrier === 'autre') {
+        var autreChamp = document.getElementById('agenda-calendrier-autre');
+        typeCalendrier = autreChamp && autreChamp.value.trim() ? autreChamp.value.trim() : 'personnalisé';
+      }
       if (!niche) { alert('Décrivez votre niche.'); return; }
       var result = document.getElementById('agenda-result');
       var resultText = document.getElementById('agenda-result-text');
