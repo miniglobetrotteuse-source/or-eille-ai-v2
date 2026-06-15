@@ -1076,7 +1076,25 @@
   <div class="page" id="page-agenda" style="padding:20px;max-width:640px;margin:0 auto;">
     <h2 style="font-family:'Basteleur',serif;color:#E0B020;text-align:center;font-size:1.8rem;margin-bottom:24px;">Agenda</h2>
 
-    <!-- Phase de lune -->
+    <!-- Choix du calendrier -->
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:8px;">🗓️ Mon calendrier</p>
+      <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:10px;">Choisis le calendrier qui correspond à ta culture et ta communauté</p>
+      <select id="agenda-calendrier" style="width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;">
+        <option value="gregorien">📅 Grégorien (standard international)</option>
+        <option value="lunaire">🌙 Lunaire (nouvelles lunes, pleines lunes)</option>
+        <option value="liturgique-catholique">✝️ Liturgique catholique (saints, fêtes)</option>
+        <option value="liturgique-orthodoxe">☦️ Liturgique orthodoxe</option>
+        <option value="hebraique">✡️ Hébraïque (Shabbat, Rosh Hashana...)</option>
+        <option value="islamique">☪️ Islamique (Ramadan, Aïd...)</option>
+        <option value="bouddhiste">☸️ Bouddhiste</option>
+        <option value="chinois">🐉 Chinois (Nouvel An lunaire...)</option>
+        <option value="ethiopien">🇪🇹 Éthiopien</option>
+        <option value="hindou">🕉️ Hindou (Diwali, Holi...)</option>
+        <option value="africain-traditionnel">🌍 Traditionnel africain (saisons, ancêtres)</option>
+        <option value="solaire">☀️ Solaire (solstices, équinoxes)</option>
+      </select>
+    </div>
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;border-left:3px solid #E0B020;">
       <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:4px;">🌙 Phase lunaire actuelle</p>
       <p id="agenda-moon" style="font-family:'Basteleur',serif;font-size:0.85rem;color:#2a2a2a;font-style:italic;"></p>
@@ -1182,6 +1200,8 @@
     async function genererCalendrier() {
       var niche = document.getElementById('agenda-niche').value.trim();
       var platform = document.getElementById('agenda-platform').value;
+      var calendrier = document.getElementById('agenda-calendrier');
+      var typeCalendrier = calendrier ? calendrier.value : 'gregorien';
       if (!niche) { alert('Décrivez votre niche.'); return; }
       var result = document.getElementById('agenda-result');
       var resultText = document.getElementById('agenda-result-text');
@@ -1189,7 +1209,40 @@
       resultText.textContent = 'Génération en cours...';
       result.scrollIntoView({ behavior: 'smooth' });
       var duree = document.getElementById('agenda-duree').value;
-      await CALENDAR.generateIdeas(niche, platform, duree, true);
+
+      // Construire le prompt avec le calendrier culturel
+      var promptCalendrier = '';
+      var labelsCalendriers = {
+        'gregorien': 'grégorien standard',
+        'lunaire': 'lunaire — inclure les phases de lune (nouvelle lune, pleine lune)',
+        'liturgique-catholique': 'liturgique catholique — inclure les fêtes, saints et temps liturgiques',
+        'liturgique-orthodoxe': 'liturgique orthodoxe',
+        'hebraique': 'hébraïque — inclure Shabbat, fêtes juives (Rosh Hashana, Yom Kippour, Hanoukka...)',
+        'islamique': 'islamique — inclure Ramadan, Aïd el-Fitr, Aïd el-Adha, Mouharram...',
+        'bouddhiste': 'bouddhiste — inclure Vesak, Asalha Puja...',
+        'chinois': 'chinois — inclure Nouvel An lunaire chinois, fête des Lanternes...',
+        'ethiopien': 'éthiopien — inclure Timkat, Meskel, Enkutatash...',
+        'hindou': 'hindou — inclure Diwali, Holi, Navaratri...',
+        'africain-traditionnel': 'traditionnel africain — inclure les saisons, fêtes des ancêtres, cycles agricoles',
+        'solaire': 'solaire — inclure solstices d\'été et d\'hiver, équinoxes de printemps et d\'automne'
+      };
+      promptCalendrier = labelsCalendriers[typeCalendrier] || 'grégorien';
+
+      var prompt = 'Génère un calendrier éditorial de ' + duree + ' pour une personne dont la niche est : "' + niche + '", sur ' + platform + '. Calendrier culturel utilisé : ' + promptCalendrier + '. Propose 7 à 10 idées de contenu en tenant compte des dates importantes de ce calendrier. Pour chaque idée : date suggérée, titre accrocheur, format recommandé (post/reel/story...), et une phrase d\'accroche. Sois créatif et précis.';
+
+      try {
+        var r = await fetch('/api/claude', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ messages: [{role: 'user', content: prompt}] })
+        });
+        var d = await r.json();
+        var texte = (d.content && d.content[0] && d.content[0].text) ? d.content[0].text : 'Erreur de réponse.';
+        var html = texte.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+        resultText.innerHTML = html;
+      } catch(e) {
+        resultText.textContent = 'La connexion est momentanément indisponible.';
+      }
     }
 
     function planifierIdee() {
