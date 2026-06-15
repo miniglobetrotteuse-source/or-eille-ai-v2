@@ -1350,8 +1350,12 @@
       }
     }
 
+    var _guideProfilEnCours = false;
+
     function guideProfil() {
       if (!guideVocal) return;
+      if (_guideProfilEnCours) return; // déjà en cours
+      _guideProfilEnCours = true;
 
       var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -1463,6 +1467,7 @@
                           stopGlobalMic();
                           elAvatar.style.outline = '2px solid #1A3A8F';
                           dire("Parfait, tout est prêt. Je sauvegarde.", function() {
+                            _guideProfilEnCours = false;
                             sauvegarderProfil();
                           });
                         }
