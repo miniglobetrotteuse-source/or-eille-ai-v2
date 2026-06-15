@@ -152,14 +152,19 @@
   <div class="page" id="page-abonnement">
     <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;gap:32px;">
       <h2 style="font-family:'Basteleur',serif;font-size:2rem;color:#E0B020;">Choisissez votre formule</h2>
-      
-      <div style="display:flex;flex-direction:column;gap:20px;width:100%;max-width:500px;">
+
+      <!-- Coordonnées -->
+      <div style="width:100%;max-width:500px;display:flex;flex-direction:column;gap:8px;">
+        <input type="text" id="abo-prenom" placeholder="Prénom" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.95rem;box-sizing:border-box;">
+        <input type="text" id="abo-nom" placeholder="Nom" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.95rem;box-sizing:border-box;">
+        <input type="email" id="abo-email" placeholder="Email" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #e0d8cc;font-family:'Basteleur',serif;font-size:0.95rem;box-sizing:border-box;">
+      </div>
         
         <div style="background:white;border:2px solid #1A3A8F;border-radius:20px;padding:28px;text-align:center;">
           <div style="font-family:'Basteleur',serif;font-size:1.5rem;color:#1A3A8F;margin-bottom:8px;">Mensuel</div>
           <div style="font-family:'Basteleur',serif;font-size:2.5rem;color:#E0B020;margin-bottom:8px;">18€<span style="font-size:1rem;">/mois</span></div>
           <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;margin-bottom:20px;">Sans engagement · Résiliation à tout moment</div>
-          <a href="https://buy.stripe.com/8x2aEP64j4Xo0sDeIBbsc02" style="display:block;background:#1A3A8F;color:#E0B020;padding:14px 28px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;text-decoration:none;">S'abonner</a>
+          <a onclick="allerStripe('https://buy.stripe.com/8x2aEP64j4Xo0sDeIBbsc02')" href="#" style="display:block;background:#1A3A8F;color:#E0B020;padding:14px 28px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;text-decoration:none;">S'abonner</a>
         </div>
 
         <div style="background:white;border:2px solid #E0B020;border-radius:20px;padding:28px;text-align:center;position:relative;">
@@ -168,7 +173,7 @@
           <div style="font-family:'Basteleur',serif;font-size:2.5rem;color:#1A3A8F;margin-bottom:4px;">200€<span style="font-size:1rem;">/an</span></div>
           <div style="font-family:'Basteleur',serif;font-size:0.85rem;color:#E0B020;margin-bottom:4px;">soit 16,67€/mois</div>
           <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#E0B020;margin-bottom:20px;">16€ d'économie par rapport au mensuel · soit 16,67€/mois</div>
-          <a href="https://buy.stripe.com/fZu00b3Wb61sdfpeIBbsc03" style="display:block;background:#E0B020;color:#1A3A8F;padding:14px 28px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;text-decoration:none;">S'abonner</a>
+          <a onclick="allerStripe('https://buy.stripe.com/fZu00b3Wb61sdfpeIBbsc03')" href="#" style="display:block;background:#E0B020;color:#1A3A8F;padding:14px 28px;border-radius:50px;font-family:'Basteleur',serif;font-size:1rem;text-decoration:none;">S'abonner</a>
         </div>
 
       </div>
@@ -1513,8 +1518,11 @@
           if (!dejaVenu) {
             localStorage.setItem('moe_visite', '1');
             dejaVenu = '1';
+            // bienvenue dit via PAGE_WELCOME profil
+            showPage('profil');
+          } else {
+            showPage('profil');
           }
-          // showPage deja declenche par le premier listener ci-dessus
         });
       }
 
@@ -1787,13 +1795,7 @@
         msg.className = 'message assistant';
         msg.innerHTML = html;
         messages.appendChild(msg);
-        var reponseNette = reponse.replace(/[*][*]/g, '').replace(/[*]/g, '');
-        speak(reponseNette);
-        // Mode conversation : relancer le micro apres que la voix ait fini de parler
-        if (guideVocal) {
-          var duree = Math.max(1500, reponseNette.length * 65);
-          setTimeout(function() { if (!isRecording) startMic(); }, duree);
-        }
+        speak(reponse.replace(/\*\*/g, '').replace(/\*/g, ''));
       } catch(e) {
         thinking.remove();
         var err = document.createElement('div');
@@ -1870,7 +1872,8 @@
         var texteComplet = intro + " Qu'est-ce que tu veux créer aujourd'hui ?";
         msg.textContent = texteComplet;
         msg.style.color = mode === "alter_ego" ? "#E0B020" : "#1A3A8F";
-        // La voix est geree par showPage('assistant') pour eviter le doublon
+        // Dire à voix haute
+        setTimeout(function() { parler(texteComplet); }, 500);
       }
 
       // Titre assistant personnalisé
@@ -1881,6 +1884,16 @@
       }
 
       showPage('assistant');
+    }
+
+    function allerStripe(url) {
+      var email = document.getElementById('abo-email');
+      if (!email || !email.value || !email.value.includes('@')) {
+        alert('Merci d\'entrer ton adresse email avant de continuer.');
+        return false;
+      }
+      window.open(url + '?prefilled_email=' + encodeURIComponent(email.value), '_blank');
+      return false;
     }
 
     function setGuideVocal(actif) {
