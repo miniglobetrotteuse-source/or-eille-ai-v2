@@ -1171,12 +1171,34 @@
 
   <script>
     // Initialiser l'agenda au chargement
-    function initAgenda() {
-      if (!window.CALENDAR) return;
+    function calculerPhaseLunaire() {
+      // Calcul basé sur la nouvelle lune de référence : 15 juin 2026
+      var ref = new Date(2026, 5, 15); // nouvelle lune connue
+      var now = new Date();
+      var diff = (now - ref) / (1000 * 60 * 60 * 24);
+      var cycle = 29.53;
+      var age = ((diff % cycle) + cycle) % cycle;
 
-      // Phase de lune
+      var signes = ['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance','Scorpion','Sagittaire','Capricorne','Verseau','Poissons'];
+      var signe = signes[Math.floor((age / cycle) * 12) % 12];
+
+      if (age < 1.85) return { emoji: '🌑', nom: 'Nouvelle Lune', signe: signe, message: 'Moment idéal pour poser de nouvelles intentions, lancer un projet, repartir à zéro.' };
+      if (age < 7.38) return { emoji: '🌒', nom: 'Premier croissant', signe: signe, message: 'Énergie de croissance. Bon moment pour initier, communiquer, semer.' };
+      if (age < 9.22) return { emoji: '🌓', nom: 'Premier quartier', signe: signe, message: 'Action et décision. Surmontez les obstacles, passez à l\'action.' };
+      if (age < 14.77) return { emoji: '🌔', nom: 'Lune gibbeuse croissante', signe: signe, message: 'Affinez, ajustez, préparez-vous pour le pic d\'énergie.' };
+      if (age < 16.61) return { emoji: '🌕', nom: 'Pleine Lune', signe: signe, message: 'Pic d\'énergie et d\'émotions. Célébrez, publiez, rendez visible.' };
+      if (age < 22.15) return { emoji: '🌖', nom: 'Lune gibbeuse décroissante', signe: signe, message: 'Gratitude et partage. Récoltez ce que vous avez semé.' };
+      if (age < 24) return { emoji: '🌗', nom: 'Dernier quartier', signe: signe, message: 'Lâcher prise, faire le bilan, clore des cycles.' };
+      return { emoji: '🌘', nom: 'Dernier croissant', signe: signe, message: 'Repos et introspection. Préparez-vous à la prochaine nouvelle lune.' };
+    }
+
+    function initAgenda() {
+      // Phase de lune du jour
       var moon = document.getElementById('agenda-moon');
-      if (moon) moon.textContent = CALENDAR.getMoonPhase();
+      if (moon) {
+        var phase = calculerPhaseLunaire();
+        moon.innerHTML = phase.emoji + ' <strong>' + phase.nom + '</strong> en ' + phase.signe + '<br><span style="font-size:0.8rem;opacity:0.7;">' + phase.message + '</span>';
+      }
 
       // Événements proches
       var events = CALENDAR.getUpcomingEvents();
