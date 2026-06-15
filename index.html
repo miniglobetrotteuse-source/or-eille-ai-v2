@@ -1263,7 +1263,11 @@
       };
       var promptCalendrier = calendriersChoisis.map(function(c) { return labelsCalendriers[c] || c; }).join(' + ');
 
-      var prompt = 'Génère un calendrier éditorial de ' + duree + ' pour une personne dont la niche est : "' + niche + '", sur ' + platform + '. Calendrier culturel utilisé : ' + promptCalendrier + '. Propose 7 à 10 idées de contenu en tenant compte des dates importantes de ce calendrier. Pour chaque idée : date suggérée, titre accrocheur, format recommandé (post/reel/story...), et une phrase d\'accroche. Sois créatif et précis.';
+      var aujourd_hui = new Date();
+      var dateStr = aujourd_hui.toLocaleDateString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'});
+      var phaseLune = calculerPhaseLunaire();
+
+      var prompt = 'Génère un calendrier éditorial de ' + duree + ' pour une personne dont la niche est : "' + niche + '", sur ' + platform + '.\n\nAujourd\'hui : ' + dateStr + '.\nPhase lunaire actuelle : ' + phaseLune.nom + ' en ' + phaseLune.signe + '.\nCalendriers culturels choisis : ' + promptCalendrier + '.\n\nIMPORTANT : Identifie et intègre dans le calendrier toutes les dates importantes qui tombent dans cette période selon les calendriers choisis (pleines lunes, nouvelles lunes, solstices, fêtes religieuses ou culturelles, équinoxes...). Pour chaque date importante, propose un contenu spécifique en lien avec cet événement.\n\nPour chaque idée : date précise, 🗓 l\'événement s\'il y en a un ce jour-là, titre accrocheur, format recommandé (post/reel/story/carrousel...), et une phrase d\'accroche percutante. Sois créatif, précis et concret.';
 
       try {
         var r = await fetch('/api/claude', {
