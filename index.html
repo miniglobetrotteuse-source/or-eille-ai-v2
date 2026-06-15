@@ -109,6 +109,10 @@
       <img class="hero-logo" src="logo.png" alt="Or Eille AI logo" />
       <h1>Or Eille AI</h1>
       <p class="hero-slogan" style="color:#1A3A8F;">L'IA qui s'exécute au doigt et à l'œil.</p>
+      <!-- Message pour débloquer l'audio -->
+      <div id="msg-bienvenue" style="display:none;background:rgba(224,176,32,.12);border:1px solid rgba(224,176,32,.4);border-radius:12px;padding:12px 16px;margin-bottom:16px;text-align:center;">
+        <p style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;margin:0;">👆 Appuie sur le logo de l'oreille pour activer la voix et commencer</p>
+      </div>
       <div class="hero-buttons">
         <button class="btn-primary" id="btn-essayer">Essayer gratuitement</button>
         <button class="btn-secondary" onclick="showPage('abonnement')">S'abonner</button>
@@ -1463,17 +1467,22 @@
       var dejaVenu = localStorage.getItem('moe_visite');
       if (logo) {
         logo.addEventListener('click', function() {
+          unlockAudio();
           if (!dejaVenu) {
             localStorage.setItem('moe_visite', '1');
             dejaVenu = '1';
-            // Voix d'abord, AVANT de changer de page
-            parler("Bonjour ! Bienvenue sur Or Eille A I. On va essayer de s'entendre — au sens propre comme au sens figuré. Dans quelques secondes, je vais te poser quelques questions pour qu'on fasse connaissance. Prends ton temps, il n'y a aucune urgence.");
-            // Puis on va sur profil quand la voix a fini
-            setTimeout(function() { showPage('profil'); }, 7500);
+            parler("Bienvenue sur Or Eille A I. Je vais vous aider à configurer votre profil.");
+            setTimeout(function() { showPage('profil'); }, 4000);
           } else {
             showPage('profil');
           }
         });
+      }
+
+      // Message d'invite au premier chargement
+      var msgBienvenue = document.getElementById('msg-bienvenue');
+      if (!dejaVenu && msgBienvenue) {
+        msgBienvenue.style.display = 'block';
       }
     });
 
@@ -1625,6 +1634,23 @@
       }
     }
 
+    var _audioUnlocked = false;
+    var _audioContext = null;
+
+    function unlockAudio() {
+      if (_audioUnlocked) return;
+      // Créer un contexte audio silencieux pour débloquer l'autoplay
+      try {
+        _audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        var buffer = _audioContext.createBuffer(1, 1, 22050);
+        var source = _audioContext.createBufferSource();
+        source.buffer = buffer;
+        source.connect(_audioContext.destination);
+        source.start(0);
+        _audioUnlocked = true;
+      } catch(e) {}
+    }
+
     function toggleSpeaker() {
       speakerOn = !speakerOn;
       var btn = document.getElementById('btn-speaker');
@@ -1632,7 +1658,7 @@
     }
 
     function speak(text) {
-      if (!speakerOn || !text) return;
+      if (!text) return;
       parler(text);
     }
 
@@ -1642,6 +1668,7 @@
     }
 
     function startMic() {
+      unlockAudio(); // Débloque l'autoplay audio pour toute la session
       var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SR) { alert('Reconnaissance vocale non disponible sur ce navigateur.'); return; }
       recognition = new SR();
