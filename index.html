@@ -1317,7 +1317,7 @@
       accueil:     "",
       assistant:   "Te voilà dans l'Assistant. Dis-moi ce que tu veux créer aujourd'hui — avec le micro ou en écrivant.",
       abonnement:  "Voici les formules. Mensuel à 18 euros, ou annuel à 200 euros pour ceux qui veulent s'engager sur la durée.",
-      profil:      "Bonjour et bienvenue sur Or Eille A I ! On va faire connaissance. Je vais te poser quelques questions toutes simples. Ça prend deux minutes, promis. Première question :",
+      profil:      "Bonjour et bienvenue sur Or Eille A I ! On va faire connaissance. Je vais te poser quelques questions toutes simples. Ça prend deux minutes, promis.",
       agenda:      "Tu es dans l'Agenda. Phase de lune, calendrier éditorial, planification de tes idées — tout est là.",
       redaction:   "Tu es dans Contenu Texte. Légendes, titres, carrousel, recyclage, livre numérique — choisis ton outil.",
       image:       "Tu es dans Composition d'image. Mode D.A. pour respecter ta charte, Mode Libre pour créer sans contrainte. Décris ce que tu veux avec le micro, puis appuie sur Générer.",
@@ -1428,7 +1428,7 @@
       }
 
       // Q1 — LANGUE EN PREMIER
-      dire("Première question, et c'est la plus importante. En quelle langue tu veux qu'on se parle ? Dis français, anglais, lingala, espagnol, portugais, wolof, bambara ou swahili.", function() {
+      dire("En quelle langue tu veux qu'on se parle ? Dis français, anglais, lingala, espagnol, portugais, wolof, bambara ou swahili.", function() {
         ecouter(function(dit) {
           var langues = {
             'français': 'fr', 'francais': 'fr',
