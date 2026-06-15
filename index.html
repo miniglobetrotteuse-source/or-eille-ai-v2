@@ -1844,9 +1844,14 @@
       var msg = document.querySelector('#messages .message.assistant');
       if (msg && nom) {
         var mode = profil.mode || "alter_ego";
-        var intro = mode === "alter_ego" ? "Bonjour. Je suis " + nom + ", le pinceau de ta creativite." : "Bonjour. Je suis " + nom + ", ton agent personnel.";
-        msg.textContent = intro + " Que souhaites-tu creer aujourd'hui ?";
+        var intro = mode === "alter_ego"
+          ? "Bonjour. Je suis " + nom + ", le pinceau de ta créativité."
+          : "Bonjour. Je suis " + nom + ", ton agent personnel.";
+        var texteComplet = intro + " Qu'est-ce que tu veux créer aujourd'hui ?";
+        msg.textContent = texteComplet;
         msg.style.color = mode === "alter_ego" ? "#E0B020" : "#1A3A8F";
+        // Dire à voix haute
+        setTimeout(function() { parler(texteComplet); }, 500);
       }
 
       // Titre assistant personnalisé
