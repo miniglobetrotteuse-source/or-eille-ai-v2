@@ -1309,7 +1309,7 @@
 
     var PAGE_WELCOME = {
       accueil:     "",
-      assistant:   "Te voilà dans l'Assistant. Dis-moi ce que tu veux créer aujourd'hui — avec le micro ou en écrivant.",
+      assistant:   "PERSONNALISE",
       abonnement:  "Voici les formules. Mensuel à 18 euros, ou annuel à 200 euros pour ceux qui veulent s'engager sur la durée.",
       profil:      "",
       agenda:      "Tu es dans l'Agenda. Phase de lune, calendrier éditorial, planification de tes idées — tout est là.",
@@ -1340,12 +1340,20 @@
 
       if (guideVocal) {
         if (p === 'profil') {
-          // Lancer le guide profil directement
           setTimeout(guideProfil, 500);
+        } else if (p === 'assistant') {
+          // Message personnalisé avec le prénom de l'assistant
+          var profil = JSON.parse(localStorage.getItem('moe_profil') || sessionStorage.getItem('profil') || '{}');
+          var nomAssistant = profil.avatar || profil.nom || '';
+          var modeAssistant = profil.mode || 'alter_ego';
+          var msgAssistant = nomAssistant
+            ? "Bonjour ! Je suis " + nomAssistant + ", " + (modeAssistant === 'agent' ? "ton agent personnel." : "le pinceau de ta créativité.") + " Qu'est-ce qu'on crée aujourd'hui ?"
+            : "Bonjour ! Je suis là. Qu'est-ce qu'on crée aujourd'hui ?";
+          parler(msgAssistant);
         } else {
           var texte = PAGE_WELCOME[p] || '';
           if (PAGE_DETAIL[p]) texte += ' ' + PAGE_DETAIL[p];
-          if (texte) parler(texte);
+          if (texte && texte !== 'PERSONNALISE') parler(texte);
         }
       }
     }
