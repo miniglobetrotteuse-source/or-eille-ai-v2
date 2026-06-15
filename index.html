@@ -1117,23 +1117,56 @@
       <div style="margin-top:14px;">
         <p style="font-family:'Basteleur',serif;font-size:0.85rem;color:#1A3A8F;margin-bottom:6px;">🕐 Fuseau horaire de ton audience principale</p>
         <select id="agenda-timezone" onchange="afficherHeureAudience()" style="width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.82rem;">
-          <option value="1">🇫🇷 Paris / Bruxelles / Genève (UTC+1/+2)</option>
-          <option value="3">🇪🇹 Addis-Abeba / Nairobi (UTC+3) ⚠️ Heure éthiopienne = UTC-6h</option>
-          <option value="0">🇸🇳 Dakar / Abidjan / Accra (UTC+0)</option>
-          <option value="1">🇨🇬 Brazzaville / Lagos / Kinshasa (UTC+1)</option>
-          <option value="1">🇲🇦 Casablanca / Tunis / Alger (UTC+1)</option>
-          <option value="-5">🇺🇸 New York / Miami (UTC-5)</option>
-          <option value="-8">🇺🇸 Los Angeles (UTC-8)</option>
-          <option value="-3">🇧🇷 São Paulo / Haïti (UTC-3/-5)</option>
-          <option value="5.5">🇮🇳 Inde (UTC+5:30)</option>
-          <option value="8">🇨🇳 Chine / Singapour (UTC+8)</option>
-          <option value="9">🇯🇵 Japon / Corée (UTC+9)</option>
-          <option value="10">🇦🇺 Sydney / Melbourne (UTC+10/+11)</option>
-          <option value="10">🇦🇺 Brisbane / Queensland (UTC+10, pas d'heure d'été)</option>
-          <option value="9.5">🇦🇺 Adélaïde / Darwin (UTC+9:30/+10:30)</option>
-          <option value="12">🇳🇿 Auckland / Wellington (UTC+12/+13)</option>
-          <option value="13">🌺 Samoa / Tonga / Fidji (UTC+13)</option>
-          <option value="-10">🌺 Hawaï (UTC-10)</option>
+        <select id="agenda-timezone" onchange="afficherHeureAudience()" style="width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.82rem;">
+          <optgroup label="🌍 Afrique">
+            <option value="0">🇸🇳 Dakar / Abidjan / Accra / Conakry (UTC+0)</option>
+            <option value="1" selected>🇨🇬 Brazzaville / Lagos / Kinshasa / Douala / Libreville (UTC+1)</option>
+            <option value="2">🇿🇦 Johannesburg / Nairobi / Le Caire / Harare (UTC+2)</option>
+            <option value="3">🇪🇹 Addis-Abeba / Djibouti (UTC+3) ⚠️ Heure éthiopienne décalée +6h</option>
+          </optgroup>
+          <optgroup label="🌍 Europe">
+            <option value="1">🇫🇷 Paris / Bruxelles / Madrid / Rome (UTC+1/+2)</option>
+            <option value="0">🇬🇧 Londres / Lisbonne (UTC+0/+1)</option>
+            <option value="2">🇬🇷 Athènes / Istanbul (UTC+2/+3)</option>
+            <option value="3">🇷🇺 Moscou (UTC+3)</option>
+            <option value="1">🇲🇦 Casablanca / Tunis / Alger (UTC+1)</option>
+          </optgroup>
+          <optgroup label="🌎 Amériques">
+            <option value="-5">🇺🇸 New York / Miami / Toronto (UTC-5/-4)</option>
+            <option value="-6">🇺🇸 Chicago / Mexico / Guatemala (UTC-6/-5)</option>
+            <option value="-8">🇺🇸 Los Angeles / Vancouver (UTC-8/-7)</option>
+            <option value="-9">🇺🇸 Alaska (UTC-9)</option>
+            <option value="-10">🌺 Hawaï (UTC-10)</option>
+            <option value="-5">🇭🇹 Haïti / Cuba / Jamaïque (UTC-5/-4)</option>
+            <option value="-4">🇧🇧 Antilles / Barbade / Trinidad (UTC-4)</option>
+            <option value="-3">🇧🇷 São Paulo / Rio / Buenos Aires (UTC-3)</option>
+            <option value="-3.5">🇨🇦 Terre-Neuve (UTC-3:30) — fuseau à demi-heure</option>
+          </optgroup>
+          <optgroup label="🌏 Moyen-Orient / Asie du Sud">
+            <option value="3.5">🇮🇷 Iran (UTC+3:30) — fuseau non-standard</option>
+            <option value="4">🇦🇪 Dubaï / Émirats / Oman (UTC+4)</option>
+            <option value="4.5">🇦🇫 Afghanistan (UTC+4:30) — fuseau non-standard</option>
+            <option value="5">🇵🇰 Pakistan / Tachkent (UTC+5)</option>
+            <option value="5.5">🇮🇳 Inde / Sri Lanka (UTC+5:30) — fuseau non-standard</option>
+            <option value="5.75">🇳🇵 Népal (UTC+5:45) — seul pays au monde à +45min</option>
+            <option value="6">🇧🇩 Bangladesh / Dhaka (UTC+6)</option>
+            <option value="6.5">🇲🇲 Myanmar / Birmanie (UTC+6:30) — fuseau non-standard</option>
+            <option value="7">🇹🇭 Bangkok / Jakarta / Hanoi (UTC+7)</option>
+          </optgroup>
+          <optgroup label="🌏 Asie de l'Est">
+            <option value="8">🇨🇳 Chine / Singapour / Philippines / Malaisie (UTC+8)</option>
+            <option value="9">🇯🇵 Japon / Corée du Sud (UTC+9)</option>
+          </optgroup>
+          <optgroup label="🌏 Océanie / Pacifique">
+            <option value="9.5">🇦🇺 Adélaïde / Darwin (UTC+9:30) — fuseau non-standard</option>
+            <option value="10">🇦🇺 Sydney / Melbourne / Brisbane (UTC+10/+11)</option>
+            <option value="10.5">🇦🇺 Lord Howe Island (UTC+10:30) — fuseau non-standard</option>
+            <option value="11">🌺 Nouvelle-Calédonie / Îles Salomon (UTC+11)</option>
+            <option value="12">🇳🇿 Auckland / Wellington (UTC+12/+13)</option>
+            <option value="12.75">🇳🇿 Îles Chatham NZ (UTC+12:45) — fuseau non-standard</option>
+            <option value="13">🌺 Samoa / Tonga (UTC+13)</option>
+            <option value="14">🌺 Kiribati / Ligne Islands (UTC+14) — premiers à entrer dans le nouveau jour</option>
+          </optgroup>
         </select>
         <div id="agenda-heure-audience" style="margin-top:6px;font-family:'Basteleur',serif;font-size:0.8rem;color:#E0B020;font-style:italic;"></div>
       </div>
