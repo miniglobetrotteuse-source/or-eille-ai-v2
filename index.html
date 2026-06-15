@@ -1513,11 +1513,8 @@
           if (!dejaVenu) {
             localStorage.setItem('moe_visite', '1');
             dejaVenu = '1';
-            // bienvenue dit via PAGE_WELCOME profil
-            showPage('profil');
-          } else {
-            showPage('profil');
           }
+          // showPage deja declenche par le premier listener ci-dessus
         });
       }
 
@@ -1790,7 +1787,13 @@
         msg.className = 'message assistant';
         msg.innerHTML = html;
         messages.appendChild(msg);
-        speak(reponse.replace(/\*\*/g, '').replace(/\*/g, ''));
+        var reponseNette = reponse.replace(/[*][*]/g, '').replace(/[*]/g, '');
+        speak(reponseNette);
+        // Mode conversation : relancer le micro apres que la voix ait fini de parler
+        if (guideVocal) {
+          var duree = Math.max(1500, reponseNette.length * 65);
+          setTimeout(function() { if (!isRecording) startMic(); }, duree);
+        }
       } catch(e) {
         thinking.remove();
         var err = document.createElement('div');
@@ -1867,8 +1870,7 @@
         var texteComplet = intro + " Qu'est-ce que tu veux créer aujourd'hui ?";
         msg.textContent = texteComplet;
         msg.style.color = mode === "alter_ego" ? "#E0B020" : "#1A3A8F";
-        // Dire à voix haute
-        setTimeout(function() { parler(texteComplet); }, 500);
+        // La voix est geree par showPage('assistant') pour eviter le doublon
       }
 
       // Titre assistant personnalisé
