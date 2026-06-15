@@ -1405,7 +1405,7 @@
       }
 
       // Bienvenue + Q1
-      dire("Bonjour et bienvenue ! On va faire connaissance. En quelle langue tu veux qu'on se parle ? Dis français, anglais, lingala, espagnol, portugais, wolof, bambara ou swahili.", function() {
+      dire("Bonjour et bienvenue ! On va faire connaissance. Je vais te poser quelques questions. Première question, et c'est la plus importante : en quelle langue veux-tu qu'on se parle ? Tu peux dire français, anglais, espagnol, portugais, arabe, lingala, wolof, bambara, swahili, turc, chinois, japonais, russe, allemand, italien — ou n'importe quelle autre langue. Dis simplement le nom de ta langue.", function() {
         ecouter(function(dit) {
           var langues = {
             'français': 'fr', 'francais': 'fr',
@@ -1466,10 +1466,7 @@
                           _profilIntervals = _profilIntervals.filter(function(x){return x!==check4;});
                           stopGlobalMic();
                           elAvatar.style.outline = '2px solid #1A3A8F';
-                          dire("Parfait, tout est prêt. Je sauvegarde.", function() {
-                            _guideProfilEnCours = false;
-                            sauvegarderProfil();
-                          });
+                          guideProfil_accessibilite();
                         }
                       }, 800);
                     });
@@ -1805,6 +1802,36 @@
       var label = v < 0.8 ? 'Lente' : v > 1.2 ? 'Rapide' : 'Normale';
       document.getElementById('vitesse-label').textContent = label;
     });
+
+
+    function guideProfil_accessibilite() {
+      dire("Dernière étape. Est-ce que tu as besoin d'aide pour lire ? Par exemple, une police plus grande, ou une police spéciale dyslexie ? Si tu as besoin d'aide, dis oui. Sinon dis non ou passe.", function() {
+        ecouter(function(dit) {
+          if (dit.includes('oui') || dit.includes('dyslexie') || dit.includes('grande') || dit.includes('aide')) {
+            var sel = document.getElementById('profil-police');
+            if (sel) sel.value = 'opendyslexic';
+            var taille = document.getElementById('profil-taille');
+            if (taille) taille.value = 20;
+            dire("Très bien, j'adapte l'affichage pour toi. Est-ce que tu as un profil particulier ? Par exemple neurodivergent, malvoyant ou malentendant ? Dis-le moi ou dis non.", function() {
+              ecouter(function(dit2) {
+                var theme = document.getElementById('profil-theme');
+                if (dit2.includes('malvoy') && theme) theme.value = 'contraste';
+                if (dit2.includes('neurodiv') && theme) theme.value = 'neurodivergent';
+                dire("Parfait. Je sauvegarde tout ça.", function() {
+                  _guideProfilEnCours = false;
+                  sauvegarderProfil();
+                });
+              });
+            });
+          } else {
+            dire("Très bien. Je sauvegarde ton profil.", function() {
+              _guideProfilEnCours = false;
+              sauvegarderProfil();
+            });
+          }
+        });
+      });
+    }
 
     function sauvegarderProfil() {
       var profil = {
