@@ -1359,14 +1359,40 @@
       var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
       function dire(texte, callback) {
-        window.speechSynthesis.cancel();
-        var utt = new SpeechSynthesisUtterance(texte);
-        utt.lang = 'fr-FR';
-        utt.rate = 0.85;
-        var voix = window.speechSynthesis.getVoices().find(function(v) { return v.lang.startsWith('fr'); });
-        if (voix) utt.voice = voix;
-        utt.onend = function() { if (callback) setTimeout(callback, 800); };
-        window.speechSynthesis.speak(utt);
+        // Utiliser OpenAI TTS via parler() avec callback quand l'audio est fini
+        var langue = (localStorage.getItem('moe_profil') ? JSON.parse(localStorage.getItem('moe_profil') || '{}').langue : null) || 'fr';
+        fetch('/api/tts', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ text: texte, lang: langue })
+        }).then(function(r) {
+          return r.blob();
+        }).then(function(blob) {
+          var url = URL.createObjectURL(blob);
+          var audio = new Audio(url);
+          audio.onended = function() {
+            URL.revokeObjectURL(url);
+            if (callback) setTimeout(callback, 600);
+          };
+          audio.onerror = function() {
+            if (callback) setTimeout(callback, 800);
+          };
+          audio.play().catch(function() {
+            // Fallback navigateur si audio bloqué
+            var utt = new SpeechSynthesisUtterance(texte);
+            utt.lang = 'fr-FR';
+            utt.rate = 0.85;
+            utt.onend = function() { if (callback) setTimeout(callback, 600); };
+            window.speechSynthesis && window.speechSynthesis.speak(utt);
+          });
+        }).catch(function() {
+          // Fallback navigateur
+          var utt = new SpeechSynthesisUtterance(texte);
+          utt.lang = 'fr-FR';
+          utt.rate = 0.85;
+          utt.onend = function() { if (callback) setTimeout(callback, 600); };
+          window.speechSynthesis && window.speechSynthesis.speak(utt);
+        });
       }
 
       function ecouter(callback) {
