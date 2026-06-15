@@ -7,7 +7,12 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Or Eille AI">
-  <meta name="theme-color" content="#F7F4EF">
+  <meta name="theme-color" content="#E0B020">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Or Eille AI">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/logo.png">
   <style>
     @font-face {
       font-family: "Basteleur";
@@ -1846,6 +1851,12 @@
   <script>
     window.addEventListener('load', function() {
       if (window.A11Y_CONFIG) A11Y_CONFIG.apply();
+      // Enregistrer le service worker pour PWA
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function() { console.log('SW enregistré'); })
+          .catch(function(e) { console.log('SW erreur:', e); });
+      }
     });
   </script>
 </body>
