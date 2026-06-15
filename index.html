@@ -1101,9 +1101,34 @@
         <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="persan" onclick="afficherSituation()"> 🌸 Persan / Nowruz</label>
         <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="vodou" onclick="afficherSituation()"> 🥁 Vodou / Diaspora africaine</label>
         <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="autre" onclick="toggleAutreCalendrier(this)"> ✨ Autre</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="copte" onclick="afficherSituation()"> ☩ Copte (Égypte, diaspora)</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="tibetain" onclick="afficherSituation()"> 🏔️ Tibétain</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="bahai" onclick="afficherSituation()"> ✨ Bahá'í (19 mois de 19 jours)</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="berbere" onclick="afficherSituation()"> 🌵 Berbère / Amazigh (Yennayer)</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="julien" onclick="afficherSituation()"> ✝️ Julien (orthodoxes slaves)</label>
+        <label style="display:flex;align-items:center;gap:8px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;"><input type="checkbox" value="azteque" onclick="afficherSituation()"> 🦅 Aztèque / Mexica</label>
       </div>
       <div id="agenda-situation" style="display:none;background:#F7F4EF;border-radius:10px;padding:12px;margin-top:10px;font-family:'Basteleur',serif;font-size:0.82rem;color:#1A3A8F;line-height:1.6;"></div>
       <input type="text" id="agenda-calendrier-autre" placeholder="Décris ton calendrier ou ta tradition..." style="display:none;width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;margin-top:8px;box-sizing:border-box;">
+
+      <!-- Fuseau horaire audience -->
+      <div style="margin-top:14px;">
+        <p style="font-family:'Basteleur',serif;font-size:0.85rem;color:#1A3A8F;margin-bottom:6px;">🕐 Fuseau horaire de ton audience principale</p>
+        <select id="agenda-timezone" onchange="afficherHeureAudience()" style="width:100%;padding:10px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.82rem;">
+          <option value="1">🇫🇷 Paris / Bruxelles / Genève (UTC+1/+2)</option>
+          <option value="3">🇪🇹 Addis-Abeba / Nairobi (UTC+3) ⚠️ Heure éthiopienne = UTC-6h</option>
+          <option value="0">🇸🇳 Dakar / Abidjan / Accra (UTC+0)</option>
+          <option value="1">🇨🇬 Brazzaville / Lagos / Kinshasa (UTC+1)</option>
+          <option value="1">🇲🇦 Casablanca / Tunis / Alger (UTC+1)</option>
+          <option value="-5">🇺🇸 New York / Miami (UTC-5)</option>
+          <option value="-8">🇺🇸 Los Angeles (UTC-8)</option>
+          <option value="-3">🇧🇷 São Paulo / Haïti (UTC-3/-5)</option>
+          <option value="5.5">🇮🇳 Inde (UTC+5:30)</option>
+          <option value="8">🇨🇳 Chine / Singapour (UTC+8)</option>
+          <option value="9">🇯🇵 Japon / Corée (UTC+9)</option>
+        </select>
+        <div id="agenda-heure-audience" style="margin-top:6px;font-family:'Basteleur',serif;font-size:0.8rem;color:#E0B020;font-style:italic;"></div>
+      </div>
     </div>
     <!-- Générer calendrier éditorial -->
     <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
@@ -1238,8 +1263,63 @@
       document.getElementById('agenda-platform').value = plat;
     }
 
+    function afficherHeureAudience() {
+      var sel = document.getElementById('agenda-timezone');
+      var zone = document.getElementById('agenda-heure-audience');
+      if (!sel || !zone) return;
+      var offset = parseFloat(sel.value);
+      var maintenant = new Date();
+      var utc = maintenant.getTime() + maintenant.getTimezoneOffset() * 60000;
+      var heureAudience = new Date(utc + offset * 3600000);
+      var h = heureAudience.getHours();
+      var m = heureAudience.getMinutes().toString().padStart(2,'0');
+      var conseil = '';
+      if (h >= 6 && h < 9) conseil = '✅ Bon moment — matin, audience active';
+      else if (h >= 12 && h < 14) conseil = '✅ Bon moment — pause déjeuner';
+      else if (h >= 18 && h < 22) conseil = '✅ Bon moment — soirée, pic d\'engagement';
+      else if (h >= 0 && h < 6) conseil = '❌ Mauvais moment — nuit, audience dort';
+      else conseil = '⚠️ Moment moyen';
+
+      // Note spéciale heure éthiopienne
+      var note = '';
+      if (sel.value === '3') {
+        var hEth = ((h + 6) % 12) || 12;
+        note = ' (= ' + hEth + 'h heure éthiopienne)';
+      }
+      zone.textContent = 'Chez ton audience il est ' + h + 'h' + m + note + ' — ' + conseil;
+    }
+
+    function getSituationCopte(d) {
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      if (mois === 1 && jour === 7) return '☩ Noël copte le 7 janvier — Noël orthodoxe selon le calendrier julien';
+      if (mois === 4 && jour >= 12 && jour <= 20) return '☩ Pâques copte 2026 — ~19 avril selon calendrier julien';
+      return '☩ Copte — an 1742/1743 AM. Noël copte : 7 janv. Pâques : ~19 avril 2026';
+    }
+
+    function getSituationBahai(d) {
+      // Nouvel An Baha'i = 20 mars (Naw-Rúz)
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      if (mois === 3 && jour >= 18 && jour <= 22) return '✨ Naw-Rúz (Nouvel An Bahá\'í) le 20 mars — an 183 BE';
+      if (mois === 4 && jour >= 20 && jour <= 23) return '✨ Fête de la Ridván (21 avr) — fête la plus sainte Bahá\'íe';
+      return '✨ Calendrier Bahá\'í — an 183 BE. 19 mois de 19 jours + 4 jours intercalaires';
+    }
+
+    function getSituationBerbere(d) {
+      var mois = d.getMonth() + 1, jour = d.getDate();
+      if (mois === 1 && jour >= 12 && jour <= 14) return '🌵 Yennayer — Nouvel An amazigh le 13 janvier (an 2976 AG)';
+      return '🌵 Calendrier amazigh — an 2976 AG. Yennayer (Nouvel An) : 13 janvier';
+    }
+
+    function getSituationJulien(d) {
+      // Calendrier julien = 13 jours de retard sur le grégorien
+      var julien = new Date(d.getTime() - 13 * 24 * 3600 * 1000);
+      var mois = julien.getMonth() + 1, jour = julien.getDate();
+      if (mois === 12 && jour === 25) return '✝️ Noël orthodoxe (julien) = 7 janvier grégorien';
+      if (mois === 1 && jour === 6) return '✝️ Épiphanie orthodoxe julienne = 19 janvier grégorien';
+      return '✝️ Julien : aujourd\'hui = ' + jour + '/' + mois + ' selon le calendrier julien (13j de retard sur grégorien)';
+    }
+
     function toggleAutreCalendrier(checkbox) {
-      var autre = document.getElementById('agenda-calendrier-autre');
       if (autre) {
         var autreChecked = document.querySelector('#page-agenda input[value="autre"]');
         autre.style.display = (autreChecked && autreChecked.checked) ? 'block' : 'none';
@@ -1282,6 +1362,24 @@
             break;
           case 'africain-traditionnel':
             lines.push('🌍 Traditionnel africain — saisons, cycles lunaires et agricoles selon ta région');
+            break;
+          case 'copte':
+            lines.push('☩ ' + getSituationCopte(aujourd));
+            break;
+          case 'bahai':
+            lines.push('✨ ' + getSituationBahai(aujourd));
+            break;
+          case 'berbere':
+            lines.push('🌵 ' + getSituationBerbere(aujourd));
+            break;
+          case 'julien':
+            lines.push('✝️ ' + getSituationJulien(aujourd));
+            break;
+          case 'tibetain':
+            lines.push('🏔️ Tibétain — Losar (Nouvel An tibétain) 2026 : ~28 février. An 2153 du calendrier tibétain.');
+            break;
+          case 'azteque':
+            lines.push('🦅 Aztèque/Mexica — Tonalpohualli : cycle de 260 jours. Xiuhpohualli : 365 jours. Consulte un calculateur pour le jour exact.');
             break;
           case 'solaire':
             lines.push('☀️ ' + getSituationSolaire(aujourd));
