@@ -1,0 +1,38 @@
+{
+  "name": "Or Eille AI",
+  "short_name": "Or Eille AI",
+  "description": "L'IA qui s'exécute au doigt et à l'œil.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F7F4EF",
+  "theme_color": "#E0B020",
+  "orientation": "portrait",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Assistant",
+      "url": "/#assistant",
+      "description": "Ouvrir l'assistant"
+    },
+    {
+      "name": "Contenu",
+      "url": "/#contenu",
+      "description": "Créer du contenu"
+    }
+  ]
+}
