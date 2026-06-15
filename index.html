@@ -45,8 +45,12 @@
     .page { display: none; flex: 1; flex-direction: column; }
     .page.active { display: flex; }
     .hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 24px; }
-    .hero-logo { width: 160px; height: 160px; margin-bottom: 32px; animation: float 4s ease-in-out infinite; }
+    .hero-logo { width: 160px; height: 160px; margin-bottom: 16px; animation: float 4s ease-in-out infinite; cursor: pointer; }
     @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+    .hero-logo.invite { animation: inviteClick 1.5s ease-in-out infinite; filter: drop-shadow(0 0 18px #E0B020); }
+    @keyframes inviteClick { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px #E0B020); } 50% { transform: scale(1.08); filter: drop-shadow(0 0 24px #E0B020); } }
+    .touch-hint { font-size: 2rem; animation: bounce 1.2s ease-in-out infinite; display: block; margin-bottom: 8px; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
     .hero h1 { font-family: "BasteleurBold", "Basteleur", serif; font-size: clamp(3rem, 8vw, 6rem); color: #E0B020; line-height: 1.05; margin-bottom: 16px; }
     .hero-slogan { color: #1A3A8F !important; font-family: "Basteleur", serif; font-size: clamp(1rem, 2.5vw, 1.3rem); margin-bottom: 52px; font-style: italic; }
     .hero-slogan-override { font-family: "Basteleur"; font-size: clamp(1rem, 2.5vw, 1.3rem); color: #1a1a1a; margin-bottom: 52px; }
@@ -111,7 +115,8 @@
 
   <div class="page active" id="page-accueil">
     <main class="hero">
-      <img class="hero-logo" src="logo.png" alt="Or Eille AI logo" />
+      <img class="hero-logo invite" src="logo.png" alt="Or Eille AI logo" id="hero-logo-img" />
+      <span class="touch-hint">👆</span>
       <h1>Or Eille AI</h1>
       <p class="hero-slogan" style="color:#1A3A8F;">L'IA qui s'exécute au doigt et à l'œil.</p>
       <!-- Message pour débloquer l'audio -->
@@ -1495,8 +1500,14 @@
       var logo = document.querySelector('.hero-logo');
       if (logo) {
         logo.style.cursor = 'pointer';
-        logo.title = 'Configurer mon profil';
-        logo.addEventListener('click', function() { showPage('profil'); });
+        logo.title = 'Touche ici pour commencer';
+        logo.addEventListener('click', function() {
+          // Enlever l'animation d'invite
+          logo.classList.remove('invite');
+          logo.style.animation = 'float 4s ease-in-out infinite';
+          logo.style.filter = '';
+          var hint = document.querySelector('.touch-hint');
+          if (hint) hint.style.display = 'none'; showPage('profil'); });
       }
 
 
