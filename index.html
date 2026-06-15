@@ -1314,7 +1314,7 @@
     }
 
     var PAGE_WELCOME = {
-      accueil:     "Bienvenue sur Or Eille A I. Appuie sur le logo de l'oreille pour qu'on fasse connaissance.",
+      accueil:     "",
       assistant:   "Te voilà dans l'Assistant. Dis-moi ce que tu veux créer aujourd'hui — avec le micro ou en écrivant.",
       abonnement:  "Voici les formules. Mensuel à 18 euros, ou annuel à 200 euros pour ceux qui veulent s'engager sur la durée.",
       profil:      "Bonjour et bienvenue sur Or Eille A I ! On va faire connaissance. Je vais te poser quelques questions toutes simples. Ça prend deux minutes, promis. Première question :",
@@ -1463,7 +1463,7 @@
                 var nom = elNom.value.trim();
 
                 // Q3 — Alter ego ou agent
-                dire("Super, " + nom + " ! Ton assistant — alter ego créatif, ou agent pratique ? Dis alter ego ou agent.", function() {
+                dire("Super, " + nom + " ! Maintenant, ton assistant. Est-ce qu'il est ton alter ego créatif — c'est-à-dire le pinceau de ta créativité, quelqu'un qui pense comme toi ? Ou est-ce qu'il est ton agent — c'est-à-dire ton assistant personnel pratique du quotidien ? Quand tu es prêt, dis alter ego ou agent.", function() {
                   ecouter(function(dit) {
                     var confirmation;
                     if (dit.includes('agent')) {
