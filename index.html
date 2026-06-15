@@ -1345,25 +1345,13 @@
       if (footer) footer.style.display = (p === 'accueil') ? 'block' : 'none';
 
       if (guideVocal) {
-        var texte = PAGE_WELCOME[p] || '';
-        if (PAGE_DETAIL[p]) texte += ' ' + PAGE_DETAIL[p];
-        if (texte) {
-          if (p === 'profil') {
-            // Pour profil : parler via dire() avec callback pour lancer guideProfil après
-            var langue = (localStorage.getItem('moe_profil') ? JSON.parse(localStorage.getItem('moe_profil') || '{}').langue : null) || 'fr';
-            fetch('/api/tts', {
-              method: 'POST',
-              headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify({ text: texte, lang: langue })
-            }).then(function(r) { return r.blob(); }).then(function(blob) {
-              var url = URL.createObjectURL(blob);
-              var audio = new Audio(url);
-              audio.onended = function() { URL.revokeObjectURL(url); setTimeout(guideProfil, 800); };
-              audio.play().catch(function() { setTimeout(guideProfil, 3000); });
-            }).catch(function() { setTimeout(guideProfil, 3000); });
-          } else {
-            parler(texte);
-          }
+        if (p === 'profil') {
+          // Lancer le guide profil directement
+          setTimeout(guideProfil, 500);
+        } else {
+          var texte = PAGE_WELCOME[p] || '';
+          if (PAGE_DETAIL[p]) texte += ' ' + PAGE_DETAIL[p];
+          if (texte) parler(texte);
         }
       }
     }
