@@ -641,6 +641,8 @@
         <textarea id="red-idee" placeholder="Décrivez votre idée..." style="width:100%;min-height:120px;border:1px solid rgba(224,176,32,.3);border-radius:8px;padding:14px;padding-right:48px;font-family:'Basteleur',serif;font-size:1rem;resize:none;box-sizing:border-box;"></textarea>
         <button onclick="startRedMic('red-idee')" style="position:absolute;right:8px;bottom:8px;padding:8px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
       </div>
+      <button onclick="proposerIdee()" style="width:100%;padding:10px;border-radius:50px;border:1px dashed rgba(224,176,32,.5);background:transparent;font-family:'Basteleur',serif;font-size:0.85rem;color:#E0B020;cursor:pointer;margin-bottom:8px;">💡 Je n'ai pas d'idée — propose-moi quelque chose</button>
+      <div id="red-idee-suggestions" style="display:none;background:#F7F4EF;border-radius:10px;padding:12px;margin-bottom:8px;font-family:'Basteleur',serif;font-size:0.85rem;color:#1A3A8F;"></div>
       <p style="font-size:0.8rem;color:#2a2a2a;margin-bottom:8px;">Format</p>
       <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
         <button class="red-btn red-btn-active" onclick="selectFormat(this,'post')">📝 Post</button>
@@ -926,6 +928,27 @@
 
 
     // ===== FONCTIONS DE GÉNÉRATION CONTENU =====
+
+    async function proposerIdee() {
+      var zone = document.getElementById('red-idee-suggestions');
+      if (zone) { zone.style.display = 'block'; zone.textContent = 'Je cherche des idées pour toi...'; }
+      var format = document.getElementById('red-format-val');
+      var profil = JSON.parse(localStorage.getItem('moe_profil') || '{}');
+      var prompt = 'Propose 5 idées de contenu originales et percutantes';
+      if (format && format.value) prompt += ' au format ' + format.value;
+      if (profil.mission) prompt += ' pour quelqu\'un qui fait : ' + profil.mission;
+      prompt += '. Pour chaque idée : un titre accrocheur et une phrase d\'accroche. Numérote de 1 à 5. Sois créatif, va chercher des angles inattendus.';
+      var texte = await appelClaude(prompt, 'red-idee-suggestions');
+      // Permettre de cliquer sur une idée pour la sélectionner
+      if (zone && texte) {
+        zone.style.cursor = 'pointer';
+        zone.title = 'Clique pour utiliser cette idée';
+        zone.onclick = function() {
+          document.getElementById('red-idee').value = texte;
+          zone.style.display = 'none';
+        };
+      }
+    }
 
     async function creerContenu() {
       var idee = document.getElementById('red-idee');
