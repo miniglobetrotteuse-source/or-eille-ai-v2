@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Musique — Or Eille AI</title>
+<style>
+  :root { --or:#E0B020; --bleu:#1A3A8F; --creme:#F7F4EF; --texte:#2A2A2A; --ombre:rgba(224,176,32,0.15); }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--creme); color:var(--texte); font-family:Georgia,serif; font-size:15px; line-height:1.6; padding:16px; max-width:600px; margin:0 auto; }
+  h1 { font-family:Georgia,serif; color:var(--or); font-size:1.8rem; text-align:center; margin-bottom:6px; }
+  .sous-titre { text-align:center; font-size:0.82rem; color:rgba(42,42,42,0.5); margin-bottom:20px; }
+  h2 { font-family:Georgia,serif; color:var(--or); font-size:0.95rem; margin-bottom:8px; }
+  .carte { background:white; border-radius:14px; padding:16px; margin-bottom:14px; box-shadow:0 2px 12px var(--ombre); }
+  .modes { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+  .mode-btn { flex:1; min-width:120px; padding:12px 8px; border-radius:12px; border:2px solid rgba(224,176,32,0.3); background:white; color:var(--bleu); font-family:Georgia,serif; font-size:0.78rem; cursor:pointer; text-align:center; transition:all 0.15s; -webkit-tap-highlight-color:transparent; }
+  .mode-btn.actif { background:var(--bleu); color:var(--or); border-color:var(--bleu); }
+  .mode-btn .mode-emoji { font-size:1.3rem; display:block; margin-bottom:4px; }
+  .grille { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+  .tag-btn { padding:5px 12px; border-radius:16px; border:1.5px solid rgba(224,176,32,0.3); background:white; color:var(--bleu); font-family:Georgia,serif; font-size:0.78rem; cursor:pointer; transition:all 0.15s; -webkit-tap-highlight-color:transparent; }
+  .tag-btn.actif { background:var(--or); color:var(--bleu); border-color:var(--or); font-weight:bold; }
+  .champ { width:100%; padding:10px 12px; border:1.5px solid rgba(224,176,32,0.3); border-radius:10px; font-family:Georgia,serif; font-size:0.85rem; color:var(--texte); background:white; margin-bottom:10px; outline:none; resize:none; }
+  .champ:focus { border-color:var(--or); }
+  .btn-or { display:block; margin:0 auto; padding:10px 28px; background:var(--or); color:var(--bleu); border:none; border-radius:50px; font-family:Georgia,serif; font-size:0.9rem; font-weight:bold; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:transform 0.15s; }
+  .btn-or:active { transform:scale(0.97); }
+  .btn-rouge { display:block; margin:8px auto 0; padding:10px 28px; background:#ef5350; color:white; border:none; border-radius:50px; font-family:Georgia,serif; font-size:0.9rem; font-weight:bold; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .resultat { display:none; background:white; border-radius:12px; padding:14px; margin-top:12px; font-size:0.83rem; line-height:1.8; color:var(--texte); border-left:3px solid var(--or); }
+  .resultat.visible { display:block; }
+  .chargement { text-align:center; color:var(--or); font-size:0.85rem; padding:12px; }
+  .section { display:none; }
+  .section.visible { display:block; }
+  .piste { display:flex; align-items:center; gap:10px; padding:8px 12px; background:var(--creme); border-radius:8px; margin-bottom:6px; }
+  .piste-nom { flex:1; font-size:0.82rem; color:var(--bleu); }
+  .piste-dur { font-size:0.75rem; color:rgba(42,42,42,0.5); }
+  .piste-sup { background:none; border:none; color:#ef5350; cursor:pointer; font-size:1rem; }
+  .micro-btn { width:64px; height:64px; border-radius:50%; border:3px solid var(--or); background:white; font-size:1.8rem; cursor:pointer; display:block; margin:0 auto 10px; transition:all 0.15s; -webkit-tap-highlight-color:transparent; }
+  .micro-btn.enregistre { background:var(--or); animation:pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(224,176,32,0.4);} 50%{box-shadow:0 0 0 12px rgba(224,176,32,0);} }
+  .micro-statut { text-align:center; font-size:0.8rem; color:rgba(42,42,42,0.5); margin-bottom:10px; }
+  .alerte { background:#FFF3CD; border:1px solid #E0B020; border-radius:8px; padding:8px 12px; font-size:0.78rem; color:#856404; margin-bottom:10px; display:none; }
+</style>
+</head>
+<body>
+
+<h1>🎵 Musique</h1>
+<p class="sous-titre">Du gamin dans sa cave au groupe professionnel</p>
+
+<div id="alerte-batterie" class="alerte">⚠️ Batterie faible — branche ton téléphone avant d'enregistrer</div>
+
+<!-- MODES -->
+<div class="modes">
+  <button class="mode-btn actif" onclick="setMode('creer')">
+    <span class="mode-emoji">✍️</span>Créer une chanson
+  </button>
+  <button class="mode-btn" onclick="setMode('enregistrer')">
+    <span class="mode-emoji">🎙️</span>Enregistrer mes pistes
+  </button>
+  <button class="mode-btn" onclick="setMode('album')">
+    <span class="mode-emoji">💿</span>Créer un album
+  </button>
+  <button class="mode-btn" onclick="setMode('clip')">
+    <span class="mode-emoji">🎬</span>Clip vidéo
+  </button>
+</div>
+
+<!-- ═══ CRÉER UNE CHANSON ═══ -->
+<div class="section visible" id="section-creer">
+
+  <div class="carte">
+    <h2>🎭 Ton idée de départ</h2>
+    <textarea class="champ" id="creer-idee" rows="3" placeholder="Décris ton idée — un thème, une émotion, une histoire, quelques mots qui te trottent dans la tête..."></textarea>
+  </div>
+
+  <div class="carte">
+    <h2>🎵 Genre musical</h2>
+    <div class="grille" id="genres-grille"></div>
+    <div class="grille" id="genres2-grille"></div>
+    <input type="text" class="champ" id="genre-autre" placeholder="Autre genre ou mix de genres — ex: rumba + électro, gospel + trap..." style="display:none;margin-top:6px;">
+    <p style="font-size:0.75rem;color:rgba(42,42,42,0.5);margin-top:4px;">Tu peux choisir plusieurs genres pour créer un mix unique</p>
+  </div>
+
+  <div class="carte">
+    <h2>📝 Paroles</h2>
+    <div class="grille">
+      <button class="tag-btn actif" onclick="selectTag(this,'paroles','paroles-mode')">L'IA écrit les paroles</button>
+      <button class="tag-btn" onclick="selectTag(this,'paroles-co','paroles-mode')">On co-écrit ensemble</button>
+      <button class="tag-btn" onclick="selectTag(this,'paroles-miennes','paroles-mode')">J'ai déjà mes paroles</button>
+    </div>
+    <textarea class="champ" id="paroles-input" rows="4" placeholder="Tes paroles ou tes idées de paroles..." style="display:none;margin-top:8px;"></textarea>
+  </div>
+
+  <div class="carte">
+    <h2>🌍 Langue</h2>
+    <div class="grille" id="langues-grille"></div>
+    <input type="text" class="champ" id="langue-autre" placeholder="Autre langue..." style="display:none;margin-top:6px;">
+  </div>
+
+  <div class="carte">
+    <h2>⚙️ Informations techniques</h2>
+    <div style="display:flex;gap:10px;">
+      <div style="flex:1;">
+        <p style="font-size:0.78rem;color:rgba(42,42,42,0.5);margin-bottom:4px;">Tempo (BPM)</p>
+        <input type="number" class="champ" id="bpm" placeholder="Ex: 90, 120, 140..." style="margin-bottom:0;">
+      </div>
+      <div style="flex:1;">
+        <p style="font-size:0.78rem;color:rgba(42,42,42,0.5);margin-bottom:4px;">Tonalité</p>
+        <select class="champ" id="tonalite" style="margin-bottom:0;">
+          <option value="">Je ne sais pas</option>
+          <option>Do majeur (C)</option><option>Ré majeur (D)</option>
+          <option>Mi majeur (E)</option><option>Fa majeur (F)</option>
+          <option>Sol majeur (G)</option><option>La majeur (A)</option>
+          <option>Si majeur (B)</option><option>La mineur (Am)</option>
+          <option>Ré mineur (Dm)</option><option>Mi mineur (Em)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-or" onclick="creerChanson()">🎨 Créer ma chanson</button>
+  <div class="resultat" id="resultat-creer"></div>
+</div>
+
+<!-- ═══ ENREGISTRER ═══ -->
+<div class="section" id="section-enregistrer">
+
+  <div class="carte">
+    <h2>🎙️ Enregistrer une piste</h2>
+    <p style="font-size:0.78rem;color:rgba(42,42,42,0.5);margin-bottom:12px;">Voix, guitare, piano, percussion, chœurs... une piste à la fois</p>
+
+    <input type="text" class="champ" id="piste-nom-input" placeholder="Nom de la piste — ex: Voix lead, Guitare, Chœurs 1...">
+
+    <button class="micro-btn" id="micro-btn" onclick="toggleEnregistrement()">🎙️</button>
+    <p class="micro-statut" id="micro-statut">Appuie pour enregistrer</p>
+
+    <div style="text-align:center;margin-bottom:10px;">
+      <span id="chrono" style="font-size:1.2rem;font-weight:bold;color:var(--or);display:none;">0:00</span>
+    </div>
+  </div>
+
+  <div class="carte" id="pistes-section" style="display:none;">
+    <h2>🎚️ Mes pistes enregistrées</h2>
+    <div id="pistes-liste"></div>
+    <button class="btn-or" style="margin-top:12px;" onclick="analyserPistes()">🎨 Analyser et mixer</button>
+    <div class="resultat" id="resultat-pistes"></div>
+  </div>
+</div>
+
+<!-- ═══ ALBUM ═══ -->
+<div class="section" id="section-album">
+
+  <div class="carte">
+    <h2>💿 Mon album</h2>
+    <input type="text" class="champ" id="album-titre" placeholder="Titre de l'album...">
+    <textarea class="champ" id="album-theme" rows="2" placeholder="Thème, concept, histoire de l'album..."></textarea>
+    <div style="display:flex;gap:10px;">
+      <div style="flex:1;">
+        <p style="font-size:0.78rem;color:rgba(42,42,42,0.5);margin-bottom:4px;">Nombre de titres</p>
+        <select class="champ" id="album-nb" style="margin-bottom:0;">
+          <option>5</option><option>8</option><option>10</option>
+          <option selected>12</option><option>15</option><option>17</option><option>20</option>
+        </select>
+      </div>
+      <div style="flex:1;">
+        <p style="font-size:0.78rem;color:rgba(42,42,42,0.5);margin-bottom:4px;">Artiste / Groupe</p>
+        <input type="text" class="champ" id="album-artiste" placeholder="Ton nom..." style="margin-bottom:0;">
+      </div>
+    </div>
+  </div>
+
+  <div class="carte">
+    <h2>🎵 Genre principal</h2>
+    <div class="grille" id="album-genres-grille"></div>
+  </div>
+
+  <button class="btn-or" onclick="creerAlbum()">🎨 Créer mon album</button>
+  <div class="resultat" id="resultat-album"></div>
+</div>
+
+<!-- ═══ CLIP VIDÉO ═══ -->
+<div class="section" id="section-clip">
+
+  <div class="carte">
+    <h2>🎬 Ma chanson</h2>
+    <input type="text" class="champ" id="clip-titre" placeholder="Titre de la chanson...">
+    <textarea class="champ" id="clip-paroles" rows="4" placeholder="Paroles ou résumé de la chanson..."></textarea>
+  </div>
+
+  <div class="carte">
+    <h2>🎨 Style visuel du clip</h2>
+    <p style="font-size:0.75rem;color:rgba(42,42,42,0.5);margin-bottom:8px;">Indépendant du style musical — une rumba peut avoir un clip gothique</p>
+    <div class="grille" id="clip-styles-grille"></div>
+    <input type="text" class="champ" id="clip-style-autre" placeholder="Autre style visuel..." style="display:none;margin-top:6px;">
+  </div>
+
+  <div class="carte">
+    <h2>📹 Mode de réalisation</h2>
+    <div class="grille">
+      <button class="tag-btn actif" onclick="selectTag(this,'ia','clip-mode')">Images IA — zéro caméra</button>
+      <button class="tag-btn" onclick="selectTag(this,'reel','clip-mode')">Je filme moi-même</button>
+      <button class="tag-btn" onclick="selectTag(this,'mixte','clip-mode')">Mix IA + mes images</button>
+    </div>
+  </div>
+
+  <button class="btn-or" onclick="creerClip()">🎨 Créer mon clip</button>
+  <div class="resultat" id="resultat-clip"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// DONNÉES
+// ═══════════════════════════════════════
+
+var GENRES_1 = ['Afrobeat','Afropop','Coupé-décalé','Rumba congolaise','Soukous','Makossa','Highlife','Mbalax','Raï','Gnawa','Zouk','Kompa','Reggae','Dancehall','Gospel','Soul','R&B','Hip-hop','Rap','Trap'];
+var GENRES_2 = ['Jazz','Blues','Pop','Rock','Électro','House','Lo-fi','Bossa nova','Samba','Salsa','Flamenco','K-pop','J-pop','City pop','Bollywood','Classique','Ambient','✨ Autre mix'];
+
+var LANGUES = ['Français','Lingala','Wolof','Bambara','Swahili','Kinyarwanda','Hausa','Yoruba','Twi','Zulu','Anglais','Espagnol','Portugais','Arabe','Créole haïtien','✨ Autre'];
+
+var STYLES_CLIP = ['Afrofuturiste','Nollywood','Bollywood','Gothique / Dark','Harry Potter / Fantastique','Disney / Animation','Casablanca (N&B)','Anime / Manga','Vintage 70-80','Réaliste / Documentaire','Luxe / Or','Nature / Forêt','Science-fiction','Contes africains','Péplum africain','✨ Autre'];
+
+var GENRES_ALBUM = ['Afrobeat','Afropop','Rumba','Gospel','R&B / Soul','Hip-hop','Reggae','Jazz','Pop','Électro','Classique','Folk','✨ Autre'];
+
+// État
+var modeActif = 'creer';
+var genresActifs = [];
+var parolesModeActif = 'paroles';
+var clipModeActif = 'ia';
+var clipStyleActif = null;
+var langueActif = 'Français';
+var albumGenreActif = null;
+var pistes = [];
+var mediaRecorder = null;
+var audioChunks = [];
+var enregistrement = false;
+var chronoInterval = null;
+var chronoSecondes = 0;
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+
+document.addEventListener('DOMContentLoaded', function() {
+  renderGenres('genres-grille', GENRES_1, 'genre');
+  renderGenres('genres2-grille', GENRES_2, 'genre');
+  renderTagsBoutons('langues-grille', LANGUES, 'langue');
+  renderTagsBoutons('clip-styles-grille', STYLES_CLIP, 'clip-style');
+  renderTagsBoutons('album-genres-grille', GENRES_ALBUM, 'album-genre');
+  verifierBatterie();
+});
+
+function renderGenres(id, items, type) {
+  var grille = document.getElementById(id);
+  if (!grille) return;
+  grille.innerHTML = '';
+  items.forEach(function(item) {
+    var btn = document.createElement('button');
+    btn.className = 'tag-btn';
+    btn.textContent = item;
+    btn.onclick = function() {
+      if (item === '✨ Autre mix') {
+        btn.classList.toggle('actif');
+        document.getElementById('genre-autre').style.display = btn.classList.contains('actif') ? 'block' : 'none';
+        return;
+      }
+      btn.classList.toggle('actif');
+      var idx = genresActifs.indexOf(item);
+      if (idx >= 0) genresActifs.splice(idx,1);
+      else genresActifs.push(item);
+    };
+    grille.appendChild(btn);
+  });
+}
+
+function renderTagsBoutons(id, items, type) {
+  var grille = document.getElementById(id);
+  if (!grille) return;
+  grille.innerHTML = '';
+  items.forEach(function(item) {
+    var btn = document.createElement('button');
+    btn.className = 'tag-btn';
+    btn.textContent = item;
+    btn.onclick = function() { selectTag(btn, item, type); };
+    grille.appendChild(btn);
+  });
+}
+
+// ═══════════════════════════════════════
+// SÉLECTION
+// ═══════════════════════════════════════
+
+function selectTag(btn, val, type) {
+  var grille = btn.parentElement;
+  grille.querySelectorAll('.tag-btn').forEach(function(b){ b.classList.remove('actif'); });
+  btn.classList.add('actif');
+
+  if (type === 'paroles-mode') {
+    parolesModeActif = val;
+    document.getElementById('paroles-input').style.display = (val !== 'paroles') ? 'block' : 'none';
+  }
+  else if (type === 'langue') {
+    langueActif = val;
+    document.getElementById('langue-autre').style.display = val === '✨ Autre' ? 'block' : 'none';
+  }
+  else if (type === 'clip-style') {
+    clipStyleActif = val;
+    document.getElementById('clip-style-autre').style.display = val === '✨ Autre' ? 'block' : 'none';
+  }
+  else if (type === 'clip-mode') { clipModeActif = val; }
+  else if (type === 'album-genre') { albumGenreActif = val; }
+}
+
+function setMode(mode) {
+  modeActif = mode;
+  document.querySelectorAll('.mode-btn').forEach(function(b){ b.classList.remove('actif'); });
+  event.currentTarget.classList.add('actif');
+  document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('visible'); });
+  document.getElementById('section-' + mode).classList.add('visible');
+}
+
+// ═══════════════════════════════════════
+// CRÉER CHANSON
+// ═══════════════════════════════════════
+
+async function creerChanson() {
+  var idee = document.getElementById('creer-idee').value.trim();
+  if (!idee) { alert('Décris ton idée de chanson.'); return; }
+
+  var genres = genresActifs.join(', ') || document.getElementById('genre-autre').value || 'Afropop';
+  var langue = langueActif === '✨ Autre' ? document.getElementById('langue-autre').value : langueActif;
+  var bpm = document.getElementById('bpm').value;
+  var tonalite = document.getElementById('tonalite').value;
+  var parolesInput = document.getElementById('paroles-input').value;
+
+  var zone = document.getElementById('resultat-creer');
+  zone.className = 'resultat visible';
+  zone.innerHTML = '<div class="chargement">⏳ Création en cours...</div>';
+
+  var prompt = 'Tu es un compositeur et parolier professionnel. Crée une chanson complète.\n\n';
+  prompt += 'Idée / Thème : ' + idee + '\n';
+  prompt += 'Genre(s) : ' + genres + '\n';
+  prompt += 'Langue : ' + langue + '\n';
+  if (bpm) prompt += 'Tempo : ' + bpm + ' BPM\n';
+  if (tonalite) prompt += 'Tonalité : ' + tonalite + '\n';
+  if (parolesModeActif === 'paroles-co' && parolesInput) prompt += 'Idées de paroles de l\'artiste : ' + parolesInput + '\n';
+  if (parolesModeActif === 'paroles-miennes' && parolesInput) prompt += 'Paroles existantes : ' + parolesInput + '\n';
+
+  prompt += '\nDonne :\n1. TITRE\n2. STRUCTURE (intro / couplet / refrain / pont / outro avec nombre de mesures)\n3. PAROLES COMPLÈTES (en ' + langue + ')\n4. GRILLE D\'ACCORDS (accords pour chaque section)\n5. INDICATIONS DE PRODUCTION (instruments, ambiance, effets suggérés)\n6. TEMPO SUGGÉRÉ si non fourni';
+
+  try {
+    var r = await fetch('/api/claude', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ messages:[{role:'user',content:prompt}] }) });
+    var d = await r.json();
+    var texte = d.content && d.content[0] ? d.content[0].text : 'Erreur.';
+    zone.innerHTML = texte.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  } catch(e) { zone.innerHTML = 'Connexion indisponible.'; }
+}
+
+// ═══════════════════════════════════════
+// ENREGISTREMENT
+// ═══════════════════════════════════════
+
+async function toggleEnregistrement() {
+  if (!enregistrement) {
+    try {
+      var stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      audioChunks = [];
+      mediaRecorder.ondataavailable = function(e) { audioChunks.push(e.data); };
+      mediaRecorder.onstop = function() {
+        var blob = new Blob(audioChunks, { type:'audio/webm' });
+        sauvegarderPiste(blob);
+        stream.getTracks().forEach(function(t){ t.stop(); });
+      };
+      mediaRecorder.start();
+      enregistrement = true;
+      document.getElementById('micro-btn').classList.add('enregistre');
+      document.getElementById('micro-btn').textContent = '⏹️';
+      document.getElementById('micro-statut').textContent = 'Enregistrement en cours...';
+      // Chrono
+      chronoSecondes = 0;
+      document.getElementById('chrono').style.display = 'inline';
+      chronoInterval = setInterval(function() {
+        chronoSecondes++;
+        var m = Math.floor(chronoSecondes/60);
+        var s = chronoSecondes % 60;
+        document.getElementById('chrono').textContent = m + ':' + (s<10?'0':'') + s;
+      }, 1000);
+    } catch(e) {
+      alert('Micro non disponible. Autorise l\'accès au micro dans les réglages.');
+    }
+  } else {
+    if (mediaRecorder) mediaRecorder.stop();
+    enregistrement = false;
+    clearInterval(chronoInterval);
+    document.getElementById('micro-btn').classList.remove('enregistre');
+    document.getElementById('micro-btn').textContent = '🎙️';
+    document.getElementById('micro-statut').textContent = 'Piste sauvegardée ✓';
+    document.getElementById('chrono').style.display = 'none';
+  }
+}
+
+function sauvegarderPiste(blob) {
+  var nom = document.getElementById('piste-nom-input').value.trim() || ('Piste ' + (pistes.length + 1));
+  var url = URL.createObjectURL(blob);
+  pistes.push({ nom: nom, blob: blob, url: url, duree: chronoSecondes });
+  document.getElementById('piste-nom-input').value = '';
+  renderPistes();
+  document.getElementById('pistes-section').style.display = 'block';
+}
+
+function renderPistes() {
+  var liste = document.getElementById('pistes-liste');
+  liste.innerHTML = '';
+  pistes.forEach(function(p, i) {
+    var div = document.createElement('div');
+    div.className = 'piste';
+    var m = Math.floor(p.duree/60), s = p.duree%60;
+    div.innerHTML = '<span class="piste-nom">🎵 ' + p.nom + '</span>' +
+      '<span class="piste-dur">' + m + ':' + (s<10?'0':'') + s + '</span>' +
+      '<audio controls src="' + p.url + '" style="height:30px;max-width:120px;"></audio>' +
+      '<button class="piste-sup" onclick="supprimerPiste(' + i + ')">✕</button>';
+    liste.appendChild(div);
+  });
+}
+
+function supprimerPiste(i) {
+  pistes.splice(i, 1);
+  renderPistes();
+  if (pistes.length === 0) document.getElementById('pistes-section').style.display = 'none';
+}
+
+async function analyserPistes() {
+  if (pistes.length === 0) { alert('Enregistre au moins une piste.'); return; }
+
+  var zone = document.getElementById('resultat-pistes');
+  zone.className = 'resultat visible';
+  zone.innerHTML = '<div class="chargement">⏳ Analyse en cours...</div>';
+
+  var info = pistes.map(function(p, i) {
+    var m = Math.floor(p.duree/60), s = p.duree%60;
+    return 'Piste ' + (i+1) + ' : "' + p.nom + '" — ' + m + ':' + (s<10?'0':'') + s;
+  }).join('\n');
+
+  var prompt = 'Tu es un ingénieur du son. Analyse ces pistes enregistrées et donne des instructions de mixage.\n\n' + info + '\n\nDonne :\n1. Ordre suggéré dans le mix\n2. Volume relatif de chaque piste (en %)\n3. Effets suggérés pour chaque piste (réverb, écho, compression)\n4. Instructions pas à pas pour GarageBand (iPhone/Mac, gratuit) ou Audacity (PC, gratuit)\n5. Durée totale estimée';
+
+  try {
+    var r = await fetch('/api/claude', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ messages:[{role:'user',content:prompt}] }) });
+    var d = await r.json();
+    var texte = d.content && d.content[0] ? d.content[0].text : 'Erreur.';
+    zone.innerHTML = texte.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  } catch(e) { zone.innerHTML = 'Connexion indisponible.'; }
+}
+
+// ═══════════════════════════════════════
+// ALBUM
+// ═══════════════════════════════════════
+
+async function creerAlbum() {
+  var titre = document.getElementById('album-titre').value.trim();
+  var theme = document.getElementById('album-theme').value.trim();
+  var nb = document.getElementById('album-nb').value;
+  var artiste = document.getElementById('album-artiste').value.trim();
+
+  if (!titre && !theme) { alert('Donne un titre ou un thème à ton album.'); return; }
+
+  var zone = document.getElementById('resultat-album');
+  zone.className = 'resultat visible';
+  zone.innerHTML = '<div class="chargement">⏳ Création de l\'album...</div>';
+
+  var prompt = 'Tu es un directeur artistique musical. Crée un album complet.\n\n';
+  if (artiste) prompt += 'Artiste : ' + artiste + '\n';
+  if (titre) prompt += 'Titre de l\'album : ' + titre + '\n';
+  if (theme) prompt += 'Concept / Thème : ' + theme + '\n';
+  if (albumGenreActif) prompt += 'Genre principal : ' + albumGenreActif + '\n';
+  prompt += 'Nombre de titres : ' + nb + '\n\n';
+  prompt += 'Crée :\n1. PRÉSENTATION DE L\'ALBUM (3 lignes)\n2. LISTE DES ' + nb + ' TITRES (numéro, titre, durée estimée, thème de chaque chanson)\n3. ORDRE PROPOSÉ (arc narratif de l\'album)\n4. TITRE PHARE / SINGLE recommandé\n5. CONCEPT VISUEL pour la pochette\n6. BIO ARTISTE courte (3 lignes)';
+
+  try {
+    var r = await fetch('/api/claude', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ messages:[{role:'user',content:prompt}] }) });
+    var d = await r.json();
+    var texte = d.content && d.content[0] ? d.content[0].text : 'Erreur.';
+    zone.innerHTML = texte.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  } catch(e) { zone.innerHTML = 'Connexion indisponible.'; }
+}
+
+// ═══════════════════════════════════════
+// CLIP VIDÉO
+// ═══════════════════════════════════════
+
+async function creerClip() {
+  var titre = document.getElementById('clip-titre').value.trim();
+  var paroles = document.getElementById('clip-paroles').value.trim();
+  if (!titre && !paroles) { alert('Donne le titre ou les paroles de ta chanson.'); return; }
+
+  var style = clipStyleActif === '✨ Autre' ? document.getElementById('clip-style-autre').value : (clipStyleActif || 'Afrofuturiste');
+
+  var zone = document.getElementById('resultat-clip');
+  zone.className = 'resultat visible';
+  zone.innerHTML = '<div class="chargement">⏳ Création du clip...</div>';
+
+  var prompt = 'Tu es un réalisateur de clips musicaux. Crée le découpage d\'un clip vidéo.\n\n';
+  if (titre) prompt += 'Chanson : "' + titre + '"\n';
+  if (paroles) prompt += 'Paroles / Résumé : ' + paroles + '\n';
+  prompt += 'Style visuel : ' + style + '\n';
+  prompt += 'Mode : ' + (clipModeActif === 'ia' ? '100% images IA générées' : clipModeActif === 'reel' ? 'images réelles filmées par l\'artiste' : 'mix IA et images réelles') + '\n\n';
+  prompt += 'Crée :\n1. CONCEPT DU CLIP (3 lignes)\n2. DÉCOUPAGE SCÈNE PAR SCÈNE (6 à 10 scènes) avec :\n   - Description visuelle précise\n   - Durée de la scène\n   - Paroles synchronisées\n   - Prompt image IA en anglais (pour générer le visuel)\n3. AMBIANCE MUSICALE et couleurs\n4. INSTRUCTIONS DE MONTAGE dans CapCut ou iMovie';
+
+  try {
+    var r = await fetch('/api/claude', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ messages:[{role:'user',content:prompt}] }) });
+    var d = await r.json();
+    var texte = d.content && d.content[0] ? d.content[0].text : 'Erreur.';
+    zone.innerHTML = texte.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  } catch(e) { zone.innerHTML = 'Connexion indisponible.'; }
+}
+
+// ═══════════════════════════════════════
+// BATTERIE
+// ═══════════════════════════════════════
+
+function verifierBatterie() {
+  if (navigator.getBattery) {
+    navigator.getBattery().then(function(battery) {
+      if (battery.level < 0.15 && !battery.charging) {
+        document.getElementById('alerte-batterie').style.display = 'block';
+      }
+    });
+  }
+}
+</script>
+</body>
+</html>
