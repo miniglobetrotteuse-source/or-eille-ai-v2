@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image & Composition — Or Eille AI</title>
+<style>
+  :root {
+    --or: #E0B020;
+    --bleu: #1A3A8F;
+    --creme: #F7F4EF;
+    --texte: #2A2A2A;
+    --ombre: rgba(224,176,32,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--creme);
+    color: var(--texte);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-family: Georgia, serif;
+    color: var(--or);
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .sous-titre {
+    text-align: center;
+    font-size: 0.82rem;
+    color: rgba(42,42,42,0.5);
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-family: Georgia, serif;
+    color: var(--or);
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }
+
+  .carte {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px var(--ombre);
+  }
+
+  /* MODES */
+  .modes {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .mode-btn {
+    flex: 1;
+    padding: 12px 8px;
+    border-radius: 12px;
+    border: 2px solid rgba(224,176,32,0.3);
+    background: white;
+    color: var(--bleu);
+    font-family: Georgia, serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mode-btn.actif {
+    background: var(--bleu);
+    color: var(--or);
+    border-color: var(--bleu);
+  }
+
+  .mode-btn .mode-emoji { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+
+  /* GRILLES DE BOUTONS */
+  .grille {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .tag-btn {
+    padding: 5px 12px;
+    border-radius: 16px;
+    border: 1.5px solid rgba(224,176,32,0.3);
+    background: white;
+    color: var(--bleu);
+    font-family: Georgia, serif;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .tag-btn.actif {
+    background: var(--or);
+    color: var(--bleu);
+    border-color: var(--or);
+    font-weight: bold;
+  }
+
+  /* INPUTS */
+  .champ {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid rgba(224,176,32,0.3);
+    border-radius: 10px;
+    font-family: Georgia, serif;
+    font-size: 0.85rem;
+    color: var(--texte);
+    background: white;
+    margin-bottom: 10px;
+    outline: none;
+    resize: none;
+  }
+
+  .champ:focus { border-color: var(--or); }
+
+  /* ZONE UPLOAD */
+  .zone-upload {
+    border: 2px dashed rgba(224,176,32,0.4);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .zone-upload:hover, .zone-upload.dragover {
+    border-color: var(--or);
+    background: rgba(224,176,32,0.05);
+  }
+
+  .zone-upload input { display: none; }
+  .zone-upload-label { font-size: 0.82rem; color: rgba(42,42,42,0.5); cursor: pointer; }
+  .zone-upload-label span { color: var(--or); text-decoration: underline; }
+
+  .previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .preview-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid var(--or);
+  }
+
+  /* BOUTONS ACTION */
+  .btn-or {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 28px;
+    background: var(--or);
+    color: var(--bleu);
+    border: none;
+    border-radius: 50px;
+    font-family: Georgia, serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s;
+  }
+
+  .btn-or:active { transform: scale(0.97); }
+
+  /* RÉSULTAT */
+  .resultat {
+    display: none;
+    background: white;
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 12px;
+    font-size: 0.83rem;
+    line-height: 1.8;
+    color: var(--texte);
+    border-left: 3px solid var(--or);
+  }
+
+  .resultat.visible { display: block; }
+
+  .chargement {
+    text-align: center;
+    color: var(--or);
+    font-size: 0.85rem;
+    padding: 12px;
+  }
+
+  /* FICHE PÉDAGOGIQUE */
+  .fiche {
+    display: none;
+    background: rgba(26,58,143,0.04);
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--texte);
+    border-left: 3px solid var(--bleu);
+  }
+
+  .fiche.visible { display: block; }
+  .fiche strong { color: var(--bleu); }
+
+  /* SECTION */
+  .section { display: none; }
+  .section.visible { display: block; }
+
+  /* INFO BATTERIE */
+  .alerte {
+    background: #FFF3CD;
+    border: 1px solid #E0B020;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.78rem;
+    color: #856404;
+    margin-bottom: 10px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<h1>🎨 Image</h1>
+<p class="sous-titre">Génère, compose et transforme tes visuels</p>
+
+<div id="alerte-batterie" class="alerte">⚠️ Batterie faible — branche ton téléphone avant de commencer</div>
+
+<!-- CHOIX DU MODE -->
+<div class="modes">
+  <button class="mode-btn actif" onclick="setMode('generer')">
+    <span class="mode-emoji">✨</span>
+    Générer<br>une image IA
+  </button>
+  <button class="mode-btn" onclick="setMode('composer')">
+    <span class="mode-emoji">🖼️</span>
+    Composer<br>mes photos
+  </button>
+  <button class="mode-btn" onclick="setMode('mixer')">
+    <span class="mode-emoji">🔀</span>
+    Mixer IA<br>+ ma photo
+  </button>
+</div>
+
+<!-- ═══ MODE GÉNÉRER ═══ -->
+<div class="section visible" id="section-generer">
+
+  <!-- SUJET -->
+  <div class="carte">
+    <h2>📝 Ce que tu veux représenter</h2>
+    <textarea class="champ" id="gen-sujet" rows="2" placeholder="Ex: une femme africaine qui sourit au coucher du soleil, une tasse de café sur une table en bois, un logo d'oreille dorée..."></textarea>
+  </div>
+
+  <!-- STYLE ARTISTIQUE -->
+  <div class="carte">
+    <h2>🎨 Style artistique</h2>
+    <div class="grille" id="styles-grille"></div>
+    <div id="style-fiche" class="fiche"></div>
+    <input type="text" class="champ" id="gen-style-autre" placeholder="Autre style — décris-le..." style="display:none;margin-top:8px;">
+  </div>
+
+  <!-- MÉDIUM -->
+  <div class="carte">
+    <h2>🖌️ Médium / Technique</h2>
+    <div class="grille" id="mediums-grille"></div>
+    <input type="text" class="champ" id="gen-medium-autre" placeholder="Autre médium..." style="display:none;margin-top:8px;">
+  </div>
+
+  <!-- AMBIANCE -->
+  <div class="carte">
+    <h2>🌟 Ambiance</h2>
+    <div class="grille" id="ambiances-grille"></div>
+    <input type="text" class="champ" id="gen-ambiance-autre" placeholder="Autre ambiance..." style="display:none;margin-top:8px;">
+  </div>
+
+  <!-- FORMAT -->
+  <div class="carte">
+    <h2>📐 Format</h2>
+    <div class="grille" id="formats-grille"></div>
+  </div>
+
+  <button class="btn-or" onclick="genererImage()">🎨 Générer le prompt</button>
+  <div class="resultat" id="resultat-gen"></div>
+</div>
+
+<!-- ═══ MODE COMPOSER ═══ -->
+<div class="section" id="section-composer">
+
+  <!-- PHOTOS -->
+  <div class="carte">
+    <h2>📸 Tes photos (2 à 5)</h2>
+    <div class="zone-upload" onclick="document.getElementById('comp-photos').click()">
+      <input type="file" id="comp-photos" multiple accept="image/*" onchange="chargerPhotos(this.files)">
+      <div class="zone-upload-label">Appuie pour choisir tes photos<br><span>ou glisse-les ici</span></div>
+    </div>
+    <div class="previews" id="comp-previews"></div>
+  </div>
+
+  <!-- MESSAGE -->
+  <div class="carte">
+    <h2>💬 Texte / Message à intégrer</h2>
+    <input type="text" class="champ" id="comp-texte" placeholder="Ex: Bonne fête Maman, Disponible sur Instagram, Mon logo...">
+  </div>
+
+  <!-- FORMAT -->
+  <div class="carte">
+    <h2>📐 Format</h2>
+    <div class="grille" id="comp-formats-grille"></div>
+  </div>
+
+  <!-- AMBIANCE -->
+  <div class="carte">
+    <h2>🌟 Ambiance</h2>
+    <div class="grille" id="comp-ambiances-grille"></div>
+  </div>
+
+  <button class="btn-or" onclick="genererComposition()">🎨 Composer</button>
+  <div class="resultat" id="resultat-comp"></div>
+</div>
+
+<!-- ═══ MODE MIXER ═══ -->
+<div class="section" id="section-mixer">
+
+  <div class="carte">
+    <h2>📸 Ta photo de base</h2>
+    <div class="zone-upload" onclick="document.getElementById('mix-photo').click()">
+      <input type="file" id="mix-photo" accept="image/*" onchange="chargerPhotoMix(this.files)">
+      <div class="zone-upload-label">Appuie pour choisir ta photo<br><span>toi, ton produit, ton espace...</span></div>
+    </div>
+    <div id="mix-preview"></div>
+  </div>
+
+  <div class="carte">
+    <h2>✨ Ce que tu veux ajouter ou changer</h2>
+    <textarea class="champ" id="mix-description" rows="3" placeholder="Ex: mets-moi dans un décor médiéval, ajoute des fleurs sur la table, change le fond en coucher de soleil, intègre mon logo en haut à droite..."></textarea>
+  </div>
+
+  <!-- STYLE -->
+  <div class="carte">
+    <h2>🎨 Style visuel</h2>
+    <div class="grille" id="mix-styles-grille"></div>
+  </div>
+
+  <button class="btn-or" onclick="genererMix()">🎨 Générer le prompt</button>
+  <div class="resultat" id="resultat-mix"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// DONNÉES
+// ═══════════════════════════════════════
+
+var STYLES = [
+  { val:'impressionnisme', label:'🎨 Impressionnisme', fiche:'Période : 1860-1900, France. Capturer la lumière et l\'instant. Touches visibles, couleurs vibrantes. Artistes : Monet, Renoir, Degas.' },
+  { val:'pointillisme', label:'🔵 Pointillisme', fiche:'Période : 1886-1910. Des milliers de petits points de couleur pure. Artistes : Seurat, Signac. Science de la couleur appliquée à la peinture.' },
+  { val:'cubisme', label:'📦 Cubisme', fiche:'Période : 1907-1920. Représenter un objet sous plusieurs angles simultanément. ⚠️ Picasso s\'est inspiré des masques africains (Fang du Gabon, sculptures Kongo). Artistes : Picasso, Braque.' },
+  { val:'art_deco', label:'🏛️ Art Déco', fiche:'Période : 1920-1940. Géométrie élégante, symétrie, luxe. Ex : Empire State Building, affiches années 30. Artiste clé : Tamara de Lempicka.' },
+  { val:'surrealisme', label:'🌙 Surréalisme', fiche:'Période : 1920-1960. L\'inconscient et les rêves mis en image. Artistes : Dalí, Magritte, Frida Kahlo.' },
+  { val:'pop_art', label:'💥 Pop Art', fiche:'Période : 1950-1970. Culture populaire et publicité élevées au rang d\'art. Artistes : Warhol, Lichtenstein, Keith Haring.' },
+  { val:'renaissance', label:'🏛️ Renaissance', fiche:'Période : 1400-1600, Italie. Proportions parfaites, lumière dramatique. Michel-Ange, Raphaël, Léonard de Vinci.' },
+  { val:'baroque', label:'✨ Baroque', fiche:'Période : 1600-1750. Mouvement, contraste lumière/ombre extrême (clair-obscur). Rembrandt, Caravage, Rubens.' },
+  { val:'afrofuturisme', label:'🚀 Afrofuturisme', fiche:'1990-présent. Futur où cultures africaines et technologie avancée coexistent. Kehinde Wiley, Wangechi Mutu. Black Panther, Janelle Monáe.' },
+  { val:'ecole_bamako', label:'📷 École de Bamako', fiche:'Portrait studio avec fonds peints, accessoires modernes, dignité africaine. Seydou Keïta (1948-1962), Malick Sidibé. Premiers à photographier des Noirs sans regard colonial.' },
+  { val:'manga_shonen', label:'⚔️ Manga Shonen', fiche:'Action, amitié, héros masculin. Dragon Ball, Naruto, One Piece.' },
+  { val:'manga_shojo', label:'🌸 Manga Shojo', fiche:'Émotions, romance, trait fin et délicat. Sailor Moon, Card Captor Sakura.' },
+  { val:'anime', label:'🎌 Anime', fiche:'Animation japonaise. Studio Ghibli (Miyazaki), Evangelion, Ghost in the Shell.' },
+  { val:'ukiyo_e', label:'🗻 Ukiyo-e', fiche:'Estampes japonaises 17e-19e s. La Grande Vague de Kanagawa. Hokusai, Hiroshige.' },
+  { val:'art_rupestre', label:'🦌 Art rupestre', fiche:'Peintures des cavernes préhistoriques. Lascaux, Altamira. Silhouettes d\'animaux, mains négatives.' },
+  { val:'egyptien', label:'𓂀 Égyptien ancien', fiche:'Représentation de profil, hiérarchie des tailles, couleurs symboliques. Or, bleu lapis-lazuli.' },
+  { val:'abstrait', label:'🌀 Art abstrait', fiche:'Pas de représentation du réel. Couleurs et formes pures. Kandinsky, Rothko, Pollock.' },
+  { val:'minimaliste', label:'⬜ Minimaliste', fiche:'Moins c\'est plus. Une seule couleur, espaces vides intentionnels. Forme suit la fonction.' },
+  { val:'street_art', label:'🏙️ Street art', fiche:'Graffiti urbain, couleurs vives, messages sociaux. Banksy, Jean-Michel Basquiat.' },
+  { val:'wax_africain', label:'🌺 Wax/Ankara', fiche:'Tissus et motifs africains. Couleurs vives, géométrie répétitive, symboles culturels.' },
+  { val:'autre', label:'✨ Autre', fiche:'' },
+];
+
+var MEDIUMS = [
+  'Aquarelle','Huile sur toile','Acrylique','Fusain','Crayon graphite',
+  'Pastel sec','Encre de Chine','Gravure sur bois','Peinture sur soie',
+  'Batik','Gouache','Numérique','3D réaliste','Pixel art','✨ Autre'
+];
+
+var AMBIANCES = [
+  'Romantique','Dark romance','Médiéval','Futuriste','Nature / Bohème',
+  'Africain traditionnel','Luxe / Or','Minimaliste','Fête / Célébration',
+  'Professionnel','Enfants / Doux','Halloween / Mystère','Été / Tropical',
+  'Nollywood','Bollywood','Afrofuturiste','✨ Autre'
+];
+
+var FORMATS = [
+  { label:'Carré 1:1', desc:'Instagram post', val:'1080x1080px' },
+  { label:'Portrait 4:5', desc:'Instagram portrait', val:'1080x1350px' },
+  { label:'Vertical 9:16', desc:'Reels / TikTok / Stories', val:'1080x1920px' },
+  { label:'Horizontal 16:9', desc:'YouTube', val:'1920x1080px' },
+  { label:'Carte visite', desc:'8.5x5.5cm', val:'1050x600px' },
+  { label:'A4 portrait', desc:'Flyer / Affiche', val:'2480x3508px' },
+  { label:'Bannière LinkedIn', desc:'Profil', val:'1584x396px' },
+];
+
+// État
+var styleActif = null;
+var mediumActif = null;
+var ambianceActif = null;
+var formatActif = '1080x1080px';
+var compAmbianceActif = null;
+var compFormatActif = '1080x1080px';
+var mixStyleActif = null;
+var modeActif = 'generer';
+var photosChargees = [];
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+
+document.addEventListener('DOMContentLoaded', function() {
+  renderGrille('styles-grille', STYLES.map(function(s){ return {val:s.val, label:s.label}; }), 'style');
+  renderGrille('mediums-grille', MEDIUMS.map(function(m){ return {val:m, label:m}; }), 'medium');
+  renderGrille('ambiances-grille', AMBIANCES.map(function(a){ return {val:a, label:a}; }), 'ambiance');
+  renderFormats('formats-grille', 'format');
+  renderGrille('comp-ambiances-grille', AMBIANCES.map(function(a){ return {val:a, label:a}; }), 'comp-ambiance');
+  renderFormats('comp-formats-grille', 'comp-format');
+  renderGrille('mix-styles-grille', STYLES.slice(0,12).map(function(s){ return {val:s.val, label:s.label}; }), 'mix-style');
+  verifierBatterie();
+});
+
+// ═══════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════
+
+function renderGrille(id, items, type) {
+  var grille = document.getElementById(id);
+  if (!grille) return;
+  grille.innerHTML = '';
+  items.forEach(function(item) {
+    var btn = document.createElement('button');
+    btn.className = 'tag-btn';
+    btn.textContent = item.label;
+    btn.onclick = function() { selectTag(btn, item.val, type); };
+    grille.appendChild(btn);
+  });
+}
+
+function renderFormats(id, type) {
+  var grille = document.getElementById(id);
+  if (!grille) return;
+  grille.innerHTML = '';
+  FORMATS.forEach(function(f) {
+    var btn = document.createElement('button');
+    btn.className = 'tag-btn' + (f.val === '1080x1080px' ? ' actif' : '');
+    btn.innerHTML = f.label + '<br><small style="opacity:0.6;font-size:0.7em">' + f.desc + '</small>';
+    btn.onclick = function() {
+      document.querySelectorAll('#' + id + ' .tag-btn').forEach(function(b){ b.classList.remove('actif'); });
+      btn.classList.add('actif');
+      if (type === 'format') formatActif = f.val;
+      else compFormatActif = f.val;
+    };
+    grille.appendChild(btn);
+  });
+}
+
+function selectTag(btn, val, type) {
+  var grille = btn.parentElement;
+  grille.querySelectorAll('.tag-btn').forEach(function(b){ b.classList.remove('actif'); });
+  btn.classList.add('actif');
+
+  if (type === 'style') {
+    styleActif = val;
+    var style = STYLES.find(function(s){ return s.val === val; });
+    var fiche = document.getElementById('style-fiche');
+    var autre = document.getElementById('gen-style-autre');
+    if (val === 'autre') { autre.style.display = 'block'; fiche.classList.remove('visible'); }
+    else if (style && style.fiche) {
+      fiche.innerHTML = '<strong>' + style.label.replace(/^[^\s]+\s/,'') + '</strong><br>' + style.fiche;
+      fiche.classList.add('visible');
+      autre.style.display = 'none';
+    } else { fiche.classList.remove('visible'); autre.style.display = 'none'; }
+  }
+  else if (type === 'medium') {
+    mediumActif = val;
+    document.getElementById('gen-medium-autre').style.display = val === '✨ Autre' ? 'block' : 'none';
+  }
+  else if (type === 'ambiance') {
+    ambianceActif = val;
+    document.getElementById('gen-ambiance-autre').style.display = val === '✨ Autre' ? 'block' : 'none';
+  }
+  else if (type === 'comp-ambiance') { compAmbianceActif = val; }
+  else if (type === 'mix-style') { mixStyleActif = val; }
+}
+
+// ═══════════════════════════════════════
+// MODES
+// ═══════════════════════════════════════
+
+function setMode(mode) {
+  modeActif = mode;
+  document.querySelectorAll('.mode-btn').forEach(function(b){ b.classList.remove('actif'); });
+  event.currentTarget.classList.add('actif');
+  document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('visible'); });
+  document.getElementById('section-' + mode).classList.add('visible');
+}
+
+// ═══════════════════════════════════════
+// PHOTOS
+// ═══════════════════════════════════════
+
+function chargerPhotos(files) {
+  var previews = document.getElementById('comp-previews');
+  previews.innerHTML = '';
+  photosChargees = Array.from(files).slice(0,5);
+  photosChargees.forEach(function(file) {
+    var img = document.createElement('img');
+    img.className = 'preview-img';
+    img.src = URL.createObjectURL(file);
+    previews.appendChild(img);
+  });
+}
+
+function chargerPhotoMix(files) {
+  if (!files || !files[0]) return;
+  var preview = document.getElementById('mix-preview');
+  var img = document.createElement('img');
+  img.className = 'preview-img';
+  img.src = URL.createObjectURL(files[0]);
+  img.style.width = '100%';
+  img.style.height = '160px';
+  img.style.borderRadius = '10px';
+  img.style.marginTop = '8px';
+  preview.innerHTML = '';
+  preview.appendChild(img);
+}
+
+// ═══════════════════════════════════════
+// GÉNÉRATION IMAGE
+// ═══════════════════════════════════════
+
+async function genererImage() {
+  var sujet = document.getElementById('gen-sujet').value.trim();
+  if (!sujet) { alert('Décris ce que tu veux représenter.'); return; }
+
+  var style = styleActif === 'autre'
+    ? document.getElementById('gen-style-autre').value
+    : (STYLES.find(function(s){ return s.val === styleActif; }) || {label:''}).label.replace(/^[^\s]+\s/,'') || '';
+  var medium = mediumActif === '✨ Autre' ? document.getElementById('gen-medium-autre').value : (mediumActif || '');
+  var ambiance = ambianceActif === '✨ Autre' ? document.getElementById('gen-ambiance-autre').value : (ambianceActif || '');
+
+  var zone = document.getElementById('resultat-gen');
+  zone.className = 'resultat visible';
+  zone.innerHTML = '<div class="chargement">⏳ Génération du prompt...</div>';
+
+  var prompt = 'Génère un prompt précis en anglais pour créer cette image avec un générateur IA (DALL-E, Midjourney, Stable Diffusion).\n\nSujet : ' + sujet;
+  if (style) prompt += '\nStyle artistique : ' + style;
+  if (medium) prompt += '\nMédium/Technique : ' + medium;
+  if (ambiance) prompt += '\nAmbiance : ' + ambiance;
+  if (formatActif) prompt += '\nFormat : ' + formatActif;
+  prompt += '\n\nDonne :\n1. Le prompt en anglais (précis, riche en détails visuels)\n2. Une version courte du prompt (pour les générateurs limités)\n3. Mots-clés négatifs (ce qu\'on ne veut pas voir)\n4. Conseil sur le meilleur outil pour ce style';
+
+  try {
+    var r = await fetch('/api/claude', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ messages: [{ role:'user', content: prompt }] })
+    });
+    var d = await r.json();
+    var texte = d.content && d.content[0] ? d.content[0].text : 'Erreur.';
+    zone.innerHTML = texte.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  } catch(e) {
+    zone.innerHTML = 'Connexion indisponible.';
+  }
+}
+
+// ═══════════════════════════════════════
+// COMPOSITION
+// ═══════════════════════════════════════
+
+async function genererComposition() {
+  var texte = document.getElementById('comp-texte').value.trim();
+  var nbPhotos = photosChargees.length;
+
+  var zone = document.getElementById('resultat-comp');
+  zone.className = 'resultat visible';
+  zone.innerHTML = '<div class="chargement">⏳ Composition en cours...</div>';
+
+  var prompt = 'Tu es un directeur artistique. Crée des instructions précises pour composer ce visuel.\n\n';
+  prompt += 'Nombre de photos : ' + (nbPhotos || 'aucune — générer en IA') + '\n';
+  if (texte) prompt += 'Texte à intégrer : "' + texte + '"\n';
+  if (compFormatActif) prompt += 'Format : ' + compFormatActif + '\n';
+  if (compAmbianceActif) prompt += 'Ambiance : ' + compAmbianceActif + '\n';
+  prompt += '\nDonne des instructions étape par étape pour Canva (gratuit) :\n- Disposition des photos\n- Où placer le texte\n- Couleurs suggérées\n- Effets recommandés\n\nEt si des éléments manquent, génère un prompt IA pour les créer.';
+
+  try {
+    var r = await fetch('/api/claude', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ messages: [{ role:'user', content: prompt }] })
+    });
+    var d = await r.json();
+    var rep = d.content && d.content[0] ? d.content[0].text : 'Erreur.';
+    zone.innerHTML = rep.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  } catch(e) {
+    zone.innerHTML = 'Connexion indisponible.';
+  }
+}
+
+// ═══════════════════════════════════════
+// MIX IA + PHOTO
+// ═══════════════════════════════════════
+
+async function genererMix() {
+  var description = document.getElementById('mix-description').value.trim();
+  if (!description) { alert('Décris ce que tu veux ajouter ou changer.'); return; }
+
+  var style = mixStyleActif ? (STYLES.find(function(s){ return s.val === mixStyleActif; }) || {label:mixStyleActif}).label.replace(/^[^\s]+\s/,'') : '';
+
+  var zone = document.getElementById('resultat-mix');
+  zone.className = 'resultat visible';
+  zone.innerHTML = '<div class="chargement">⏳ Génération du prompt...</div>';
+
+  var prompt = 'Tu es un expert en inpainting et composition photo IA.\n\n';
+  prompt += 'L\'utilisateur a une photo et veut : ' + description + '\n';
+  if (style) prompt += 'Style visuel souhaité : ' + style + '\n';
+  prompt += '\nDonne :\n1. Le prompt précis en anglais pour Adobe Firefly ou Stable Diffusion (inpainting)\n2. Les étapes pour l\'outil Firefly (gratuit en ligne) ou Canva\n3. Ce qu\'il faut sélectionner / masquer dans la photo\n4. Conseil pour un résultat naturel et cohérent';
+
+  try {
+    var r = await fetch('/api/claude', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ messages: [{ role:'user', content: prompt }] })
+    });
+    var d = await r.json();
+    var rep = d.content && d.content[0] ? d.content[0].text : 'Erreur.';
+    zone.innerHTML = rep.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  } catch(e) {
+    zone.innerHTML = 'Connexion indisponible.';
+  }
+}
+
+// ═══════════════════════════════════════
+// BATTERIE
+// ═══════════════════════════════════════
+
+function verifierBatterie() {
+  if (navigator.getBattery) {
+    navigator.getBattery().then(function(battery) {
+      if (battery.level < 0.15 && !battery.charging) {
+        document.getElementById('alerte-batterie').style.display = 'block';
+      }
+    });
+  }
+}
+</script>
+</body>
+</html>
