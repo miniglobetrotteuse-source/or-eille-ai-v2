@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda — Or Eille AI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap');
+
+  :root {
+    --or: #E0B020;
+    --bleu: #1A3A8F;
+    --creme: #F7F4EF;
+    --texte: #2A2A2A;
+    --ombre: rgba(224,176,32,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--creme);
+    color: var(--texte);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--or);
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--or);
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .carte {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px var(--ombre);
+  }
+
+  /* PHASE LUNAIRE */
+  .lune-bloc {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px var(--ombre);
+  }
+  .lune-emoji { font-size: 2.4rem; }
+  .lune-info { flex: 1; }
+  .lune-nom { font-family: 'Playfair Display', serif; color: var(--bleu); font-size: 1rem; font-weight: 700; }
+  .lune-signe { color: var(--or); font-size: 0.85rem; }
+  .lune-message { color: var(--texte); font-size: 0.8rem; opacity: 0.7; margin-top: 4px; }
+
+  /* CALENDRIERS */
+  .calendriers-grille {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .cal-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(224,176,32,0.3);
+    background: white;
+    color: var(--bleu);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .cal-btn.actif {
+    background: var(--or);
+    color: var(--bleu);
+    border-color: var(--or);
+    font-weight: 600;
+  }
+
+  .cal-btn:active { transform: scale(0.97); }
+
+  /* SITUATION */
+  .situation {
+    background: var(--bleu);
+    color: white;
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 14px;
+    display: none;
+  }
+
+  .situation.visible { display: block; }
+
+  .situation-ligne {
+    font-size: 0.82rem;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    line-height: 1.5;
+  }
+  .situation-ligne:last-child { border-bottom: none; }
+
+  /* FUSEAUX */
+  .fuseaux-grille {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .tz-btn {
+    padding: 5px 10px;
+    border-radius: 16px;
+    border: 1.5px solid rgba(224,176,32,0.3);
+    background: white;
+    color: var(--bleu);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .tz-btn.actif {
+    background: var(--or);
+    color: var(--bleu);
+    border-color: var(--or);
+    font-weight: 600;
+  }
+
+  .heure-audience {
+    margin-top: 8px;
+    padding: 10px 12px;
+    background: var(--creme);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    color: var(--bleu);
+    font-weight: 500;
+    display: none;
+  }
+
+  .heure-audience.visible { display: block; }
+
+  /* CALENDRIER ÉDITORIAL */
+  .niche-input, .duree-select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid rgba(224,176,32,0.3);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: var(--texte);
+    background: white;
+    margin-bottom: 10px;
+    outline: none;
+  }
+
+  .niche-input:focus, .duree-select:focus {
+    border-color: var(--or);
+  }
+
+  .plateformes-grille {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .pf-btn {
+    padding: 5px 12px;
+    border-radius: 16px;
+    border: 1.5px solid rgba(224,176,32,0.3);
+    background: white;
+    color: var(--bleu);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .pf-btn.actif {
+    background: var(--or);
+    color: var(--bleu);
+    border-color: var(--or);
+    font-weight: 600;
+  }
+
+  /* BOUTONS */
+  .btn-or {
+    display: block;
+    margin: 0 auto;
+    padding: 9px 24px;
+    background: var(--or);
+    color: var(--bleu);
+    border: none;
+    border-radius: 50px;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 700;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s;
+  }
+
+  .btn-or:active { transform: scale(0.97); }
+
+  .btn-bleu {
+    display: block;
+    margin: 8px auto 0;
+    padding: 9px 24px;
+    background: var(--bleu);
+    color: var(--or);
+    border: none;
+    border-radius: 50px;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 700;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s;
+  }
+
+  .btn-bleu:active { transform: scale(0.97); }
+
+  /* RÉSULTAT */
+  .resultat {
+    display: none;
+    background: white;
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 12px;
+    font-size: 0.83rem;
+    line-height: 1.7;
+    color: var(--texte);
+    border-left: 3px solid var(--or);
+  }
+
+  .resultat.visible { display: block; }
+
+  .chargement {
+    text-align: center;
+    color: var(--or);
+    font-size: 0.85rem;
+    padding: 12px;
+  }
+
+  /* PLANIFIER */
+  .planifier-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid rgba(224,176,32,0.3);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    outline: none;
+    background: white;
+  }
+
+  .planifier-input:focus { border-color: var(--or); }
+</style>
+</head>
+<body>
+
+<h1>📅 Agenda</h1>
+
+<!-- PHASE LUNAIRE -->
+<div class="lune-bloc" id="lune-bloc">
+  <div class="lune-emoji" id="lune-emoji">🌑</div>
+  <div class="lune-info">
+    <div class="lune-nom" id="lune-nom">Chargement...</div>
+    <div class="lune-signe" id="lune-signe"></div>
+    <div class="lune-message" id="lune-message"></div>
+  </div>
+</div>
+
+<!-- MON CALENDRIER -->
+<div class="carte">
+  <h2>🗓️ Mon calendrier</h2>
+  <p style="font-size:0.78rem;color:rgba(42,42,42,0.5);margin-bottom:10px;">Coche ceux qui te concernent — plusieurs choix possibles</p>
+  <div class="calendriers-grille" id="cals-grille"></div>
+  <div style="margin-top:8px;">
+    <input type="text" id="cal-autre-input" placeholder="Décris ton calendrier..." style="display:none;width:100%;padding:8px 12px;border:1.5px solid rgba(224,176,32,.3);border-radius:10px;font-family:Inter,sans-serif;font-size:0.82rem;outline:none;background:white;">
+  </div>
+</div>
+
+<!-- OÙ ON EN EST -->
+<div class="situation" id="situation">
+  <div id="situation-contenu"></div>
+</div>
+
+<!-- FUSEAU HORAIRE -->
+<div class="carte">
+  <h2>🕐 Fuseau horaire de ton audience</h2>
+  <div class="fuseaux-grille" id="tz-grille"></div>
+  <div class="heure-audience" id="heure-audience"></div>
+</div>
+
+<!-- CALENDRIER ÉDITORIAL -->
+<div class="carte">
+  <h2>✨ Générer mon calendrier éditorial</h2>
+  <p style="font-size:0.78rem;color:rgba(42,42,42,0.5);margin-bottom:10px;">L'IA propose 7 à 10 idées de contenu adaptées à ta situation</p>
+  <input type="text" class="niche-input" id="niche" placeholder="Ta niche — ex: cuisine africaine, bien-être, artisanat...">
+  <div class="plateformes-grille" id="pf-grille"></div>
+  <select class="duree-select" id="duree">
+    <option value="1 semaine">1 semaine</option>
+    <option value="2 semaines" selected>2 semaines</option>
+    <option value="1 mois">1 mois</option>
+  </select>
+  <button class="btn-or" onclick="genererCalendrier()">🎨 Générer</button>
+  <div class="resultat" id="resultat-calendrier"></div>
+</div>
+
+<!-- PLANIFIER -->
+<div class="carte">
+  <h2>📌 Planifier une idée</h2>
+  <input type="text" class="planifier-input" id="plan-titre" placeholder="Titre de l'idée...">
+  <input type="date" class="planifier-input" id="plan-date">
+  <button class="btn-bleu" onclick="planifier()">📅 Planifier</button>
+  <div class="resultat" id="resultat-plan"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// DONNÉES
+// ═══════════════════════════════════════
+
+var CALENDRIERS = [
+  { val:'gregorien', label:'🌍 Grégorien', fn: calGregorien },
+  { val:'lunaire', label:'🌙 Lunaire', fn: calLunaire },
+  { val:'catholique', label:'✝️ Catholique', fn: calCatholique },
+  { val:'islamique', label:'☪️ Islamique', fn: calIslamique },
+  { val:'hebraique', label:'✡️ Hébraïque', fn: calHebraique },
+  { val:'bouddhiste', label:'☸️ Bouddhiste', fn: calBouddhiste },
+  { val:'chinois', label:'🐉 Chinois', fn: calChinois },
+  { val:'ethiopien', label:'🇪🇹 Éthiopien', fn: calEthiopien },
+  { val:'hindou', label:'🕉️ Hindou', fn: calHindou },
+  { val:'africain-traditionnel', label:'🌍 Africain trad.', fn: calAfricain },
+  { val:'solaire', label:'☀️ Solaire', fn: calSolaire },
+  { val:'celtique', label:'🍀 Celtique', fn: calCeltique },
+  { val:'paganisme', label:'🌿 Paganisme', fn: calPaganisme },
+  { val:'maya', label:'🌺 Maya', fn: calMaya },
+  { val:'japonais', label:'⛩️ Japonais', fn: calJaponais },
+  { val:'coreen', label:'🎋 Coréen', fn: calCoreen },
+  { val:'persan', label:'🌸 Persan', fn: calPersan },
+  { val:'vodou', label:'🥁 Vodou', fn: calVodou },
+  { val:'copte', label:'☩ Copte', fn: calCopte },
+  { val:'tibetain', label:'🏔️ Tibétain', fn: calTibetain },
+  { val:'bahai', label:'✨ Bahá\'í', fn: calBahai },
+  { val:'berbere', label:'🌵 Berbère', fn: calBerbere },
+  { val:'julien', label:'✝️ Julien', fn: calJulien },
+  { val:'azteque', label:'🦅 Aztèque', fn: calAzteque },
+  { val:'maori', label:'🌿 Maori', fn: calMaori },
+  { val:'aborigene', label:'🪃 Aborigène', fn: calAborigene },
+  { val:'autre', label:'✨ Autre', fn: null },
+];
+
+var FUSEAUX = [
+  { label:'Dakar/Abidjan (UTC+0)', offset:0 },
+  { label:'Brazzaville/Lagos (UTC+1)', offset:1, selected:true },
+  { label:'Johannesburg (UTC+2)', offset:2 },
+  { label:'Addis-Abeba (UTC+3) ⚠️eth', offset:3, eth:true },
+  { label:'Paris/Genève (UTC+1)', offset:1 },
+  { label:'Londres (UTC+0)', offset:0 },
+  { label:'New York (UTC-5)', offset:-5 },
+  { label:'Los Angeles (UTC-8)', offset:-8 },
+  { label:'São Paulo (UTC-3)', offset:-3 },
+  { label:'Haïti (UTC-5)', offset:-5 },
+  { label:'Iran (UTC+3:30)', offset:3.5 },
+  { label:'Inde (UTC+5:30)', offset:5.5 },
+  { label:'Népal (UTC+5:45)', offset:5.75 },
+  { label:'Chine/Singapour (UTC+8)', offset:8 },
+  { label:'Japon/Corée (UTC+9)', offset:9 },
+  { label:'Sydney (UTC+10)', offset:10 },
+  { label:'Auckland (UTC+12)', offset:12 },
+];
+
+var PLATEFORMES = ['Instagram','TikTok','YouTube','Podcast','Newsletter','LinkedIn'];
+
+var calsActifs = {};
+var tzActif = null;
+var tzEth = false;
+var pfsActives = ['Instagram'];
+
+// ═══════════════════════════════════════
+// INITIALISATION
+// ═══════════════════════════════════════
+
+document.addEventListener('DOMContentLoaded', function() {
+  afficherLune();
+  renderCalendriers();
+  renderFuseaux();
+  renderPlateformes();
+
+  // Date du jour par défaut
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('plan-date').value = today;
+});
+
+// ═══════════════════════════════════════
+// LUNE
+// ═══════════════════════════════════════
+
+function afficherLune() {
+  var phase = calculerPhase();
+  document.getElementById('lune-emoji').textContent = phase.emoji;
+  document.getElementById('lune-nom').textContent = phase.nom;
+  document.getElementById('lune-signe').textContent = '♊ ' + phase.signe;
+  document.getElementById('lune-message').textContent = phase.message;
+}
+
+function calculerPhase() {
+  var nouvellesLunes = [
+    { date: new Date(2026,0,3), signe:'Capricorne' },
+    { date: new Date(2026,1,1), signe:'Verseau' },
+    { date: new Date(2026,2,3), signe:'Poissons' },
+    { date: new Date(2026,3,2), signe:'Bélier' },
+    { date: new Date(2026,4,1), signe:'Taureau' },
+    { date: new Date(2026,4,31), signe:'Gémeaux' },
+    { date: new Date(2026,6,29), signe:'Cancer' },
+    { date: new Date(2026,7,28), signe:'Vierge' },
+    { date: new Date(2026,8,26), signe:'Balance' },
+    { date: new Date(2026,9,26), signe:'Scorpion' },
+    { date: new Date(2026,10,24), signe:'Sagittaire' },
+    { date: new Date(2026,11,24), signe:'Capricorne' },
+  ];
+  var now = new Date();
+  var ref = nouvellesLunes[0];
+  for (var i=0; i<nouvellesLunes.length; i++) {
+    if (nouvellesLunes[i].date <= now) ref = nouvellesLunes[i];
+    else break;
+  }
+  var age = (now - ref.date) / 86400000;
+  var signe = ref.signe;
+  if (age < 1.85) return { emoji:'🌑', nom:'Nouvelle Lune', signe:signe, message:'Poser de nouvelles intentions. Moment idéal pour lancer.' };
+  if (age < 7.38) return { emoji:'🌒', nom:'Premier croissant', signe:signe, message:'Énergie de croissance. Semer, initier, communiquer.' };
+  if (age < 9.22) return { emoji:'🌓', nom:'Premier quartier', signe:signe, message:'Action et décision. Passer à l\'action.' };
+  if (age < 14.77) return { emoji:'🌔', nom:'Lune gibbeuse', signe:signe, message:'Affiner, ajuster. Le pic approche.' };
+  if (age < 16.61) return { emoji:'🌕', nom:'Pleine Lune', signe:signe, message:'Pic d\'énergie. Célébrer, publier, rendre visible.' };
+  if (age < 22.15) return { emoji:'🌖', nom:'Lune décroissante', signe:signe, message:'Gratitude. Récolter ce qu\'on a semé.' };
+  if (age < 24) return { emoji:'🌗', nom:'Dernier quartier', signe:signe, message:'Lâcher prise. Faire le bilan.' };
+  return { emoji:'🌘', nom:'Dernier croissant', signe:signe, message:'Repos et introspection.' };
+}
+
+// ═══════════════════════════════════════
+// CALENDRIERS
+// ═══════════════════════════════════════
+
+function renderCalendriers() {
+  var grille = document.getElementById('cals-grille');
+  grille.innerHTML = '';
+  CALENDRIERS.forEach(function(cal) {
+    var btn = document.createElement('button');
+    btn.className = 'cal-btn' + (calsActifs[cal.val] ? ' actif' : '');
+    btn.textContent = cal.label;
+    btn.onclick = function() { toggleCal(cal.val); };
+    grille.appendChild(btn);
+  });
+}
+
+function toggleCal(val) {
+  if (val === 'autre') {
+    calsActifs[val] = !calsActifs[val];
+    var inp = document.getElementById('cal-autre-input');
+    inp.style.display = calsActifs[val] ? 'block' : 'none';
+  } else {
+    calsActifs[val] = !calsActifs[val];
+  }
+  renderCalendriers();
+  afficherSituation();
+}
+
+function afficherSituation() {
+  var actifs = Object.keys(calsActifs).filter(function(k) { return calsActifs[k]; });
+  var zone = document.getElementById('situation');
+  var contenu = document.getElementById('situation-contenu');
+  if (actifs.length === 0) { zone.classList.remove('visible'); return; }
+
+  var today = new Date();
+  var lignes = [];
+
+  actifs.forEach(function(val) {
+    var cal = CALENDRIERS.find(function(c) { return c.val === val; });
+    if (!cal) return;
+    var texte = '';
+    if (val === 'autre') {
+      var inp = document.getElementById('cal-autre-input');
+      texte = inp && inp.value ? '✨ ' + inp.value : '✨ Calendrier personnalisé';
+    } else if (cal.fn) {
+      texte = cal.fn(today);
+    }
+    if (texte) lignes.push(texte);
+  });
+
+  if (lignes.length === 0) { zone.classList.remove('visible'); return; }
+  contenu.innerHTML = lignes.map(function(l) {
+    return '<div class="situation-ligne">' + l + '</div>';
+  }).join('');
+  zone.classList.add('visible');
+}
+
+// ═══════════════════════════════════════
+// FONCTIONS CALENDRIERS
+// ═══════════════════════════════════════
+
+function calGregorien(d) {
+  var j = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'][d.getDay()];
+  var m = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'][d.getMonth()];
+  return '🌍 Grégorien — ' + j + ' ' + d.getDate() + ' ' + m + ' ' + d.getFullYear();
+}
+
+function calLunaire(d) {
+  var phase = calculerPhase();
+  return '🌙 Lunaire — ' + phase.emoji + ' ' + phase.nom + ' en ' + phase.signe;
+}
+
+function calCatholique(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===11 && j>=27 || m===12 && j<=24) return '✝️ Catholique — Temps de l\'Avent (4 semaines avant Noël)';
+  if (m===12 && j>=25 || m===1 && j<=6) return '✝️ Catholique — 🎄 Temps de Noël';
+  if (m===3 && j>=1 && j<=14) return '✝️ Catholique — Carême en cours';
+  if (m===4 && j>=5 && j<=19) return '✝️ Catholique — 🌅 Temps Pascal';
+  return '✝️ Catholique — Temps ordinaire';
+}
+
+function calIslamique(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===2 && j>=18 || m===3 && j<=19) return '☪️ Islamique — 🌙 Ramadan 2026 (18 fév - 19 mars)';
+  if (m===3 && j>=20 && j<=25) return '☪️ Islamique — 🎉 Aïd el-Fitr 2026 (~20 mars)';
+  if (m===5 && j>=25 || m===6 && j<=2) return '☪️ Islamique — 🐑 Aïd el-Adha 2026 (~27 mai)';
+  return '☪️ Islamique — An 1447/1448 Hijri';
+}
+
+function calHebraique(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===9 && j>=12 && j<=14) return '✡️ Hébraïque — 🍎 Rosh Hashana 2026 (12 sept) — Nouvel An juif 5787';
+  if (m===9 && j>=21 && j<=22) return '✡️ Hébraïque — 🤍 Yom Kippour 2026 (21 sept)';
+  if (m===4 && j>=1 && j<=9) return '✡️ Hébraïque — 🪬 Pessah 2026 (Pâque juive)';
+  return '✡️ Hébraïque — An 5786';
+}
+
+function calBouddhiste(d) {
+  return '☸️ Bouddhiste — An 2569 BE. Vesak (naissance de Bouddha) : mai 2026';
+}
+
+function calChinois(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===2 && j>=14 && j<=20) return '🐉 Chinois — 🎉 Nouvel An 2026 le 17 fév — Année du Cheval';
+  if (m===6) return '🐉 Chinois — 🏮 Dragon Boat Festival approche (~20 juin 2026). Année du Cheval 4724';
+  return '🐉 Chinois — Année du Cheval 4724';
+}
+
+function calEthiopien(d) {
+  var moisEth = ['Meskerem','Tekemet','Hedar','Tahsas','Ter','Yekatit','Megabit','Miyazya','Ginbot','Sene','Hamle','Nehase','Pagume'];
+  var m = d.getMonth()+1;
+  var idx = ((m-9)+13)%13;
+  var annee = d.getFullYear()-8;
+  var m2 = d.getMonth()+1, j = d.getDate();
+  if (m2===9 && j>=11 && j<=12) return '🇪🇹 Éthiopien — 🎉 Enkutatash ! Nouvel An éthiopien. An ' + annee;
+  if (m2===1 && j>=7 && j<=9) return '🇪🇹 Éthiopien — ✨ Timkat (Épiphanie orthodoxe éthiopienne)';
+  return '🇪🇹 Éthiopien — ' + j + ' ' + moisEth[idx] + ' ' + annee + ' EC (an ' + annee + ')';
+}
+
+function calHindou(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===3 && j>=3 && j<=4) return '🕉️ Hindou — 🎨 Holi 2026 (~3 mars) — fête des couleurs';
+  if (m===10 && j>=18 && j<=20) return '🕉️ Hindou — 🪔 Diwali 2026 (~19 oct) — fête des lumières';
+  return '🕉️ Hindou — Navratri : ~14 oct. Diwali : ~19 oct. Holi : ~3 mars';
+}
+
+function calAfricain(d) {
+  var m = d.getMonth()+1;
+  if (m>=6 && m<=9) return '🌍 Africain traditionnel — Saison des pluies (Afrique Ouest et Centrale). Fertilité, travaux agricoles.';
+  if (m>=11 || m<=2) return '🌍 Africain traditionnel — Saison sèche / Harmattan. Temps des rassemblements et cérémonies.';
+  return '🌍 Africain traditionnel — Préparation des champs. Fêtes des semailles selon ta région.';
+}
+
+function calSolaire(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===6 && j>=15 && j<=22) return '☀️ Solaire — Solstice d\'été le 21 juin 2026 dans ' + (21-j) + ' jours. Nuit la plus courte.';
+  if (m===6 && j>22) return '☀️ Solaire — Solstice d\'été passé le 21 juin. Jours raccourcissent.';
+  if (m===12 && j>=18 && j<=22) return '❄️ Solaire — Solstice d\'hiver le 21 déc dans ' + (21-j) + ' jours.';
+  return '☀️ Solaire — Prochain : Solstice d\'été le 21 juin 2026';
+}
+
+function calCeltique(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===10 && j>=28 || m===11 && j<=2) return '🍀 Celtique — 🎃 Samhain (31 oct) — passage entre les mondes';
+  if (m===1 && j>=29 || m===2 && j<=4) return '🍀 Celtique — 🌱 Imbolc (1er fév) — retour de la lumière';
+  if (m===4 && j>=28 || m===5 && j<=3) return '🍀 Celtique — 🔥 Beltane (1er mai) — fête du feu';
+  if (m===7 && j>=29 || m===8 && j<=4) return '🍀 Celtique — 🌾 Lughnasadh (1er août) — premières récoltes';
+  if (m===6) return '🍀 Celtique — Litha (Solstice d\'été) le 21 juin approche';
+  return '🍀 Celtique — Prochain sabbat : Lughnasadh 1er août';
+}
+
+function calPaganisme(d) { return calCeltique(d).replace('Celtique','Paganisme/Wicca'); }
+
+function calMaya(d) {
+  var words = ['Imix','Ik','Akbal','Kan','Chicchan','Cimi','Manik','Lamat','Muluc','Oc','Chuen','Eb','Ben','Ix','Men','Cib','Caban','Etznab','Cauac','Ahau'];
+  var diff = Math.floor((d - new Date(2026,0,1)) / 86400000);
+  var tzIdx = ((diff % 260) + 260) % 260;
+  var num = (tzIdx % 13) + 1;
+  var nom = words[tzIdx % 20];
+  return '🌺 Maya — Tzolkin : ' + num + ' ' + nom;
+}
+
+function calJaponais(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m>=3 && m<=4) return '⛩️ Japonais — 🌸 Hanami (cerisiers en fleurs). Reiwa 8, Année du Cheval';
+  if (m===5 && j>=3 && j<=5) return '⛩️ Japonais — 🎏 Golden Week (3-5 mai)';
+  if (m===6) return '⛩️ Japonais — 🌧️ Tsuyu (saison des pluies). Tanabata le 7 juillet approche. Reiwa 8';
+  if (m===7 && j===7) return '⛩️ Japonais — 🎋 Tanabata — fête des étoiles';
+  if (m===8 && j>=13 && j<=16) return '⛩️ Japonais — 👻 Obon — fête des ancêtres';
+  return '⛩️ Japonais — Reiwa 8 (令和8年), Année du Cheval';
+}
+
+function calCoreen(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===1 && j>=28 || m===2 && j<=1) return '🎋 Coréen — 🎊 Seollal (Nouvel An lunaire ~28 jan 2026)';
+  if (m===10 && j>=2 && j<=4) return '🎋 Coréen — 🌾 Chuseok (fête des récoltes et ancêtres)';
+  return '🎋 Coréen — An 4359 (calendrier Dangun). Chuseok : octobre';
+}
+
+function calPersan(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===3 && j>=20 && j<=23) return '🌸 Persan — 🎉 Nowruz (Nouvel An persan 20-21 mars). An 1405 SH';
+  if (m===12 && j>=19 && j<=22) return '🌸 Persan — 🕯️ Yalda (solstice d\'hiver) — nuit la plus longue, poèmes de Hafez';
+  if (m===6) return '🌸 Persan — Mois de Khordad 1405 SH. Nowruz : 20 mars. Yalda : 21 déc';
+  return '🌸 Persan / Iranien — An 1405 SH';
+}
+
+function calVodou(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===1 && j===1) return '🥁 Vodou — Indépendance haïtienne + cérémonie Legba. Ouverture de l\'année spirituelle';
+  if (m===1 && j===6) return '🥁 Vodou — Fête de Legba (Épiphanie), gardien des chemins';
+  if (m===6 && j===24) return '🥁 Vodou — 24 juin (St Jean) — pèlerinage dans les paroisses';
+  if (m===7 && j===16) return '🥁 Vodou — 🎶 Pèlerinage à Saut d\'Eau, Notre-Dame du Mont Carmel';
+  if (m===7 && j===25) return '🥁 Vodou — Papa Ogou (St Jacques). Pèlerinage Grande Rivière du Nord';
+  if (m===8 && j===15) return '🥁 Vodou — ✨ Erzulie Dantor (Assomption). Grand pèlerinage à Saut d\'Eau';
+  if (m===10 && j>=30 || m===11 && j<=2) return '🥁 Vodou — 💀 Fête des Guédé (1-2 nov). Barón Samdi, Maman Brigitte. Cimetières en fête';
+  return '🥁 Vodou — Prochain : ' + (d.getMonth()<7 ? 'Saut d\'Eau 16 juillet' : 'Fête des Guédé 1er nov');
+}
+
+function calCopte(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===1 && j===7) return '☩ Copte — 🎄 Noël copte le 7 janvier (calendrier julien)';
+  if (m===4 && j>=12 && j<=20) return '☩ Copte — Pâques copte 2026 (~19 avril)';
+  return '☩ Copte — An 1742/1743 AM. Noël copte : 7 janv. Pâques : ~19 avril 2026';
+}
+
+function calTibetain(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===2 && j>=25 || m===3 && j<=2) return '🏔️ Tibétain — 🎉 Losar (Nouvel An tibétain ~28 fév 2026). An 2153';
+  return '🏔️ Tibétain — An 2153. Losar (Nouvel An) : ~28 février 2026';
+}
+
+function calBahai(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===3 && j>=18 && j<=22) return '✨ Bahá\'í — 🌸 Naw-Rúz (Nouvel An bahá\'í) le 20 mars. An 183 BE';
+  if (m===4 && j>=20 && j<=23) return '✨ Bahá\'í — Fête de la Ridván (21 avr) — fête la plus sainte';
+  return '✨ Bahá\'í — An 183 BE. 19 mois de 19 jours. Naw-Rúz : 20 mars';
+}
+
+function calBerbere(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===1 && j>=12 && j<=14) return '🌵 Berbère/Amazigh — 🎉 Yennayer (Nouvel An) le 13 janvier. An 2976 AG';
+  return '🌵 Berbère/Amazigh — An 2976 AG. Yennayer (Nouvel An) : 13 janvier';
+}
+
+function calJulien(d) {
+  var julien = new Date(d.getTime() - 13*86400000);
+  return '✝️ Julien — Aujourd\'hui = ' + julien.getDate() + '/' + (julien.getMonth()+1) + ' selon le calendrier julien (13j de retard sur grégorien)';
+}
+
+function calAzteque(d) {
+  var words = ['Imix','Ik','Akbal','Kan','Chicchan','Cimi','Manik','Lamat','Muluc','Oc','Chuen','Eb','Ben','Ix','Men','Cib','Caban','Etznab','Cauac','Ahau'];
+  var diff = Math.floor((d - new Date(2026,0,1)) / 86400000);
+  var idx = ((diff % 20) + 20) % 20;
+  return '🦅 Aztèque/Mexica — Tonalpohualli : cycle 260 jours. Jour : ' + words[idx];
+}
+
+function calMaori(d) {
+  var m = d.getMonth()+1, j = d.getDate();
+  if (m===6 && j>=20 || m===7 && j<=9) return '🌟 Maori — Matariki approche ! Nouvel An maori le 10 juillet 2026. Observer les Pléiades à l\'aube.';
+  if (m===7 && j>=10 && j<=15) return '🌟 Maori — 🎉 Matariki 2026 (10 juil) — Nouvel An maori. Jour férié NZ. Honorer les disparus, célébrer le présent.';
+  if (m===2 && j===6) return '🌿 Maori — Waitangi Day (6 fév) — Fête nationale NZ avec célébrations maories';
+  return '🌿 Maori / Aotearoa — Maramataka (calendrier lunaire et stellaire). Matariki : 10 juillet 2026';
+}
+
+function calAborigene(d) {
+  var m = d.getMonth()+1;
+  var saisons = {
+    12:{nom:'Birak',desc:'été sec, récolte de baies et reptiles'},
+    1:{nom:'Birak',desc:'été sec, récolte de baies et reptiles'},
+    2:{nom:'Bunuru',desc:'période la plus chaude, récolte des fruits de mer'},
+    3:{nom:'Bunuru',desc:'période la plus chaude, récolte des fruits de mer'},
+    4:{nom:'Djeran',desc:'automne, fourmis ailées, poissons et kangourous'},
+    5:{nom:'Djeran',desc:'automne, fourmis ailées, poissons et kangourous'},
+    6:{nom:'Makuru',desc:'hiver, pluies, reptiles hibernent, temps des cérémonies'},
+    7:{nom:'Makuru',desc:'hiver, pluies, reptiles hibernent, temps des cérémonies'},
+    8:{nom:'Djilba',desc:'fin d\'hiver, fleurs sauvages, orques en mer'},
+    9:{nom:'Djilba',desc:'fin d\'hiver, fleurs sauvages, orques en mer'},
+    10:{nom:'Kambarang',desc:'printemps, fleurs, serpents actifs, récoltes abondantes'},
+    11:{nom:'Kambarang',desc:'printemps, fleurs, serpents actifs, récoltes abondantes'},
+  };
+  var s = saisons[m];
+  return '🪃 Nyoongar (Australie) — Saison ' + s.nom + ' : ' + s.desc + '. NAIDOC Week : 1ère sem juillet 2026';
+}
+
+// ═══════════════════════════════════════
+// FUSEAUX
+// ═══════════════════════════════════════
+
+function renderFuseaux() {
+  var grille = document.getElementById('tz-grille');
+  grille.innerHTML = '';
+  FUSEAUX.forEach(function(tz, i) {
+    var btn = document.createElement('button');
+    btn.className = 'tz-btn' + (tzActif === i ? ' actif' : '');
+    btn.textContent = tz.label;
+    btn.onclick = function() { selectTZ(i); };
+    grille.appendChild(btn);
+  });
+}
+
+function selectTZ(idx) {
+  tzActif = idx;
+  tzEth = FUSEAUX[idx].eth || false;
+  renderFuseaux();
+  afficherHeureAudience();
+}
+
+function afficherHeureAudience() {
+  if (tzActif === null) return;
+  var zone = document.getElementById('heure-audience');
+  var tz = FUSEAUX[tzActif];
+  var now = new Date();
+  var utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  var heureAudience = new Date(utc + tz.offset * 3600000);
+  var h = heureAudience.getHours();
+  var m = heureAudience.getMinutes().toString().padStart(2,'0');
+
+  var conseil = '';
+  if (h>=6 && h<9) conseil = '✅ Bon moment — matin actif';
+  else if (h>=12 && h<14) conseil = '✅ Bon moment — pause déjeuner';
+  else if (h>=18 && h<22) conseil = '✅ Bon moment — soirée, pic d\'engagement';
+  else if (h>=0 && h<6) conseil = '❌ Mauvais moment — nuit';
+  else conseil = '⚠️ Moment moyen';
+
+  var note = '';
+  if (tzEth) {
+    var hEth = ((h + 6) % 12) || 12;
+    note = ' (= ' + hEth + 'h heure éthiopienne)';
+  }
+
+  zone.textContent = 'Chez ton audience il est ' + h + 'h' + m + note + ' — ' + conseil;
+  zone.classList.add('visible');
+}
+
+// ═══════════════════════════════════════
+// PLATEFORMES
+// ═══════════════════════════════════════
+
+function renderPlateformes() {
+  var grille = document.getElementById('pf-grille');
+  grille.innerHTML = '';
+  PLATEFORMES.forEach(function(pf) {
+    var btn = document.createElement('button');
+    btn.className = 'pf-btn' + (pfsActives.indexOf(pf) >= 0 ? ' actif' : '');
+    btn.textContent = pf;
+    btn.onclick = function() { togglePF(pf); };
+    grille.appendChild(btn);
+  });
+}
+
+function togglePF(pf) {
+  var idx = pfsActives.indexOf(pf);
+  if (idx >= 0) pfsActives.splice(idx, 1);
+  else pfsActives.push(pf);
+  renderPlateformes();
+}
+
+// ═══════════════════════════════════════
+// CALENDRIER ÉDITORIAL
+// ═══════════════════════════════════════
+
+async function genererCalendrier() {
+  var niche = document.getElementById('niche').value.trim();
+  if (!niche) { alert('Décris ta niche ou ton activité.'); return; }
+
+  var zone = document.getElementById('resultat-calendrier');
+  zone.className = 'resultat visible';
+  zone.innerHTML = '<div class="chargement">⏳ Génération en cours...</div>';
+
+  var phase = calculerPhase();
+  var cals = Object.keys(calsActifs).filter(function(k){ return calsActifs[k]; });
+  var pf = pfsActives.join(', ') || 'Instagram';
+  var duree = document.getElementById('duree').value;
+
+  var contexte = 'Aujourd\'hui : ' + new Date().toLocaleDateString('fr-FR', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  contexte += '. Lune : ' + phase.emoji + ' ' + phase.nom + ' en ' + phase.signe + '.';
+  if (cals.length > 0) contexte += ' Calendriers actifs : ' + cals.join(', ') + '.';
+
+  var prompt = contexte + '\n\nCrée un calendrier éditorial pour ' + duree + ' pour une personne dans la niche "' + niche + '", sur ' + pf + '.\n\nPropose 7 à 10 idées de contenu concrètes et précises — pas des conseils génériques. Pour chaque idée : la date, la plateforme, le format (Reel/Post/Story/Podcast/etc.), le titre accrocheur, et en quoi ça correspond à la phase lunaire ou aux calendriers actifs si pertinent. Sois précis et actionnable.';
+
+  try {
+    var r = await fetch('/api/claude', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ messages: [{ role:'user', content: prompt }] })
+    });
+    var d = await r.json();
+    var texte = d.content && d.content[0] && d.content[0].text ? d.content[0].text : 'Erreur de génération.';
+    zone.innerHTML = texte.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  } catch(e) {
+    zone.innerHTML = 'Connexion indisponible. Vérifie ta connexion internet.';
+  }
+}
+
+// ═══════════════════════════════════════
+// PLANIFIER
+// ═══════════════════════════════════════
+
+function planifier() {
+  var titre = document.getElementById('plan-titre').value.trim();
+  var date = document.getElementById('plan-date').value;
+  var zone = document.getElementById('resultat-plan');
+
+  if (!titre) { alert('Ajoute un titre.'); return; }
+  if (!date) { alert('Choisis une date.'); return; }
+
+  var d = new Date(date);
+  var jours = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  var mois = ['jan','fév','mars','avr','mai','juin','juil','août','sept','oct','nov','déc'];
+  var dateStr = jours[d.getDay()] + ' ' + d.getDate() + ' ' + mois[d.getMonth()];
+
+  zone.className = 'resultat visible';
+  zone.innerHTML = '✅ Planifié : <strong>' + titre + '</strong><br>📅 ' + dateStr;
+
+  // Sauvegarder localement
+  try {
+    var plans = JSON.parse(localStorage.getItem('moe_plans') || '[]');
+    plans.push({ titre: titre, date: date, creeLe: new Date().toISOString() });
+    plans.sort(function(a,b){ return a.date.localeCompare(b.date); });
+    localStorage.setItem('moe_plans', JSON.stringify(plans));
+  } catch(e) {}
+}
+</script>
+</body>
+</html>
