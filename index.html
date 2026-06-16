@@ -55,6 +55,10 @@
     .hero-slogan { color: #1A3A8F !important; font-family: "Basteleur", serif; font-size: clamp(1rem, 2.5vw, 1.3rem); margin-bottom: 52px; font-style: italic; }
     .hero-slogan-override { font-family: "Basteleur"; font-size: clamp(1rem, 2.5vw, 1.3rem); color: #1a1a1a; margin-bottom: 52px; }
     .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    /* RÈGLE GLOBALE — boutons dorés toujours lisibles */
+    [style*="background:#E0B020"], [style*="background: #E0B020"] { color: #1A3A8F !important; }
+    button.style-btn.active-style, .tz-btn[style*="background:#E0B020"] { color: #1A3A8F !important; }
+    .btn-secondary { background: transparent; color: #E0B020; border: 2px solid #E0B020; padding: 12px 28px; border-radius: 50px; font-family: "Basteleur"; font-size: 0.95rem; cursor: pointer; }
     .btn-primary { background: #1A3A8F; color: #E0B020; border: none; padding: 12px 28px; border-radius: 50px; font-family: "Basteleur"; font-size: 0.95rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(26,58,143,0.3); }
     .btn-primary:hover { transform: translateY(-2px); }
     .btn-secondary { background: #E0B020; color: #1A3A8F; border: 2px solid #E0B020; padding: 12px 28px; border-radius: 50px; font-family: "Basteleur"; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; }
@@ -101,7 +105,7 @@
       </div>
     </div>
     <!-- MICRO PERMANENT -->
-    <button id="global-mic-btn" onclick="toggleGlobalMic()" title="Micro — parle pour remplir le champ actif" style="background:#E0B020;border:none;border-radius:50%;width:42px;height:42px;font-size:1.2rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(224,176,32,.4);">🎙️</button>
+    <button id="global-mic-btn" onclick="toggleGlobalMic()" title="Micro — parle pour remplir le champ actif" style="background:#E0B020;color:#1A3A8F;border:none;border-radius:50%;width:42px;height:42px;font-size:1.2rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(224,176,32,.4);">🎙️</button>
     <nav>
       <a href="#" id="nav-accueil">Accueil</a>
       <a href="#" id="nav-assistant">Assistant</a>
@@ -110,7 +114,7 @@
       <a href="#" id="nav-redaction" onclick="showPage('redaction');return false;">Contenu</a>
       <a href="#" id="nav-agenda" onclick="showPage('agenda');return false;">Agenda</a>
       <a href="#" id="nav-image" onclick="showPage('image');return false;">Image</a>
-      <a href="#" id="nav-video" onclick="showPage('video');return false;" style="color:#E0B020;">Vidéo</a>
+      <a href="#" id="nav-video" onclick="showPage('video');return false;" style="color:#1A3A8F;">Vidéo</a>
     </nav>
   </header>
 
@@ -197,7 +201,7 @@
           <label style="font-family:'Basteleur',serif;font-size:0.85rem;color:#E0B020;display:block;margin-bottom:6px;">Mon assistant est...</label>
           <input type="hidden" id="mode-assistant" value="alter_ego">
           <div style="display:flex;gap:8px;">
-            <div id="btn-alter" onclick="selectMode('alter_ego')" style="flex:1;border:3px solid #E0B020;border-radius:10px;padding:10px;cursor:pointer;text-align:center;background:#E0B020;">
+            <div id="btn-alter" onclick="selectMode('alter_ego')" style="flex:1;border:3px solid #E0B020;border-radius:10px;padding:10px;cursor:pointer;text-align:center;background:#E0B020;color:#1A3A8F;">
               <div style="font-family:'Basteleur',serif;font-size:0.9rem;color:#1A3A8F;font-weight:bold;">Mon alter ego</div>
               <div style="font-family:'Basteleur',serif;font-size:0.75rem;color:#1A3A8F;margin-top:2px;font-style:italic;">le pinceau de ta créativité</div>
             </div>
@@ -464,7 +468,7 @@
     <!-- Choix du mode -->
     <div style="display:flex;gap:10px;margin-bottom:20px;">
       <button onclick="setVideoMode('montage')" id="vid-mode-montage" style="flex:1;padding:10px;border-radius:50px;border:2px solid #E0B020;background:#E0B020;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;font-weight:bold;">
-        ✂️ Montage<br><span style="font-size:0.7rem;font-weight:normal;">Mes propres vidéos</span>
+        ✂️ <strong>Montage</strong><br><span style="font-size:0.7rem;font-weight:normal;">Mes propres vidéos</span>
       </button>
       <button onclick="setVideoMode('narration')" id="vid-mode-narration" style="flex:1;padding:10px;border-radius:50px;border:2px solid #1A3A8F;background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;">
         🎬 Narration IA<br><span style="font-size:0.7rem;font-weight:normal;">Film avec images IA</span>
@@ -1254,7 +1258,7 @@
           <button class="tz-btn" onclick="selectTZ(this,'1')" style="padding:4px 10px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;color:#1A3A8F;">Brazzaville/Lagos (UTC+1)</button>
           <button class="tz-btn" onclick="selectTZ(this,'2')" style="padding:4px 10px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;color:#1A3A8F;">Johannesburg/Nairobi (UTC+2)</button>
           <button class="tz-btn" onclick="selectTZ(this,'3','eth')" style="padding:4px 10px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;color:#1A3A8F;">Addis-Abeba (UTC+3) ⚠️eth</button>
-          <button class="tz-btn" onclick="selectTZ(this,'1')" style="padding:4px 10px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:#E0B020;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;color:#1A3A8F;font-weight:bold;">Paris/Genève (UTC+1)</button>
+          <button class="tz-btn" onclick="selectTZ(this,'1')" style="padding:4px 10px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:#E0B020;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;color:#1A3A8F;font-weight:bold;">Paris/Genève (UTC+1)</button>
           <button class="tz-btn" onclick="selectTZ(this,'0')" style="padding:4px 10px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;color:#1A3A8F;">Londres (UTC+0)</button>
           <button class="tz-btn" onclick="selectTZ(this,'-5')" style="padding:4px 10px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;color:#1A3A8F;">New York (UTC-5)</button>
           <button class="tz-btn" onclick="selectTZ(this,'-8')" style="padding:4px 10px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;font-family:'Basteleur',serif;font-size:0.75rem;cursor:pointer;color:#1A3A8F;">Los Angeles (UTC-8)</button>
