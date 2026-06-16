@@ -33,8 +33,15 @@
     .header-logo img { width: 64px; height: 64px; }
     .header-logo-text { font-family: "BasteleurBold", "Basteleur", serif; font-size: 1.3rem; color: #E0B020; line-height: 1.1; }
     .header-logo-slogan { font-family: "Basteleur", serif; font-size: 0.6rem; color: #1A3A8F; letter-spacing: 0.05em; font-style: italic; }
-    nav a { font-family: "BasteleurBold", "Basteleur", serif; font-size: 1rem; text-decoration: none; margin-left: 24px; transition: opacity 0.2s; }
-    nav a:hover { opacity: 0.8; }
+    nav { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+    .nav-group { position: relative; }
+    .nav-group-btn { font-family: "BasteleurBold", "Basteleur", serif; font-size: 0.9rem; text-decoration: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; border: none; background: transparent; transition: background 0.2s; }
+    .nav-group-btn:hover { background: rgba(224,176,32,.15); }
+    .nav-dropdown { display: none; position: absolute; top: 100%; left: 0; background: #F7F4EF; border: 1px solid rgba(224,176,32,.3); border-radius: 12px; padding: 6px; min-width: 160px; z-index: 999; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+    .nav-group:hover .nav-dropdown, .nav-group.open .nav-dropdown { display: block; }
+    .nav-dropdown a { display: block; font-family: "Basteleur", serif; font-size: 0.85rem; text-decoration: none; padding: 8px 12px; border-radius: 8px; color: #1A3A8F; }
+    .nav-dropdown a:hover { background: rgba(224,176,32,.2); }
+    .nav-accueil { font-family: "BasteleurBold", "Basteleur", serif; font-size: 0.9rem; text-decoration: none; padding: 6px 12px; color: #E0B020; }
     #nav-accueil { color: #E0B020; }
     #nav-assistant { color: #1A3A8F; }
     #nav-abonnement { color: #E0B020; }
@@ -107,14 +114,32 @@
     <!-- MICRO PERMANENT -->
     <button id="global-mic-btn" onclick="toggleGlobalMic()" title="Micro — parle pour remplir le champ actif" style="background:#E0B020;color:#1A3A8F;border:none;border-radius:50%;width:42px;height:42px;font-size:1.2rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(224,176,32,.4);">🎙️</button>
     <nav>
-      <a href="#" id="nav-accueil">Accueil</a>
-      <a href="#" id="nav-assistant">Assistant</a>
-      <a href="#" id="nav-abonnement" onclick="showPage('abonnement');return false;">Abonnement</a>
-      <a href="#" id="nav-profil" onclick="showPage('profil');return false;">Profil</a>
-      <a href="#" id="nav-redaction" onclick="showPage('redaction');return false;">Contenu</a>
-      <a href="#" id="nav-agenda" onclick="showPage('agenda');return false;">Agenda</a>
-      <a href="#" id="nav-image" onclick="showPage('image');return false;">Image</a>
-      <a href="#" id="nav-video" onclick="showPage('video');return false;" style="color:#1A3A8F;">Vidéo</a>
+      <a href="#" class="nav-accueil" id="nav-accueil" onclick="showPage('accueil');return false;">Accueil</a>
+
+      <div class="nav-group" onclick="toggleNavGroup(this)">
+        <button class="nav-group-btn" style="color:#E0B020;">🎨 Créer</button>
+        <div class="nav-dropdown">
+          <a href="#" onclick="showPage('redaction');closeNavGroups();return false;">✍️ Contenu</a>
+          <a href="#" onclick="showPage('image');closeNavGroups();return false;">🖼️ Image</a>
+          <a href="#" onclick="showPage('video');closeNavGroups();return false;">🎬 Vidéo</a>
+        </div>
+      </div>
+
+      <div class="nav-group" onclick="toggleNavGroup(this)">
+        <button class="nav-group-btn" style="color:#1A3A8F;">📅 Gérer</button>
+        <div class="nav-dropdown">
+          <a href="#" onclick="showPage('agenda');closeNavGroups();return false;">📅 Agenda</a>
+          <a href="#" onclick="showPage('assistant');closeNavGroups();return false;">🤖 Assistant</a>
+        </div>
+      </div>
+
+      <div class="nav-group" onclick="toggleNavGroup(this)">
+        <button class="nav-group-btn" style="color:#E0B020;">👤 Moi</button>
+        <div class="nav-dropdown">
+          <a href="#" onclick="showPage('profil');closeNavGroups();return false;">👤 Profil</a>
+          <a href="#" onclick="showPage('abonnement');closeNavGroups();return false;">💳 Abonnement</a>
+        </div>
+      </div>
     </nav>
   </header>
 
@@ -2766,6 +2791,18 @@
       document.getElementById('vid-montage').style.display = mode === 'montage' ? 'block' : 'none';
       document.getElementById('vid-narration').style.display = mode === 'narration' ? 'block' : 'none';
     }
+
+    function toggleNavGroup(el) {
+      var isOpen = el.classList.contains('open');
+      closeNavGroups();
+      if (!isOpen) el.classList.add('open');
+    }
+    function closeNavGroups() {
+      document.querySelectorAll('.nav-group').forEach(function(g) { g.classList.remove('open'); });
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav-group')) closeNavGroups();
+    });
 
     function setGuideVocal(actif) {
       guideVocal = actif;
