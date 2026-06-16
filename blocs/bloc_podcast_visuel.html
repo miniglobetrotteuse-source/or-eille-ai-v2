@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Podcast Visuel — Or Eille AI</title>
+<style>
+  :root { --or:#E0B020; --bleu:#1A3A8F; --creme:#F7F4EF; --texte:#2A2A2A; --ombre:rgba(224,176,32,0.15); }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--creme); color:var(--texte); font-family:Georgia,serif; font-size:15px; line-height:1.6; padding:16px; max-width:600px; margin:0 auto; }
+  h1 { color:var(--or); font-size:1.8rem; text-align:center; margin-bottom:6px; }
+  .sous-titre { text-align:center; font-size:0.82rem; color:rgba(42,42,42,0.5); margin-bottom:20px; }
+  h2 { color:var(--or); font-size:0.95rem; margin-bottom:8px; }
+  .carte { background:white; border-radius:14px; padding:16px; margin-bottom:14px; box-shadow:0 2px 12px var(--ombre); }
+  .modes { display:flex; gap:8px; margin-bottom:20px; }
+  .mode-btn { flex:1; padding:12px 8px; border-radius:12px; border:2px solid rgba(224,176,32,0.3); background:white; color:var(--bleu); font-family:Georgia,serif; font-size:0.78rem; cursor:pointer; text-align:center; transition:all 0.15s; -webkit-tap-highlight-color:transparent; }
+  .mode-btn.actif { background:var(--bleu); color:var(--or); border-color:var(--bleu); }
+  .mode-btn .emoji { font-size:1.3rem; display:block; margin-bottom:4px; }
+  .grille { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+  .tag-btn { padding:5px 12px; border-radius:16px; border:1.5px solid rgba(224,176,32,0.3); background:white; color:var(--bleu); font-family:Georgia,serif; font-size:0.78rem; cursor:pointer; transition:all 0.15s; -webkit-tap-highlight-color:transparent; }
+  .tag-btn.actif { background:var(--or); color:var(--bleu); border-color:var(--or); font-weight:bold; }
+  .champ { width:100%; padding:10px 12px; border:1.5px solid rgba(224,176,32,0.3); border-radius:10px; font-family:Georgia,serif; font-size:0.85rem; color:var(--texte); background:white; margin-bottom:10px; outline:none; resize:none; }
+  .champ:focus { border-color:var(--or); }
+  .btn-or { display:block; margin:0 auto; padding:10px 28px; background:var(--or); color:var(--bleu); border:none; border-radius:50px; font-family:Georgia,serif; font-size:0.9rem; font-weight:bold; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:transform 0.15s; }
+  .btn-or:active { transform:scale(0.97); }
+  .resultat { display:none; background:white; border-radius:12px; padding:14px; margin-top:12px; font-size:0.83rem; line-height:1.8; color:var(--texte); border-left:3px solid var(--or); }
+  .resultat.visible { display:block; }
+  .chargement { text-align:center; color:var(--or); font-size:0.85rem; padding:12px; }
+  .section { display:none; }
+  .section.visible { display:block; }
+  .micro-btn { width:64px; height:64px; border-radius:50%; border:3px solid var(--or); background:white; font-size:1.8rem; cursor:pointer; display:block; margin:0 auto 10px; -webkit-tap-highlight-color:transparent; transition:all 0.15s; }
+  .micro-btn.enregistre { background:var(--or); animation:pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(224,176,32,0.4);} 50%{box-shadow:0 0 0 12px rgba(224,176,32,0);} }
+  .micro-statut { text-align:center; font-size:0.8rem; color:rgba(42,42,42,0.5); margin-bottom:8px; }
+  .chrono { text-align:center; font-size:1.2rem; font-weight:bold; color:var(--or); display:none; margin-bottom:10px; }
+  .transcription-live { background:rgba(26,58,143,0.04); border-radius:10px; padding:12px; min-height:60px; font-size:0.82rem; color:var(--bleu); font-style:italic; margin-top:8px; border-left:3px solid var(--bleu); display:none; }
+  .transcription-live.visible { display:block; }
+  .image-preview { width:100%; height:160px; object-fit:cover; border-radius:10px; margin-top:8px; border:2px solid var(--or); display:none; }
+  .image-preview.visible { display:block; }
+  .zone-upload { border:2px dashed rgba(224,176,32,0.4); border-radius:12px; padding:20px; text-align:center; cursor:pointer; }
+  .zone-upload input { display:none; }
+  .zone-label { font-size:0.82rem; color:rgba(42,42,42,0.5); cursor:pointer; }
+  .zone-label span { color:var(--or); text-decoration:underline; }
+  .langues-tv { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+  .lang-tv { padding:5px 12px; border-radius:16px; border:1.5px solid rgba(224,176,32,0.3); background:white; color:var(--bleu); font-family:Georgia,serif; font-size:0.78rem; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .lang-tv.actif { background:var(--or); color:var(--bleu); border-color:var(--or); font-weight:bold; }
+  .alerte { background:#FFF3CD; border:1px solid #E0B020; border-radius:8px; padding:8px 12px; font-size:0.78rem; color:#856404; margin-bottom:10px; display:none; }
+  .info-box { background:rgba(26,58,143,0.05); border-radius:10px; padding:12px; font-size:0.8rem; color:var(--bleu); margin-top:8px; line-height:1.6; }
+</style>
+</head>
+<body>
+
+<h1>🎙️ Podcast Visuel</h1>
+<p class="sous-titre">Audio + image + sous-titres — pour tout le monde</p>
+
+<div id="alerte-batterie" class="alerte">⚠️ Batterie faible — branche ton téléphone avant d'enregistrer</div>
+
+<!-- MODES -->
+<div class="modes">
+  <button class="mode-btn actif" onclick="setMode('enregistrer')">
+    <span class="emoji">🎙️</span>Enregistrer mon podcast
+  </button>
+  <button class="mode-btn" onclick="setMode('sous-titrer')">
+    <span class="emoji">📺</span>Sous-titrer un film
+  </button>
+  <button class="mode-btn" onclick="setMode('preparer')">
+    <span class="emoji">✍️</span>Préparer mon épisode
+  </button>
+</div>
+
+<!-- ═══ ENREGISTRER ═══ -->
+<div class="section visible" id="section-enregistrer">
+
+  <!-- CHECKLIST AVANT -->
+  <div class="carte">
+    <h2>✅ Avant de commencer</h2>
+    <div id="checklist">
+      <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:0.85rem;cursor:pointer;">
+        <input type="checkbox" id="check-notifs" onchange="verifierChecklist()"> Notifications silencieuses
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:0.85rem;cursor:pointer;">
+        <input type="checkbox" id="check-calme" onchange="verifierChecklist()"> Endroit calme, peu de bruit
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:0.85rem;cursor:pointer;">
+        <input type="checkbox" id="check-titre" onchange="verifierChecklist()"> Titre de l'épisode défini
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;cursor:pointer;">
+        <input type="checkbox" id="check-pret" onchange="verifierChecklist()"> Je suis prêt(e) à parler
+      </label>
+    </div>
+    <div id="checklist-alerte" style="margin-top:10px;font-size:0.78rem;color:#856404;display:none;">⚠️ Coche tout avant de commencer</div>
+  </div>
+
+  <!-- INFOS ÉPISODE -->
+  <div class="carte">
+    <h2>📝 Infos de l'épisode</h2>
+    <input type="text" class="champ" id="ep-titre" placeholder="Titre de l'épisode...">
+    <select class="champ" id="ep-langue">
+      <option value="fr">Français</option>
+      <option value="en">Anglais</option>
+      <option value="ln">Lingala</option>
+      <option value="wo">Wolof</option>
+      <option value="sw">Swahili</option>
+      <option value="es">Espagnol</option>
+      <option value="pt">Portugais</option>
+      <option value="ar">Arabe</option>
+    </select>
+  </div>
+
+  <!-- ENREGISTREMENT -->
+  <div class="carte">
+    <h2>🎙️ Enregistrement</h2>
+    <button class="micro-btn" id="micro-btn" onclick="toggleEnregistrement()">🎙️</button>
+    <p class="micro-statut" id="micro-statut">Appuie pour commencer</p>
+    <div class="chrono" id="chrono">0:00</div>
+    <div class="transcription-live" id="transcription-live">
+      <em>Les sous-titres apparaissent ici en temps réel...</em>
+    </div>
+  </div>
+
+  <!-- IMAGE DE FOND -->
+  <div class="carte">
+    <h2>🖼️ Image de fond du podcast</h2>
+    <div class="grille">
+      <button class="tag-btn actif" onclick="selectTag(this,'ma-photo','image-mode')">Ma photo</button>
+      <button class="tag-btn" onclick="selectTag(this,'generer','image-mode')">Générer en IA</button>
+      <button class="tag-btn" onclick="selectTag(this,'logo','image-mode')">Mon logo</button>
+    </div>
+    <div class="zone-upload" onclick="document.getElementById('image-upload').click()">
+      <input type="file" id="image-upload" accept="image/*" onchange="chargerImage(this.files)">
+      <div class="zone-label">Appuie pour choisir une image<br><span>ou génère-en une dans la page Image</span></div>
+    </div>
+    <img class="image-preview" id="image-preview">
+  </div>
+
+  <!-- SOUS-TITRES -->
+  <div class="carte">
+    <h2>💬 Sous-titres automatiques</h2>
+    <p style="font-size:0.78rem;color:rgba(42,42,42,0.5);margin-bottom:10px;">Générés automatiquement à partir de ton enregistrement</p>
+    <div class="grille" id="st-langues-grille"></div>
+    <div class="info-box">Tes sous-titres seront disponibles en téléchargement après l'enregistrement. Format compatible YouTube, Instagram, TikTok.</div>
+  </div>
+
+  <button class="btn-or" id="btn-finaliser" onclick="finaliserPodcast()" style="display:none;">🎨 Finaliser mon épisode</button>
+  <div class="resultat" id="resultat-enregistrer"></div>
+</div>
+
+<!-- ═══ SOUS-TITRER UN FILM ═══ -->
+<div class="section" id="section-sous-titrer">
+
+  <div class="carte">
+    <div class="info-box" style="margin-bottom:12px;">
+      📺 Lance le film sur ton écran. Or Eille AI capte l'audio via le micro et génère les sous-titres en temps réel dans la langue de chaque personne.
+    </div>
+    <h2>👥 Profils dans la salle</h2>
+    <p style="font-size:0.78rem;color:rgba(42,42,42,0.5);margin-bottom:10px;">Ajoute une langue par personne — tout s'affiche sur le même écran</p>
+
+    <div id="profils-liste"></div>
+
+    <div style="display:flex;gap:8px;margin-top:10px;">
+      <select class="champ" id="nouvelle-langue" style="margin-bottom:0;flex:1;">
+        <option value="fr">🇫🇷 Français</option>
+        <option value="en">🇬🇧 Anglais</option>
+        <option value="it">🇮🇹 Italien</option>
+        <option value="de">🇩🇪 Allemand</option>
+        <option value="es">🇪🇸 Espagnol</option>
+        <option value="pt">🇧🇷 Portugais</option>
+        <option value="ar">🇸🇦 Arabe</option>
+        <option value="zh">🇨🇳 Chinois</option>
+        <option value="ko">🇰🇷 Coréen</option>
+        <option value="ja">🇯🇵 Japonais</option>
+        <option value="ln">Lingala</option>
+        <option value="wo">Wolof</option>
+        <option value="sw">🌍 Swahili</option>
+        <option value="lsf">🤟 LSF (Langue des Signes)</option>
+      </select>
+      <button onclick="ajouterProfil()" style="padding:10px 16px;background:var(--or);color:var(--bleu);border:none;border-radius:10px;cursor:pointer;font-size:0.85rem;font-weight:bold;">+ Ajouter</button>
+    </div>
+  </div>
+
+  <div class="carte" id="tv-section" style="display:none;">
+    <h2>📺 Sous-titres en direct</h2>
+    <button class="micro-btn" id="tv-micro-btn" onclick="toggleTV()">🎙️</button>
+    <p class="micro-statut" id="tv-statut">Lance le film, puis appuie</p>
+    <div id="tv-sous-titres"></div>
+    <div class="info-box" style="margin-top:10px;">💡 Pour afficher sur ta télé : connecte via AirPlay (iPhone → Apple TV) ou Chromecast (Android → TV)</div>
+  </div>
+</div>
+
+<!-- ═══ PRÉPARER ═══ -->
+<div class="section" id="section-preparer">
+
+  <div class="carte">
+    <h2>💡 Mon idée d'épisode</h2>
+    <textarea class="champ" id="prep-idee" rows="3" placeholder="Décris ton idée — un sujet, une question, une histoire..."></textarea>
+  </div>
+
+  <div class="carte">
+    <h2>🎯 Ton audience</h2>
+    <input type="text" class="champ" id="prep-audience" placeholder="Ex: femmes de la diaspora africaine, entrepreneurs solo, jeunes parents...">
+  </div>
+
+  <div class="carte">
+    <h2>⏱️ Durée visée</h2>
+    <div class="grille">
+      <button class="tag-btn" onclick="selectTag(this,'3 minutes','duree')">3 min</button>
+      <button class="tag-btn actif" onclick="selectTag(this,'5 minutes','duree')">5 min</button>
+      <button class="tag-btn" onclick="selectTag(this,'8 minutes','duree')">8 min</button>
+      <button class="tag-btn" onclick="selectTag(this,'15 minutes','duree')">15 min</button>
+      <button class="tag-btn" onclick="selectTag(this,'30 minutes','duree')">30 min</button>
+    </div>
+  </div>
+
+  <button class="btn-or" onclick="preparerEpisode()">🎨 Préparer mon épisode</button>
+  <div class="resultat" id="resultat-preparer"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// DONNÉES
+// ═══════════════════════════════════════
+
+var LANGUES_ST = ['Français','Anglais','Lingala','Wolof','Swahili','Espagnol','Portugais','Arabe','Créole','Italiano','Deutsch','中文','한국어','日本語'];
+
+var languesST = ['Français'];
+var imageModeActif = 'ma-photo';
+var dureeActif = '5 minutes';
+var profils = [];
+var enregistrement = false;
+var tvActif = false;
+var mediaRecorder = null;
+var audioChunks = [];
+var recognition = null;
+var chronoInterval = null;
+var chronoSecondes = 0;
+var checklistOK = false;
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+
+document.addEventListener('DOMContentLoaded', function() {
+  renderLanguesST();
+  verifierBatterie();
+});
+
+// ═══════════════════════════════════════
+// MODES
+// ═══════════════════════════════════════
+
+function setMode(mode) {
+  document.querySelectorAll('.mode-btn').forEach(function(b){ b.classList.remove('actif'); });
+  event.currentTarget.classList.add('actif');
+  document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('visible'); });
+  document.getElementById('section-' + mode).classList.add('visible');
+}
+
+function selectTag(btn, val, type) {
+  var grille = btn.parentElement;
+  grille.querySelectorAll('.tag-btn').forEach(function(b){ b.classList.remove('actif'); });
+  btn.classList.add('actif');
+  if (type === 'image-mode') imageModeActif = val;
+  if (type === 'duree') dureeActif = val;
+}
+
+// ═══════════════════════════════════════
+// CHECKLIST
+// ═══════════════════════════════════════
+
+function verifierChecklist() {
+  var checks = ['check-notifs','check-calme','check-titre','check-pret'];
+  var tous = checks.every(function(id){ return document.getElementById(id).checked; });
+  document.getElementById('checklist-alerte').style.display = tous ? 'none' : 'block';
+  checklistOK = tous;
+}
+
+// ═══════════════════════════════════════
+// ENREGISTREMENT
+// ═══════════════════════════════════════
+
+async function toggleEnregistrement() {
+  if (!checklistOK) {
+    document.getElementById('checklist-alerte').style.display = 'block';
+    document.getElementById('checklist-alerte').textContent = '⚠️ Coche les 4 cases avant de commencer';
+    return;
+  }
+
+  if (!enregistrement) {
+    try {
+      var stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      audioChunks = [];
+      mediaRecorder.ondataavailable = function(e) { audioChunks.push(e.data); };
+      mediaRecorder.onstop = function() {
+        stream.getTracks().forEach(function(t){ t.stop(); });
+        document.getElementById('btn-finaliser').style.display = 'block';
+      };
+      mediaRecorder.start();
+
+      // Reconnaissance vocale temps réel
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SR) {
+        recognition = new SR();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = document.getElementById('ep-langue').value + '-FR';
+        var transDiv = document.getElementById('transcription-live');
+        transDiv.classList.add('visible');
+        transDiv.innerHTML = '';
+        recognition.onresult = function(e) {
+          var texte = Array.from(e.results).map(function(r){ return r[0].transcript; }).join(' ');
+          transDiv.textContent = texte;
+        };
+        recognition.start();
+      }
+
+      enregistrement = true;
+      document.getElementById('micro-btn').classList.add('enregistre');
+      document.getElementById('micro-btn').textContent = '⏹️';
+      document.getElementById('micro-statut').textContent = 'En cours — appuie pour arrêter';
+      document.getElementById('chrono').style.display = 'block';
+      chronoSecondes = 0;
+      chronoInterval = setInterval(function() {
+        chronoSecondes++;
+        var m = Math.floor(chronoSecondes/60);
+        var s = chronoSecondes % 60;
+        document.getElementById('chrono').textContent = m + ':' + (s<10?'0':'') + s;
+      }, 1000);
+
+    } catch(e) {
+      alert('Micro non disponible. Autorise l\'accès au micro dans les réglages de ton navigateur.');
+    }
+  } else {
+    if (recognition) { try{ recognition.stop(); }catch(e){} }
+    if (mediaRecorder) mediaRecorder.stop();
+    enregistrement = false;
+    clearInterval(chronoInterval);
+    document.getElementById('micro-btn').classList.remove('enregistre');
+    document.getElementById('micro-btn').textContent = '🎙️';
+    document.getElementById('micro-statut').textContent = '✓ Enregistrement terminé';
+    document.getElementById('chrono').style.display = 'none';
+  }
+}
+
+// ═══════════════════════════════════════
+// LANGUES SOUS-TITRES
+// ═══════════════════════════════════════
+
+function renderLanguesST() {
+  var grille = document.getElementById('st-langues-grille');
+  if (!grille) return;
+  grille.innerHTML = '';
+  LANGUES_ST.forEach(function(lang) {
+    var btn = document.createElement('button');
+    btn.className = 'tag-btn' + (languesST.indexOf(lang) >= 0 ? ' actif' : '');
+    btn.textContent = lang;
+    btn.onclick = function() {
+      btn.classList.toggle('actif');
+      var idx = languesST.indexOf(lang);
+      if (idx >= 0) languesST.splice(idx,1);
+      else languesST.push(lang);
+    };
+    grille.appendChild(btn);
+  });
+}
+
+// ═══════════════════════════════════════
+// IMAGE
+// ═══════════════════════════════════════
+
+function chargerImage(files) {
+  if (!files || !files[0]) return;
+  var img = document.getElementById('image-preview');
+  img.src = URL.createObjectURL(files[0]);
+  img.classList.add('visible');
+}
+
+// ═══════════════════════════════════════
+// FINALISER
+// ═══════════════════════════════════════
+
+async function finaliserPodcast() {
+  var titre = document.getElementById('ep-titre').value.trim() || 'Mon épisode';
+  var transcription = document.getElementById('transcription-live').textContent;
+  var duree = chronoSecondes;
+  var m = Math.floor(duree/60), s = duree % 60;
+
+  var zone = document.getElementById('resultat-enregistrer');
+  zone.className = 'resultat visible';
+  zone.innerHTML = '<div class="chargement">⏳ Finalisation...</div>';
+
+  var prompt = 'Tu es un producteur de podcast. Finalise cet épisode.\n\n';
+  prompt += 'Titre : ' + titre + '\n';
+  prompt += 'Durée : ' + m + ' min ' + s + ' sec\n';
+  if (transcription && transcription.length > 10) prompt += 'Transcription : ' + transcription.substring(0, 500) + '...\n';
+  prompt += 'Sous-titres demandés en : ' + languesST.join(', ') + '\n\n';
+  prompt += 'Donne :\n1. RÉSUMÉ DE L\'ÉPISODE (3 lignes)\n2. DESCRIPTION pour Spotify/Deezer (150 mots)\n3. TITRE ALTERNATIF plus accrocheur si pertinent\n4. 5 HASHTAGS recommandés\n5. HEURE DE PUBLICATION recommandée selon l\'audience\n6. EXTRAIT FORT à partager sur Instagram (1 phrase marquante)';
+
+  try {
+    var r = await fetch('/api/claude', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ messages:[{role:'user',content:prompt}] }) });
+    var d = await r.json();
+    var texte = d.content && d.content[0] ? d.content[0].text : 'Erreur.';
+    zone.innerHTML = texte.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  } catch(e) { zone.innerHTML = 'Connexion indisponible.'; }
+}
+
+// ═══════════════════════════════════════
+// PROFILS TV
+// ═══════════════════════════════════════
+
+function ajouterProfil() {
+  var select = document.getElementById('nouvelle-langue');
+  var val = select.value;
+  var label = select.options[select.selectedIndex].text;
+  if (profils.find(function(p){ return p.val === val; })) return;
+  profils.push({ val: val, label: label, texte: '' });
+  renderProfils();
+  document.getElementById('tv-section').style.display = 'block';
+}
+
+function supprimerProfil(i) {
+  profils.splice(i, 1);
+  renderProfils();
+  if (profils.length === 0) document.getElementById('tv-section').style.display = 'none';
+}
+
+function renderProfils() {
+  var liste = document.getElementById('profils-liste');
+  liste.innerHTML = '';
+  profils.forEach(function(p, i) {
+    var div = document.createElement('div');
+    div.style.cssText = 'display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f8f5f0;border-radius:8px;margin-bottom:6px;';
+    div.innerHTML = '<span style="flex:1;font-size:0.85rem;color:var(--bleu);">' + p.label + '</span>' +
+      '<button onclick="supprimerProfil(' + i + ')" style="background:none;border:none;color:#ef5350;cursor:pointer;font-size:1rem;">✕</button>';
+    liste.appendChild(div);
+  });
+}
+
+// ═══════════════════════════════════════
+// SOUS-TITRES TV EN DIRECT
+// ═══════════════════════════════════════
+
+async function toggleTV() {
+  if (!tvActif) {
+    if (profils.length === 0) { alert('Ajoute au moins une langue.'); return; }
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { alert('Reconnaissance vocale non disponible sur ce navigateur. Utilise Chrome.'); return; }
+
+    recognition = new SR();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'fr-FR';
+
+    var stDiv = document.getElementById('tv-sous-titres');
+    stDiv.innerHTML = '';
+
+    recognition.onresult = async function(e) {
+      var texte = Array.from(e.results).map(function(r){ return r[0].transcript; }).join(' ');
+      // Afficher en direct pour la première langue
+      stDiv.innerHTML = '';
+      for (var i = 0; i < profils.length; i++) {
+        var p = profils[i];
+        var div = document.createElement('div');
+        div.style.cssText = 'padding:8px 12px;margin-bottom:6px;border-radius:8px;background:rgba(26,58,143,0.08);font-size:0.85rem;';
+        div.innerHTML = '<small style="color:var(--or);font-weight:bold;">' + p.label + '</small><br>';
+        if (p.val === 'lsf') {
+          div.innerHTML += '🤟 [Signes LSF — bientôt disponible]';
+        } else if (p.val === 'fr') {
+          div.innerHTML += texte;
+        } else {
+          div.innerHTML += '<em style="color:rgba(42,42,42,0.5);">Traduction en cours...</em>';
+        }
+        stDiv.appendChild(div);
+      }
+    };
+
+    recognition.start();
+    tvActif = true;
+    document.getElementById('tv-micro-btn').classList.add('enregistre');
+    document.getElementById('tv-micro-btn').textContent = '⏹️';
+    document.getElementById('tv-statut').textContent = 'Sous-titres en direct — appuie pour arrêter';
+  } else {
+    if (recognition) { try{ recognition.stop(); }catch(e){} }
+    tvActif = false;
+    document.getElementById('tv-micro-btn').classList.remove('enregistre');
+    document.getElementById('tv-micro-btn').textContent = '🎙️';
+    document.getElementById('tv-statut').textContent = 'Arrêté';
+  }
+}
+
+// ═══════════════════════════════════════
+// PRÉPARER ÉPISODE
+// ═══════════════════════════════════════
+
+async function preparerEpisode() {
+  var idee = document.getElementById('prep-idee').value.trim();
+  if (!idee) { alert('Décris ton idée d\'épisode.'); return; }
+
+  var audience = document.getElementById('prep-audience').value.trim();
+  var zone = document.getElementById('resultat-preparer');
+  zone.className = 'resultat visible';
+  zone.innerHTML = '<div class="chargement">⏳ Préparation...</div>';
+
+  var prompt = 'Tu es un producteur de podcast expert. Prépare cet épisode.\n\n';
+  prompt += 'Idée : ' + idee + '\n';
+  if (audience) prompt += 'Audience cible : ' + audience + '\n';
+  prompt += 'Durée visée : ' + dureeActif + '\n\n';
+  prompt += 'Crée :\n1. TITRE ACCROCHEUR (la question bien posée — le format Madame Or Eille)\n2. STRUCTURE DE L\'ÉPISODE (intro / développement / conclusion avec timing)\n3. SCRIPT GUIDE (pas mot à mot, mais les points clés à aborder)\n4. ACCROCHE D\'OUVERTURE (les 15 premières secondes qui capturent)\n5. PHRASE DE CLÔTURE mémorable\n6. IMAGE DE FOND suggérée (description pour générer en IA)';
+
+  try {
+    var r = await fetch('/api/claude', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ messages:[{role:'user',content:prompt}] }) });
+    var d = await r.json();
+    var texte = d.content && d.content[0] ? d.content[0].text : 'Erreur.';
+    zone.innerHTML = texte.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  } catch(e) { zone.innerHTML = 'Connexion indisponible.'; }
+}
+
+// ═══════════════════════════════════════
+// BATTERIE
+// ═══════════════════════════════════════
+
+function verifierBatterie() {
+  if (navigator.getBattery) {
+    navigator.getBattery().then(function(battery) {
+      if (battery.level < 0.15 && !battery.charging) {
+        document.getElementById('alerte-batterie').style.display = 'block';
+      }
+    });
+  }
+}
+</script>
+</body>
+</html>
