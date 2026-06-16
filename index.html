@@ -116,8 +116,8 @@
     <nav>
       <a href="#" class="nav-accueil" id="nav-accueil" onclick="showPage('accueil');return false;">Accueil</a>
 
-      <div class="nav-group" onclick="toggleNavGroup(this)">
-        <button class="nav-group-btn" style="color:#E0B020;">🎨 Créer</button>
+      <div class="nav-group">
+        <button class="nav-group-btn" style="color:#E0B020;" onclick="toggleNavGroup(this.parentElement)">🎨 Créer ▾</button>
         <div class="nav-dropdown">
           <a href="#" onclick="showPage('redaction');closeNavGroups();return false;">✍️ Contenu</a>
           <a href="#" onclick="showPage('image');closeNavGroups();return false;">🖼️ Image</a>
@@ -125,16 +125,16 @@
         </div>
       </div>
 
-      <div class="nav-group" onclick="toggleNavGroup(this)">
-        <button class="nav-group-btn" style="color:#1A3A8F;">📅 Gérer</button>
+      <div class="nav-group">
+        <button class="nav-group-btn" style="color:#1A3A8F;" onclick="toggleNavGroup(this.parentElement)">📅 Gérer ▾</button>
         <div class="nav-dropdown">
           <a href="#" onclick="showPage('agenda');closeNavGroups();return false;">📅 Agenda</a>
           <a href="#" onclick="showPage('assistant');closeNavGroups();return false;">🤖 Assistant</a>
         </div>
       </div>
 
-      <div class="nav-group" onclick="toggleNavGroup(this)">
-        <button class="nav-group-btn" style="color:#E0B020;">👤 Moi</button>
+      <div class="nav-group">
+        <button class="nav-group-btn" style="color:#E0B020;" onclick="toggleNavGroup(this.parentElement)">👤 Moi ▾</button>
         <div class="nav-dropdown">
           <a href="#" onclick="showPage('profil');closeNavGroups();return false;">👤 Profil</a>
           <a href="#" onclick="showPage('abonnement');closeNavGroups();return false;">💳 Abonnement</a>
