@@ -110,6 +110,7 @@
       <a href="#" id="nav-redaction" onclick="showPage('redaction');return false;">Contenu</a>
       <a href="#" id="nav-agenda" onclick="showPage('agenda');return false;">Agenda</a>
       <a href="#" id="nav-image" onclick="showPage('image');return false;">Image</a>
+      <a href="#" id="nav-video" onclick="showPage('video');return false;" style="color:#E0B020;">Vidéo</a>
     </nav>
   </header>
 
@@ -455,6 +456,137 @@
 
 
   <!-- PAGE IMAGE -->
+
+  <!-- PAGE VIDÉO -->
+  <div class="page" id="page-video" style="padding:20px;max-width:640px;margin:0 auto;">
+    <h2 style="font-family:'Basteleur',serif;color:#E0B020;text-align:center;font-size:1.8rem;margin-bottom:20px;">Vidéo</h2>
+
+    <!-- Choix du mode -->
+    <div style="display:flex;gap:10px;margin-bottom:20px;">
+      <button onclick="setVideoMode('montage')" id="vid-mode-montage" style="flex:1;padding:10px;border-radius:50px;border:2px solid #E0B020;background:#E0B020;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;font-weight:bold;">
+        ✂️ Montage<br><span style="font-size:0.7rem;font-weight:normal;">Mes propres vidéos</span>
+      </button>
+      <button onclick="setVideoMode('narration')" id="vid-mode-narration" style="flex:1;padding:10px;border-radius:50px;border:2px solid #1A3A8F;background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;">
+        🎬 Narration IA<br><span style="font-size:0.7rem;font-weight:normal;">Film avec images IA</span>
+      </button>
+    </div>
+
+    <!-- MODE MONTAGE -->
+    <div id="vid-montage" style="display:block;">
+
+      <!-- Charger les prises -->
+      <div style="background:white;border-radius:16px;padding:16px;margin-bottom:12px;">
+        <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:8px;">🎥 Mes prises vidéo</p>
+        <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:10px;">Charge toutes tes prises — l'IA propose le meilleur ordre et les coupes</p>
+        <div style="border:2px dashed rgba(224,176,32,.4);border-radius:10px;padding:16px;text-align:center;">
+          <input type="file" multiple accept="video/*" id="vid-files" onchange="chargerPrises(this.files)" style="font-family:'Basteleur',serif;font-size:0.8rem;color:#1A3A8F;">
+          <p style="font-size:0.75rem;color:rgba(42,42,42,.4);margin-top:8px;">Autant de prises que tu veux</p>
+        </div>
+      </div>
+
+      <!-- Instructions de coupe vocale -->
+      <div style="background:white;border-radius:16px;padding:16px;margin-bottom:12px;" id="vid-coupe-section" style="display:none;">
+        <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:8px;">✂️ Instructions de coupe</p>
+        <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:8px;">Dis exactement ce que tu veux garder — ex: "garde de 0 à 6 secondes, supprime de 7s à 2min, garde le reste"</p>
+        <div style="position:relative;">
+          <textarea id="vid-instructions" placeholder="Ex: garde les 6 premières secondes, coupe de 7s à 2min54, garde le reste..." style="width:100%;min-height:80px;border:1px solid rgba(224,176,32,.3);border-radius:8px;padding:10px;padding-right:44px;font-family:'Basteleur',serif;font-size:0.85rem;resize:none;box-sizing:border-box;"></textarea>
+          <button onclick="startRedMic('vid-instructions')" style="position:absolute;right:8px;bottom:8px;padding:8px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+        </div>
+      </div>
+
+      <!-- Liste des prises chargées -->
+      <div id="vid-prises-liste" style="display:none;">
+        <div style="background:white;border-radius:16px;padding:16px;margin-bottom:12px;">
+          <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:12px;">📋 Tes prises — réordonne et valide</p>
+          <div id="vid-prises-contenu"></div>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;justify-content:center;">
+            <button onclick="analyserPrises()" style="padding:8px 20px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;display:block;margin:0 auto;">🎨 Analyser et proposer un ordre</button>
+            <button onclick="genererInstructionsCapcut()" style="padding:8px 20px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;display:block;margin:0 auto;">📋 Instructions CapCut</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Résultat analyse -->
+      <div id="vid-analyse-result" style="display:none;background:white;border-radius:16px;padding:16px;margin-bottom:12px;">
+        <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:8px;">🧠 Proposition de montage</p>
+        <div id="vid-analyse-texte" style="font-family:'Basteleur',serif;font-size:0.85rem;color:#1A3A8F;line-height:1.6;"></div>
+      </div>
+
+      <!-- Téléprompter -->
+      <div style="background:white;border-radius:16px;padding:16px;margin-bottom:12px;">
+        <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:8px;">🎙️ Téléprompter vocal</p>
+        <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:8px;">Le texte suit ta voix en temps réel — plus besoin de mémoriser</p>
+        <input type="text" id="tp-titre" placeholder="Titre du script..." style="width:100%;padding:8px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;margin-bottom:8px;box-sizing:border-box;">
+        <div style="position:relative;">
+          <textarea id="tp-script" placeholder="Colle ton script ici..." style="width:100%;min-height:100px;border:1px solid rgba(224,176,32,.3);border-radius:8px;padding:10px;padding-right:44px;font-family:'Basteleur',serif;font-size:0.85rem;resize:none;box-sizing:border-box;"></textarea>
+          <button onclick="startRedMic('tp-script')" style="position:absolute;right:8px;bottom:8px;padding:8px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;justify-content:center;">
+          <button onclick="lancerTeleprompter()" style="padding:8px 20px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;">🎨 Lancer</button>
+          <button onclick="sauvegarderScript()" style="padding:8px 20px;background:#1A3A8F;color:#E0B020;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.85rem;cursor:pointer;">✦ Sauvegarder</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODE NARRATION IA -->
+    <div id="vid-narration" style="display:none;">
+
+      <!-- Style cinématographique -->
+      <div style="background:white;border-radius:16px;padding:16px;margin-bottom:12px;">
+        <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:8px;">🎬 Style cinématographique</p>
+        <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:10px;">Choisis l'univers visuel de ton film</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;" id="vid-styles">
+          <button class="style-btn active-style" onclick="selectStyle(this,'futuriste')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:#E0B020;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">🚀 Futuriste</button>
+          <button class="style-btn" onclick="selectStyle(this,'historique')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">📜 Historique</button>
+          <button class="style-btn" onclick="selectStyle(this,'casablanca')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">🎞️ Casablanca</button>
+          <button class="style-btn" onclick="selectStyle(this,'disney')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">✨ Disney / Animation</button>
+          <button class="style-btn" onclick="selectStyle(this,'nollywood')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">🎭 Nollywood</button>
+          <button class="style-btn" onclick="selectStyle(this,'bollywood')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">💃 Bollywood</button>
+          <button class="style-btn" onclick="selectStyle(this,'nouvelle_vague')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">🎨 Nouvelle Vague</button>
+          <button class="style-btn" onclick="selectStyle(this,'peplum_africain')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">👑 Péplum africain</button>
+          <button class="style-btn" onclick="selectStyle(this,'coppola')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">🎩 Coppola</button>
+          <button class="style-btn" onclick="selectStyle(this,'kubrick')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">🔭 Kubrick</button>
+          <button class="style-btn" onclick="selectStyle(this,'wong_kar_wai')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">🌸 Wong Kar-wai</button>
+          <button class="style-btn" onclick="selectStyle(this,'sembene')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">🌍 Sembène</button>
+          <button class="style-btn" onclick="selectStyle(this,'documentaire')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">📹 Documentaire</button>
+          <button class="style-btn" onclick="selectStyle(this,'pagnol')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">🌿 Pagnol</button>
+          <button class="style-btn" onclick="selectStyle(this,'autre')" style="padding:5px 12px;border-radius:20px;border:1px solid rgba(224,176,32,.4);background:white;color:#1A3A8F;font-family:'Basteleur',serif;font-size:0.78rem;cursor:pointer;">✨ Autre</button>
+        </div>
+        <input type="text" id="vid-style-autre" placeholder="Décris ton style..." style="display:none;width:100%;padding:8px;border:1px solid rgba(224,176,32,.3);border-radius:8px;font-family:'Basteleur',serif;font-size:0.85rem;margin-top:8px;box-sizing:border-box;">
+      </div>
+
+      <!-- Description du film -->
+      <div style="background:white;border-radius:16px;padding:16px;margin-bottom:12px;">
+        <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:8px;">📖 Ton histoire</p>
+        <p style="font-size:0.75rem;color:rgba(42,42,42,.5);margin-bottom:8px;">Décris ce que tu veux raconter — ex: "hommage 80 ans de ma mère avec ses photos, style Casablanca, en français"</p>
+        <div style="position:relative;">
+          <textarea id="vid-histoire" placeholder="Décris ton histoire, qui c'est pour, l'occasion, le message..." style="width:100%;min-height:100px;border:1px solid rgba(224,176,32,.3);border-radius:8px;padding:10px;padding-right:44px;font-family:'Basteleur',serif;font-size:0.85rem;resize:none;box-sizing:border-box;"></textarea>
+          <button onclick="startRedMic('vid-histoire')" style="position:absolute;right:8px;bottom:8px;padding:8px;border-radius:50%;border:1px solid rgba(224,176,32,.3);background:white;cursor:pointer;font-size:1rem;">🎙️</button>
+        </div>
+      </div>
+
+      <!-- Charger des photos/vidéos -->
+      <div style="background:white;border-radius:16px;padding:16px;margin-bottom:12px;">
+        <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:8px;">🖼️ Photos ou vidéos (optionnel)</p>
+        <div style="border:2px dashed rgba(224,176,32,.4);border-radius:10px;padding:12px;text-align:center;">
+          <input type="file" multiple accept="image/*,video/*" id="vid-medias" style="font-family:'Basteleur',serif;font-size:0.8rem;color:#1A3A8F;">
+          <p style="font-size:0.75rem;color:rgba(42,42,42,.4);margin-top:6px;">Photos à différents âges, vidéos personnelles...</p>
+        </div>
+      </div>
+
+      <!-- Générer -->
+      <button onclick="genererNarration()" style="padding:8px 20px;background:#E0B020;color:#1A3A8F;border:none;border-radius:50px;font-family:'Basteleur',serif;font-size:0.88rem;cursor:pointer;display:block;margin:0 auto 12px;">🎨 Générer le film</button>
+
+      <!-- Résultat -->
+      <div id="vid-narration-result" style="display:none;background:white;border-radius:16px;padding:16px;margin-bottom:12px;">
+        <p style="font-family:'Basteleur',serif;color:#E0B020;margin-bottom:8px;">🎬 Ton film</p>
+        <div id="vid-narration-texte" style="font-family:'Basteleur',serif;font-size:0.85rem;color:#1A3A8F;line-height:1.6;"></div>
+      </div>
+    </div>
+
+    <p style="text-align:center;margin-top:16px;"><a href="#" onclick="showPage('image');return false;" style="font-family:'Basteleur',serif;font-size:0.85rem;color:rgba(42,42,42,.4);">← Retour</a></p>
+  </div>
+
   <div class="page" id="page-image" style="padding:20px;max-width:640px;margin:0 auto;">
     <h2 style="font-family:'Basteleur',serif;color:#D4A520;text-align:center;font-size:1.8rem;margin-bottom:8px;">Composition d'image</h2>
 
@@ -2409,6 +2541,226 @@
       }
       window.open(url + '?prefilled_email=' + encodeURIComponent(email.value), '_blank');
       return false;
+    }
+
+    // ═══════════════════════════════════════════
+    // PAGE VIDÉO
+    // ═══════════════════════════════════════════
+
+    var _videoStyle = 'futuriste';
+    var _videoClips = [];
+
+    function setVideoMode(mode) {
+      document.getElementById('vid-montage').style.display = mode === 'montage' ? 'block' : 'none';
+      document.getElementById('vid-narration').style.display = mode === 'narration' ? 'block' : 'none';
+      var btnMontage = document.getElementById('vid-mode-montage');
+      var btnNarration = document.getElementById('vid-mode-narration');
+      if (mode === 'montage') {
+        btnMontage.style.background = '#E0B020'; btnMontage.style.color = '#1A3A8F';
+        btnNarration.style.background = 'white'; btnNarration.style.color = '#1A3A8F';
+      } else {
+        btnNarration.style.background = '#1A3A8F'; btnNarration.style.color = '#E0B020';
+        btnMontage.style.background = 'white'; btnMontage.style.color = '#1A3A8F';
+      }
+    }
+
+    function selectStyle(btn, style) {
+      _videoStyle = style;
+      document.querySelectorAll('.style-btn').forEach(function(b) {
+        b.style.background = 'white'; b.style.color = '#1A3A8F';
+      });
+      btn.style.background = '#E0B020'; btn.style.color = '#1A3A8F';
+      var autre = document.getElementById('vid-style-autre');
+      if (autre) autre.style.display = style === 'autre' ? 'block' : 'none';
+    }
+
+    function chargerPrises(files) {
+      _videoClips = [];
+      Array.from(files).forEach(function(file, i) {
+        _videoClips.push({ id: 'clip_' + i, index: i + 1, name: file.name, file: file, url: URL.createObjectURL(file), duration: null, keep: true });
+      });
+      // Charger les durées
+      _videoClips.forEach(function(clip) {
+        var v = document.createElement('video');
+        v.src = clip.url;
+        v.onloadedmetadata = function() {
+          clip.duration = parseFloat(v.duration.toFixed(1));
+          renderPrises();
+        };
+      });
+      document.getElementById('vid-coupe-section').style.display = 'block';
+      document.getElementById('vid-prises-liste').style.display = 'block';
+      renderPrises();
+    }
+
+    function renderPrises() {
+      var html = '';
+      _videoClips.forEach(function(clip, i) {
+        var dur = clip.duration ? clip.duration + 's' : '...';
+        html += '<div style="display:flex;align-items:center;gap:8px;padding:8px;border:1px solid rgba(224,176,32,.2);border-radius:8px;margin-bottom:6px;">';
+        html += '<span style="font-family:\'Basteleur\',serif;color:#E0B020;font-size:0.9rem;min-width:24px;">' + (i+1) + '</span>';
+        html += '<div style="flex:1;font-family:\'Basteleur\',serif;font-size:0.78rem;color:#1A3A8F;">' + clip.name + '<br><span style="opacity:0.5;">' + dur + '</span></div>';
+        html += '<div style="display:flex;gap:4px;">';
+        if (i > 0) html += '<button onclick="monterClip(' + i + ')" style="padding:4px 8px;border:1px solid rgba(224,176,32,.3);background:white;border-radius:6px;cursor:pointer;font-size:0.8rem;">↑</button>';
+        if (i < _videoClips.length-1) html += '<button onclick="descendreClip(' + i + ')" style="padding:4px 8px;border:1px solid rgba(224,176,32,.3);background:white;border-radius:6px;cursor:pointer;font-size:0.8rem;">↓</button>';
+        html += '<button onclick="toggleClip(' + i + ')" style="padding:4px 8px;border:1px solid ' + (clip.keep ? '#E0B020' : '#ccc') + ';background:' + (clip.keep ? 'rgba(224,176,32,.1)' : '#f5f5f5') + ';border-radius:6px;cursor:pointer;font-size:0.75rem;color:#1A3A8F;">' + (clip.keep ? '✓ Garder' : '✗ Ignorer') + '</button>';
+        html += '</div></div>';
+      });
+      document.getElementById('vid-prises-contenu').innerHTML = html;
+    }
+
+    function monterClip(i) { var t=_videoClips[i]; _videoClips[i]=_videoClips[i-1]; _videoClips[i-1]=t; renderPrises(); }
+    function descendreClip(i) { var t=_videoClips[i]; _videoClips[i]=_videoClips[i+1]; _videoClips[i+1]=t; renderPrises(); }
+    function toggleClip(i) { _videoClips[i].keep = !_videoClips[i].keep; renderPrises(); }
+
+    async function analyserPrises() {
+      var zone = document.getElementById('vid-analyse-result');
+      var texte = document.getElementById('vid-analyse-texte');
+      zone.style.display = 'block';
+      texte.textContent = 'Analyse en cours...';
+      var info = _videoClips.map(function(c) {
+        return 'Prise ' + c.index + ' : ' + c.name + (c.duration ? ' (' + c.duration + 's)' : '');
+      }).join('\n');
+      var instructions = document.getElementById('vid-instructions') ? document.getElementById('vid-instructions').value : '';
+      var prompt = 'Tu es un monteur vidéo professionnel. Voici ' + _videoClips.length + ' prises vidéo :\n' + info;
+      if (instructions) prompt += '\n\nInstructions de l\'utilisateur : ' + instructions;
+      prompt += '\n\nPropose un ordre de montage précis. Pour chaque prise : quel moment garder (en secondes), pourquoi, dans quel ordre les assembler. Sois très concret avec des timecodes précis. Si des bruits parasites ou des défauts sont probables en début/fin de prise, suggère de couper 1-2 secondes au début et à la fin.';
+      try {
+        var r = await fetch('/api/claude', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ messages: [{role:'user', content: prompt}] }) });
+        var d = await r.json();
+        var reponse = (d.content && d.content[0] && d.content[0].text) ? d.content[0].text : 'Erreur.';
+        texte.innerHTML = reponse.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+      } catch(e) { texte.textContent = 'Connexion indisponible.'; }
+    }
+
+    function genererInstructionsCapcut() {
+      var kept = _videoClips.filter(function(c) { return c.keep; });
+      if (kept.length === 0) { alert('Aucune prise sélectionnée.'); return; }
+      var txt = 'INSTRUCTIONS CAPCUT — Or Eille AI\n\n';
+      txt += '1. Ouvrir CapCut → Nouveau projet\n\n';
+      kept.forEach(function(c, i) {
+        txt += (i+1) + '. Importer "' + c.name + '"\n';
+        if (c.duration) { txt += '   Couper les 2 premières secondes\n   Couper les 1.5 dernières secondes\n   Durée gardée : ~' + Math.max(0, c.duration-3.5).toFixed(1) + 's\n'; }
+        txt += '\n';
+      });
+      txt += 'Assembler dans cet ordre. Exporter en 1080p.';
+      var blob = new Blob([txt], { type: 'text/plain' });
+      var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'instructions_capcut.txt'; a.click();
+      var zone = document.getElementById('vid-analyse-result');
+      var texte = document.getElementById('vid-analyse-texte');
+      zone.style.display = 'block';
+      texte.innerHTML = txt.replace(/\n/g,'<br>');
+    }
+
+    async function genererNarration() {
+      var histoire = document.getElementById('vid-histoire').value.trim();
+      if (!histoire) { alert('Décris ton histoire.'); return; }
+      var style = _videoStyle;
+      if (style === 'autre') {
+        var autreEl = document.getElementById('vid-style-autre');
+        style = autreEl && autreEl.value ? autreEl.value : 'cinématographique';
+      }
+      var styles = {
+        futuriste: 'science-fiction futuriste avec effets néon et architecture avancée',
+        historique: 'film historique épique avec costumes d\'époque et lumière cinématographique',
+        casablanca: 'noir et blanc élégant style Casablanca (1942), éclairage dramatique, romantisme classique',
+        disney: 'animation Disney magique, couleurs vives, émotions expressives',
+        nollywood: 'cinéma nigérian Nollywood, couleurs saturées, émotions intenses, vie africaine contemporaine',
+        bollywood: 'comédie musicale Bollywood, couleurs vibrantes, danses, émotions dramatiques',
+        nouvelle_vague: 'Nouvelle Vague française, plans séquences, naturalisme, photographie poétique',
+        peplum_africain: 'épopée africaine, royaumes anciens, costumes traditionnels royaux, majesté',
+        coppola: 'style Coppola — ombre et lumière contrastées, profondeur psychologique, mise en scène épique',
+        kubrick: 'style Kubrick — symétrie parfaite, plans froids et précis, atmosphère particulière',
+        wong_kar_wai: 'style Wong Kar-wai — couleurs saturées, flou artistique, mélancolie douce',
+        sembene: 'cinéma d\'Ousmane Sembène — réalisme africain, dignité, critique sociale, beauté du quotidien',
+        documentaire: 'documentaire cinéma — plans larges, voix off posée, images témoignages',
+        pagnol: 'style Pagnol — lumière du Sud, dialogues savoureux, humanité simple et profonde'
+      };
+      var styleDesc = styles[style] || style;
+      var profil = JSON.parse(localStorage.getItem('moe_profil') || '{}');
+      var langue = profil.langue || 'fr';
+      var prompt = 'Tu es un réalisateur et scénariste professionnel. Crée un film complet dans le style : ' + styleDesc + '.\n\nHistoire : ' + histoire + '\n\nGénère :\n1. TITRE DU FILM\n2. SYNOPSIS (3 lignes)\n3. DÉCOUPAGE SCÈNE PAR SCÈNE (5-8 scènes) avec pour chaque scène :\n   - Description visuelle précise\n   - Texte de voix off ou dialogues\n   - Prompt image IA en anglais pour générer le visuel\n4. AMBIANCE MUSICALE recommandée\n5. DURÉE TOTALE estimée\n\nLangue : ' + langue + '. Style : ' + styleDesc;
+      var zone = document.getElementById('vid-narration-result');
+      var texte = document.getElementById('vid-narration-texte');
+      zone.style.display = 'block';
+      texte.textContent = 'Génération en cours...';
+      try {
+        var r = await fetch('/api/claude', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ messages: [{role:'user', content: prompt}] }) });
+        var d = await r.json();
+        var rep = (d.content && d.content[0] && d.content[0].text) ? d.content[0].text : 'Erreur.';
+        texte.innerHTML = rep.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+      } catch(e) { texte.textContent = 'Connexion indisponible.'; }
+    }
+
+    function lancerTeleprompter() {
+      var script = document.getElementById('tp-script');
+      if (!script || !script.value.trim()) { alert('Écris ton script.'); return; }
+      var words = script.value.trim().split(/\s+/);
+      var currentWord = 0;
+      var overlay = document.createElement('div');
+      overlay.id = 'tp-overlay';
+      overlay.style.cssText = 'position:fixed;inset:0;background:#000;z-index:99999;display:flex;flex-direction:column;overflow:hidden;';
+      var wordsHtml = words.map(function(w, i) {
+        return '<span class="tp-w" data-i="' + i + '" style="color:#fff;margin:0 .3em;line-height:1.8;cursor:pointer;font-size:48px;transition:color .2s;" onclick="tpClick(' + i + ')">' + w + '</span>';
+      }).join(' ');
+      overlay.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(224,176,32,.1);border-bottom:1px solid rgba(224,176,32,.3);">' +
+        '<span style="font-size:0.8rem;color:#E0B020;font-family:\'Basteleur\',serif;">🎙️ Téléprompter vocal actif</span>' +
+        '<button onclick="stopTeleprompter()" style="background:#ef5350;border:none;color:#fff;padding:6px 14px;cursor:pointer;border-radius:20px;font-size:0.8rem;">✕ Stop</button>' +
+        '</div>' +
+        '<div id="tp-scroll" style="flex:1;overflow-y:auto;padding:32px;text-align:center;">' +
+        '<div id="tp-text" style="font-family:Georgia,serif;line-height:1.8;">' + wordsHtml + '</div>' +
+        '</div>' +
+        '<div style="padding:8px;text-align:center;font-size:0.7rem;color:rgba(255,255,255,.4);">Parlez normalement — le texte suit votre voix</div>';
+      document.body.appendChild(overlay);
+      window._tpCurrentWord = 0;
+      window._tpWords = words;
+      tpUpdateHighlight();
+      // Reconnaissance vocale
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SR) {
+        var rec = new SR(); rec.continuous = true; rec.interimResults = true; rec.lang = 'fr-FR';
+        rec.onresult = function(e) {
+          var t = Array.from(e.results).map(function(r){return r[0].transcript;}).join(' ').toLowerCase();
+          var spoken = t.split(/\s+/);
+          var last = spoken[spoken.length-1];
+          for (var i = window._tpCurrentWord; i < Math.min(window._tpCurrentWord+5, words.length); i++) {
+            var sw = words[i].toLowerCase().replace(/[^a-zàâäéèêëïîôùûü]/g,'');
+            if (sw && last && last.includes(sw.substring(0,4))) { window._tpCurrentWord = i+1; tpUpdateHighlight(); break; }
+          }
+        };
+        rec.start(); window._tpRec = rec;
+      }
+    }
+
+    function tpClick(i) { window._tpCurrentWord = i; tpUpdateHighlight(); }
+    function tpUpdateHighlight() {
+      var words = document.querySelectorAll('.tp-w');
+      var cur = window._tpCurrentWord || 0;
+      words.forEach(function(w, i) {
+        w.style.color = i < cur ? 'rgba(255,255,255,.3)' : i === cur ? '#E0B020' : '#fff';
+        if (i === cur) w.scrollIntoView({ behavior:'smooth', block:'center' });
+      });
+    }
+    function stopTeleprompter() {
+      if (window._tpRec) { try { window._tpRec.stop(); } catch(e){} }
+      var overlay = document.getElementById('tp-overlay');
+      if (overlay) overlay.remove();
+    }
+
+    function sauvegarderScript() {
+      var titre = document.getElementById('tp-titre').value || 'Script ' + new Date().toLocaleDateString();
+      var texte = document.getElementById('tp-script').value;
+      if (!texte) return;
+      var scripts = JSON.parse(localStorage.getItem('moe_scripts') || '[]');
+      scripts.unshift({ titre: titre, texte: texte, date: new Date().toISOString() });
+      scripts = scripts.slice(0, 20);
+      localStorage.setItem('moe_scripts', JSON.stringify(scripts));
+      alert('Script sauvegardé.');
+    }
+
+    function setVideoMode(mode) {
+      document.getElementById('vid-montage').style.display = mode === 'montage' ? 'block' : 'none';
+      document.getElementById('vid-narration').style.display = mode === 'narration' ? 'block' : 'none';
     }
 
     function setGuideVocal(actif) {
