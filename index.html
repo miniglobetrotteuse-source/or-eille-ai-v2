@@ -2846,10 +2846,10 @@
       if (window.A11Y_CONFIG) A11Y_CONFIG.apply();
       // Enregistrer le service worker pour PWA
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
-          .then(function() { console.log('SW enregistré'); })
-          .catch(function(e) { console.log('SW erreur:', e); });
-      }
+      navigator.serviceWorker.getRegistrations().then(function(regs) {
+        regs.forEach(function(r) { r.unregister(); });
+      });
+    }
     });
   </script>
 </body>
