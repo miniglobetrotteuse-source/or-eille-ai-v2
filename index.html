@@ -2168,38 +2168,47 @@
       });
     }
 
-    // Premier lancement : message de bienvenue + logo cliquable vers profil
+    // Premier lancement : logo cliquable OU glissable vers profil (comme un jeu)
     window.addEventListener('load', function() {
-      // Rendre le logo cliquable
       var logo = document.querySelector('.hero-logo');
-      if (logo) {
-        logo.style.cursor = 'pointer';
-        logo.title = 'Touche ici pour commencer';
-        logo.addEventListener('click', function() {
-          // Enlever l'animation d'invite
-          logo.classList.remove('invite');
-          logo.style.animation = 'float 4s ease-in-out infinite';
-          logo.style.filter = '';
-          var hint = document.querySelector('.touch-hint');
-          if (hint) hint.style.display = 'none'; showPage('profil'); });
+      var dejaVenu = localStorage.getItem('moe_visite');
+
+      function allerVersProfil() {
+        // Enlever l'animation d'invite
+        logo.classList.remove('invite');
+        logo.style.animation = 'float 4s ease-in-out infinite';
+        logo.style.filter = '';
+        var hint = document.querySelector('.touch-hint');
+        if (hint) hint.style.display = 'none';
+        // Débloquer la voix (les navigateurs bloquent l'audio avant toute interaction)
+        unlockAudio();
+        if (!dejaVenu) {
+          localStorage.setItem('moe_visite', '1');
+          dejaVenu = '1';
+        }
+        showPage('profil');
       }
 
-
-      // Message de bienvenue — déclenché sur le clic logo
-      // (les navigateurs bloquent la voix avant toute interaction)
-      var dejaVenu = localStorage.getItem('moe_visite');
       if (logo) {
-        logo.addEventListener('click', function() {
-          unlockAudio();
-          if (!dejaVenu) {
-            localStorage.setItem('moe_visite', '1');
-            dejaVenu = '1';
-            // bienvenue dit via PAGE_WELCOME profil
-            showPage('profil');
-          } else {
-            showPage('profil');
+        logo.style.cursor = 'pointer';
+        logo.title = 'Touche ou glisse ici pour commencer';
+
+        // Clic classique
+        logo.addEventListener('click', allerVersProfil);
+
+        // Glissement (slide) — comme dans les petits jeux
+        var startX = 0, startY = 0;
+        logo.addEventListener('touchstart', function(e) {
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+        }, { passive: true });
+        logo.addEventListener('touchend', function(e) {
+          var dx = e.changedTouches[0].clientX - startX;
+          var dy = e.changedTouches[0].clientY - startY;
+          if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
+            allerVersProfil();
           }
-        });
+        }, { passive: true });
       }
 
       // Message d'invite au premier chargement
